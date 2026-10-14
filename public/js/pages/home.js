@@ -7,7 +7,7 @@ import { getProfile } from '../lib/store.js';
 import { scoreOpportunity } from '../lib/match.js';
 
 boot('home', async () => {
-  const startWizard = () => openWizard({ onComplete: () => { window.location.href = '/dashboard?welcome=1'; } });
+  const startWizard = () => openWizard({ onComplete: () => { window.location.href = '/dashboard.html?welcome=1'; } });
   $('#start-wizard').addEventListener('click', startWizard);
   $('#start-wizard-2').addEventListener('click', startWizard);
   if (new URLSearchParams(window.location.search).get('wizard') === '1') {
@@ -26,7 +26,7 @@ boot('home', async () => {
   clear(tiles);
   for (const [key, meta] of Object.entries(data.clusters)) {
     const count = opps.filter((o) => o.cluster === key).length;
-    tiles.append(h('a', { class: 'cluster-tile', href: `/dashboard?cluster=${encodeURIComponent(key)}`, dataset: { cluster: key } },
+    tiles.append(h('a', { class: 'cluster-tile', href: `/dashboard.html?cluster=${encodeURIComponent(key)}`, dataset: { cluster: key } },
       h('span', { class: 'dot' }),
       h('strong', { text: meta.label }),
       h('span', { text: `${count} opportunities · ${meta.description}` })));

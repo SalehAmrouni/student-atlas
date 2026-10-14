@@ -5,10 +5,10 @@ import { getSettings, saveSettings, getProfile, onStoreChange } from './store.js
 
 const NAV = [
   { href: '/', label: 'Home', page: 'home' },
-  { href: '/dashboard', label: 'Explore', page: 'explore' },
-  { href: '/profile', label: 'My Pathway', page: 'profile' },
-  { href: '/submission', label: 'Suggest a Resource', page: 'submit' },
-  { href: '/references', label: 'About', page: 'about' },
+  { href: '/dashboard.html', label: 'Explore', page: 'explore' },
+  { href: '/profile.html', label: 'My Pathway', page: 'profile' },
+  { href: '/submission.html', label: 'Suggest a Resource', page: 'submit' },
+  { href: '/references.html', label: 'About', page: 'about' },
 ];
 
 export function applySettings(s = getSettings()) {
@@ -136,11 +136,11 @@ export function renderLayout(activePage) {
   });
 
   const ctaLabel = h('span', { class: 'btn-label' });
-  const cta = h('a', { class: 'btn btn-primary btn-sm', href: '/profile' }, icon('compass'), ctaLabel);
+  const cta = h('a', { class: 'btn btn-primary btn-sm', href: '/profile.html' }, icon('compass'), ctaLabel);
   const setCta = () => {
     const p = getProfile();
     ctaLabel.textContent = p ? (p.firstName ? `Hi, ${p.firstName}` : 'My Pathway') : 'Find my pathway';
-    cta.href = p ? '/profile' : '/?wizard=1';
+    cta.href = p ? '/profile.html' : '/?wizard=1';
   };
   setCta();
   onStoreChange((what) => { if (what === 'profile') setCta(); });
@@ -166,15 +166,15 @@ export function renderLayout(activePage) {
       h('div', {},
         h('h4', {}, 'Explore'),
         h('ul', {},
-          h('li', {}, h('a', { href: '/dashboard' }, 'Opportunity directory')),
+          h('li', {}, h('a', { href: '/dashboard.html' }, 'Opportunity directory')),
           h('li', {}, h('a', { href: '/?wizard=1' }, 'Pathway Wizard')),
-          h('li', {}, h('a', { href: '/profile' }, 'My Pathway')))),
+          h('li', {}, h('a', { href: '/profile.html' }, 'My Pathway')))),
       h('div', {},
         h('h4', {}, 'Project'),
         h('ul', {},
-          h('li', {}, h('a', { href: '/submission' }, 'Suggest a resource')),
-          h('li', {}, h('a', { href: '/references' }, 'About & sources')),
-          h('li', {}, h('a', { href: '/references#privacy' }, 'Privacy'))))),
+          h('li', {}, h('a', { href: '/submission.html' }, 'Suggest a resource')),
+          h('li', {}, h('a', { href: '/references.html' }, 'About & sources')),
+          h('li', {}, h('a', { href: '/references.html#privacy' }, 'Privacy'))))),
     h('div', { class: 'footer-bottom' },
       h('div', { class: 'container row-between small faint' },
         h('span', {}, `© ${year} Student Atlas`),

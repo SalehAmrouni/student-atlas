@@ -11,7 +11,7 @@ Student Atlas helps students find research programs, internships, competitions, 
 - **Pathway Wizard + explainable matching.** Students see a fit score for each opportunity with the reasons behind it ("Open to 10th graders", "Pays participants") and eligibility warnings.
 - **Explore view** with search, filters (interest, type, grade, cost, format, affordable, deadline soon, eligible, saved), sorting, and shareable URLs.
 - **My Pathway** dashboard: fit by interest area, top matches, saved list, upcoming deadlines, plus data export and deletion.
-- **Community submissions**, validated on the server and queued for human review.
+- **Community suggestions** that open as a pre-filled GitHub issue for the team to review.
 - **Accessibility**: text sizing, light/dark/auto theme, high contrast, readable font, color-blind friendly palette (Okabe-Ito), reduced motion, read-aloud, keyboard navigation, and screen-reader labels.
 
 ## Security & privacy
@@ -19,7 +19,7 @@ Student Atlas helps students find research programs, internships, competitions, 
 - No accounts or passwords. The profile, saved list, settings, and Zeus conversations live in the student's browser and are never sent to the server.
 - No AI services, API keys, ads, analytics, or third-party scripts.
 - A strict Content Security Policy (no inline scripts or styles, no third-party origins) and security headers via Helmet.
-- Submissions are validated with Zod, size-limited, rate-limited, same-origin checked, and protected by a honeypot.
+- The site is fully static: no server code, database, or API runs in production.
 - Zeus's replies are rendered with a safe Markdown renderer that never uses `innerHTML` and only allows `http(s)` links.
 
 See [SECURITY.md](SECURITY.md) for details.
@@ -37,45 +37,40 @@ No API keys or accounts are needed.
 
 | Command | What it does |
 | --- | --- |
-| `npm start` | Start the server (reads environment variables) |
-| `npm run dev` | Start with auto-reload and `.env` loading |
-| `npm test` | Run the test suite (server, data, and Zeus engine) |
+| `npm run dev` | Run the site locally with auto-reload |
+| `npm run build` | Validate the data and regenerate `public/data/opportunities.json` and the icon bundle |
+| `npm test` | Run the test suite (data, static build, server, and Zeus engine) |
 | `npm run validate-data` | Validate every opportunity against the schema |
 
-### Configuration
+## Deploying to Vercel
 
-| Variable | Default | Purpose |
-| --- | --- | --- |
-| `PORT` | `3000` | HTTP port |
-| `NODE_ENV` | (none) | Set to `production` to enable HSTS and caching |
-| `TRUST_PROXY` | (none) | Set (e.g. `1`) when behind a reverse proxy so rate limits see real IPs |
+The site is fully static, and `vercel.json` configures everything (build, output folder, clean URLs, and security headers).
 
-## Deploying
+1. In Vercel, **Add New → Project** and import this GitHub repository.
+2. Leave **Root Directory** as the repository root (`./`), not `public`.
+3. Leave the framework preset and the build, output, and install commands at their defaults. `vercel.json` sets them.
+4. Click **Deploy**.
 
-Student Atlas runs on any Node.js host (the server adds security headers and receives community submissions). Render, Railway, and Fly.io all work. On Render, for example:
+If you already created the project with Root Directory set to `public`, change it under **Settings → Build and Deployment → Root Directory** to the repository root, then redeploy. (The site still loads from `public`, but you'd miss the security headers and clean URLs.)
 
-1. Create a new **Web Service** from this GitHub repository.
-2. Build command: `npm install`. Start command: `npm start`.
-3. Add environment variables: `NODE_ENV=production` and `TRUST_PROXY=1` (the host puts a proxy in front of the app; this lets rate limits see each visitor's real IP).
-
-Community suggestions are written to `data/submissions/`. On hosts with temporary disks, attach a persistent disk there (or set `SUBMISSIONS_DIR`) so they aren't lost on redeploy.
+Because everything in `public/` is plain static files, it also works on GitHub Pages, Netlify, or any static host.
 
 ## Project structure
 
 ```
-server/            Express app, submissions, data loader
+server/            Local dev server, shared security headers, data loader
 data/opportunities One JSON file per interest area (the database)
-public/            Static site: HTML pages, CSS, and ES-module JavaScript
+public/            The deployable static site: HTML pages, CSS, ES-module JavaScript, data/ and vendor/ (generated)
   js/lib/          Shared modules (Zeus engine + chat UI, matching, wizard, store, markdown, UI)
   js/pages/        One module per page
-scripts/           Data validation
+scripts/           Build (static data + icons) and data validation
 tests/             node:test suite
 ```
 
 ### Adding an opportunity
 
-Add an entry to the right file in `data/opportunities/` and run `npm run validate-data`. The schema lives in `server/opportunities.js`. Community suggestions arrive in `data/submissions/queue.jsonl` (not committed) for review.
+Add an entry to the right file in `data/opportunities/`, then run `npm run build` (it validates the data and regenerates `public/data/opportunities.json`) and commit both. The schema lives in `server/opportunities.js`. Community suggestions arrive as GitHub issues; to also accept them by email, set `SUGGESTIONS.email` in `public/js/config.js`.
 
 ## Credits
 
-Built with Node.js, Express, Helmet, express-rate-limit, Zod, and Lucide icons. Opportunity details are summarized from each organization's official website; always confirm current dates and eligibility there.
+Built with HTML, CSS, and JavaScript, plus Zod (data validation), Express (local dev server), and Lucide icons. Opportunity details are summarized from each organization's official website; always confirm current dates and eligibility there.

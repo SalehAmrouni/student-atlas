@@ -28,7 +28,7 @@ function renderLink(text, url, ctx) {
     const id = url.slice(4);
     if (/^[a-z0-9-]{1,80}$/.test(id) && (!ctx.knownIds || ctx.knownIds.has(id))) {
       // A real inline link (buttons can't wrap mid-line); the chat intercepts the click.
-      return h('a', { href: `/dashboard?q=${encodeURIComponent(text)}`, class: 'opp-link', role: 'button', dataset: { oppId: id } }, text);
+      return h('a', { href: `/dashboard.html?q=${encodeURIComponent(text)}`, class: 'opp-link', role: 'button', dataset: { oppId: id } }, text);
     }
     return text;
   }

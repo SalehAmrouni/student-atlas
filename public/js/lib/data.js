@@ -4,7 +4,7 @@ let cache = null;
 
 export async function loadData() {
   if (cache) return cache;
-  cache = fetch('/api/opportunities', { headers: { Accept: 'application/json' } })
+  cache = fetch('/data/opportunities.json', { headers: { Accept: 'application/json' } })
     .then((res) => {
       if (!res.ok) throw new Error(`Failed to load opportunities (${res.status})`);
       return res.json();

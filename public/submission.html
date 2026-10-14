@@ -17,7 +17,7 @@
     <div class="container container-narrow section-tight">
       <span class="eyebrow">Community</span>
       <h1>Suggest a resource</h1>
-      <p class="muted">Student Atlas grows with help from students, families, educators, and organizations. Every suggestion is reviewed by a person for accuracy and safety before it's added. Nothing is published automatically.</p>
+      <p class="muted">Student Atlas grows with help from students, families, educators, and organizations. Every suggestion is reviewed by a person for accuracy and safety before it's added. Nothing is published to the directory automatically.</p>
 
       <div class="callout mb-3"><i data-lucide="info"></i><span>We accept free or reputable programs for high school students: research, internships, competitions, scholarships, service, and college access. We don't list paid tutoring, ads, or programs that charge application fees without clear value.</span></div>
 
@@ -95,15 +95,6 @@
                 <option>Community member</option>
               </select>
             </div>
-            <div class="field">
-              <label class="label" for="contactEmail">Contact email <span class="faint">(optional)</span></label>
-              <input class="input" id="contactEmail" name="contactEmail" type="email" maxlength="200" autocomplete="email">
-              <span class="hint">Only if you're an adult or organization and want us to follow up. Students don't need to share this.</span>
-            </div>
-          </div>
-          <div class="honeypot" aria-hidden="true">
-            <label for="website2">Leave this field empty</label>
-            <input id="website2" name="website2" tabindex="-1" autocomplete="off">
           </div>
           <label class="check mt-2"><input type="checkbox" id="consent" name="consent" required> <span>I confirm this information is accurate to the best of my knowledge. *</span></label>
         </fieldset>
@@ -111,17 +102,19 @@
         <div id="form-status" role="alert"></div>
         <div class="row-between">
           <span class="small faint">* Required</span>
-          <button class="btn btn-primary btn-lg" type="submit" id="submit-btn"><i data-lucide="send"></i> Submit for review</button>
+          <button class="btn btn-primary btn-lg" type="submit" id="submit-btn"><i data-lucide="send"></i> Prepare my suggestion</button>
         </div>
       </form>
 
       <div class="card text-center" id="success" hidden tabindex="-1">
         <div class="zeus-avatar zeus-avatar-lg" aria-hidden="true"><i data-lucide="check"></i></div>
-        <h2>Thank you!</h2>
-        <p class="muted">Your suggestion is in our review queue. If it meets our guidelines, it will appear in the directory after we verify the details.</p>
-        <div class="row row-center">
-          <button class="btn btn-outline" type="button" id="submit-another">Suggest another</button>
-          <a class="btn btn-primary" href="/dashboard">Back to exploring</a>
+        <h2>Almost done!</h2>
+        <p class="muted">Your suggestion is ready. Send it to our review team with one of the options below. Suggestions are posted publicly for review, so don't include personal information.</p>
+        <div class="row row-center" id="send-options"></div>
+        <p class="small faint mt-2" id="copy-status" aria-live="polite"></p>
+        <div class="row row-center mt-2">
+          <button class="btn btn-ghost" type="button" id="submit-another">Suggest another</button>
+          <a class="btn btn-ghost" href="/dashboard.html">Back to exploring</a>
         </div>
       </div>
     </div>

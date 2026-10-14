@@ -42,7 +42,7 @@ boot('profile', async () => {
       profile.goals ? h('p', { class: 'small muted mt-2 mb-0' }, h('strong', {}, 'Your goal: '), profile.goals) : null,
       h('div', { class: 'row mt-3' },
         h('button', { type: 'button', class: 'btn btn-primary', onclick: rebuild }, icon('pencil'), 'Edit profile'),
-        h('a', { class: 'btn btn-ghost', href: '/dashboard?welcome=1' }, icon('sparkles'), 'Ask Zeus for a plan')));
+        h('a', { class: 'btn btn-ghost', href: '/dashboard.html?welcome=1' }, icon('sparkles'), 'Ask Zeus for a plan')));
   }
 
   function overview(profile, scored) {
@@ -73,7 +73,7 @@ boot('profile', async () => {
         bars),
       h('div', { class: 'row-between mt-4 mb-2' },
         h('h3', { class: 'mb-0' }, 'Your top matches'),
-        h('a', { class: 'btn btn-ghost btn-sm', href: '/dashboard' }, 'See all', icon('arrow-right'))),
+        h('a', { class: 'btn btn-ghost btn-sm', href: '/dashboard.html' }, 'See all', icon('arrow-right'))),
       top.length
         ? h('div', { class: 'results-grid' }, top.map(({ o }) => opportunityCard(o, { profile })))
         : h('div', { class: 'empty-state' }, 'No eligible matches yet. Try adding more interests.'),
@@ -86,7 +86,7 @@ boot('profile', async () => {
     if (!items.length) {
       return h('div', { class: 'empty-state' }, icon('bookmark'), h('h3', { text: 'Nothing saved yet' }),
         h('p', { text: 'Tap the bookmark on any opportunity to keep it here.' }),
-        h('a', { class: 'btn btn-primary', href: '/dashboard' }, 'Browse opportunities'));
+        h('a', { class: 'btn btn-primary', href: '/dashboard.html' }, 'Browse opportunities'));
     }
     return h('div', { class: 'card card-flat' },
       h('div', { class: 'row-between' },
@@ -150,7 +150,7 @@ boot('profile', async () => {
       h('div', { class: 'row' },
         h('button', { type: 'button', class: 'btn btn-outline', onclick: download }, icon('download'), 'Download my data'),
         h('button', { type: 'button', class: 'btn btn-danger', onclick: wipe }, icon('trash-2'), 'Delete all my data')),
-      h('p', { class: 'small faint mb-0' }, 'Read the full ', h('a', { href: '/references#privacy' }, 'privacy summary'), '.'));
+      h('p', { class: 'small faint mb-0' }, 'Read the full ', h('a', { href: '/references.html#privacy' }, 'privacy summary'), '.'));
   }
 
   function render() {

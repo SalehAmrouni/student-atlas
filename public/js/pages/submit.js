@@ -1,11 +1,15 @@
 import { boot } from '../lib/layout.js';
 import { h, icon, $, $$, clear, refreshIcons } from '../lib/dom.js';
 import { loadData } from '../lib/data.js';
+import { SUGGESTIONS } from '../config.js';
+
+// The site is static, so suggestions are handed off to a pre-filled GitHub
+// issue (and optionally an email) for the team to review.
 
 boot('submit', async () => {
   const form = $('#submit-form');
   const status = $('#form-status');
-  const button = $('#submit-btn');
+  const field = (name) => form.elements.namedItem(name);
 
   const data = await loadData();
   $('#cluster').append(...Object.entries(data.clusters).map(([k, m]) => h('option', { value: k }, m.label)));
@@ -30,8 +34,6 @@ boot('submit', async () => {
     (el.closest('.field') ?? el.parentElement).append(msg);
   };
 
-  const field = (name) => form.elements.namedItem(name);
-
   const collect = () => ({
     title: field('title').value.trim(),
     organization: field('organization').value.trim(),
@@ -43,12 +45,10 @@ boot('submit', async () => {
     deadline: field('deadline').value.trim(),
     grades: $$('input[name="grades"]:checked', form).map((c) => Number(c.value)),
     submitterRole: field('submitterRole').value,
-    contactEmail: field('contactEmail').value.trim(),
     consent: field('consent').checked,
-    website2: field('website2').value,
   });
 
-  const validateLocally = (body) => {
+  const validate = (body) => {
     const errors = [];
     if (body.title.length < 3) errors.push(['title', 'Enter the program name.']);
     if (body.organization.length < 2) errors.push(['organization', 'Enter the organization.']);
@@ -61,16 +61,61 @@ boot('submit', async () => {
     if (!body.type) errors.push(['type', 'Choose a type.']);
     if (!body.grades.length) errors.push(['grades', 'Choose at least one grade.']);
     if (!body.submitterRole) errors.push(['submitterRole', 'Tell us your connection to this resource.']);
-    if (body.contactEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(body.contactEmail)) errors.push(['contactEmail', 'Enter a valid email or leave this blank.']);
     if (!body.consent) errors.push(['consent', 'Please confirm the information is accurate.']);
     return errors;
   };
 
-  form.addEventListener('submit', async (e) => {
+  const clusterLabel = (k) => data.clusters[k]?.label ?? k;
+
+  function toMarkdown(b) {
+    return [
+      `**Program:** ${b.title}`,
+      `**Organization:** ${b.organization}`,
+      `**Website:** ${b.url}`,
+      `**Interest area:** ${clusterLabel(b.cluster)}`,
+      `**Type:** ${b.type}`,
+      `**Grades:** ${b.grades.join(', ')}`,
+      b.cost ? `**Cost:** ${b.cost}` : null,
+      b.deadline ? `**Typical deadline:** ${b.deadline}` : null,
+      `**Suggested by:** ${b.submitterRole}`,
+      '',
+      '**Description**',
+      b.description,
+    ].filter((line) => line !== null).join('\n');
+  }
+
+  function showSendOptions(b) {
+    const title = `Resource suggestion: ${b.title}`;
+    const body = toMarkdown(b);
+    const options = clear($('#send-options'));
+
+    if (SUGGESTIONS.githubRepo) {
+      const url = `https://github.com/${SUGGESTIONS.githubRepo}/issues/new?${new URLSearchParams({ title, body })}`;
+      options.append(h('a', { class: 'btn btn-primary', href: url, target: '_blank', rel: 'noopener noreferrer' }, icon('message-square-plus'), 'Open on GitHub'));
+    }
+    if (SUGGESTIONS.email) {
+      const mailto = `mailto:${SUGGESTIONS.email}?${new URLSearchParams({ subject: title, body }).toString().replace(/\+/g, '%20')}`;
+      options.append(h('a', { class: 'btn btn-outline', href: mailto }, icon('mail'), 'Send by email'));
+    }
+    options.append(h('button', {
+      type: 'button', class: 'btn btn-outline',
+      onclick: async () => {
+        try {
+          await navigator.clipboard.writeText(`${title}\n\n${body}`);
+          $('#copy-status').textContent = 'Copied! Paste it wherever your team collects suggestions.';
+        } catch {
+          $('#copy-status').textContent = 'Copy failed. Select the text in your browser instead.';
+        }
+      },
+    }, icon('copy'), 'Copy details'));
+    refreshIcons();
+  }
+
+  form.addEventListener('submit', (e) => {
     e.preventDefault();
     clearErrors();
     const body = collect();
-    const errors = validateLocally(body);
+    const errors = validate(body);
     if (errors.length) {
       errors.forEach(([f, m]) => fieldError(f, m));
       status.append(h('div', { class: 'bubble error' }, icon('alert-circle'), h('span', { text: 'Please fix the highlighted fields.' })));
@@ -78,36 +123,16 @@ boot('submit', async () => {
       form.querySelector('[aria-invalid="true"]')?.focus();
       return;
     }
-
-    button.disabled = true;
-    button.replaceChildren(icon('loader-2', 'spin'), 'Submitting…');
-    refreshIcons();
-    try {
-      const res = await fetch('/api/submissions', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      });
-      const json = await res.json().catch(() => ({}));
-      if (!res.ok) {
-        for (const f of json.fields ?? []) fieldError(f.field.split('.')[0], f.message);
-        throw new Error(json.error || 'Something went wrong. Please try again.');
-      }
-      form.reset();
-      $('#desc-count').textContent = '0';
-      form.hidden = true;
-      $('#success').hidden = false;
-      $('#success').focus();
-    } catch (err) {
-      status.append(h('div', { class: 'bubble error' }, icon('alert-circle'), h('span', { text: err.message })));
-    } finally {
-      button.disabled = false;
-      button.replaceChildren(icon('send'), 'Submit for review');
-      refreshIcons();
-    }
+    showSendOptions(body);
+    form.hidden = true;
+    $('#success').hidden = false;
+    $('#success').focus();
   });
 
   $('#submit-another').addEventListener('click', () => {
+    form.reset();
+    $('#desc-count').textContent = '0';
+    $('#copy-status').textContent = '';
     $('#success').hidden = true;
     form.hidden = false;
     field('title').focus();
