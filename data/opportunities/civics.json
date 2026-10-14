@@ -1,0 +1,903 @@
+[
+  {
+    "id": "us-senate-youth-program",
+    "title": "United States Senate Youth Program",
+    "organization": "The Hearst Foundations & U.S. Senate",
+    "cluster": "Civics",
+    "type": "Fellowship",
+    "format": "In-person",
+    "location": "Washington, DC",
+    "cost": "Award",
+    "costNote": "All expenses paid plus a college scholarship",
+    "financialAid": false,
+    "grades": [
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Fall (varies by state)",
+    "deadlineMonth": 10,
+    "season": "School year",
+    "description": "Two students from each state who serve in an elected or appointed student leadership office spend a week in Washington meeting senators, cabinet officials, and Supreme Court justices, and receive a college scholarship.",
+    "url": "https://ussenateyouth.org",
+    "tags": [
+      "government",
+      "leadership",
+      "scholarship",
+      "selective",
+      "washington dc"
+    ],
+    "needBased": false,
+    "featured": true
+  },
+  {
+    "id": "senate-page-program",
+    "title": "U.S. Senate Page Program",
+    "organization": "United States Senate",
+    "cluster": "Civics",
+    "type": "Internship",
+    "format": "In-person",
+    "location": "Washington, DC",
+    "cost": "Stipend",
+    "costNote": "Paid position; housing provided for a fee",
+    "financialAid": false,
+    "grades": [
+      11
+    ],
+    "minGPA": null,
+    "deadline": "Varies by sponsoring senator",
+    "deadlineMonth": null,
+    "season": "Year-round",
+    "description": "High school juniors who are at least 16 serve as pages on the Senate floor, attend the Senate Page School, and see the legislative process up close. Appointments are made by sponsoring senators.",
+    "url": "https://www.senate.gov/reference/Index/Pages.htm",
+    "tags": [
+      "government",
+      "congress",
+      "paid",
+      "washington dc"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "congressional-award",
+    "title": "The Congressional Award",
+    "organization": "The Congressional Award Foundation",
+    "cluster": "Civics",
+    "type": "Fellowship",
+    "format": "Varies",
+    "location": "Self-directed, anywhere in the U.S.",
+    "cost": "Fee",
+    "costNote": "One-time registration fee; waivers available",
+    "financialAid": true,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Register anytime",
+    "deadlineMonth": null,
+    "season": "Year-round",
+    "description": "Congress's award for young Americans ages 14-24. Participants set and achieve goals in volunteer service, personal development, physical fitness, and expedition to earn certificates and medals.",
+    "url": "https://www.congressionalaward.org",
+    "tags": [
+      "service",
+      "goal setting",
+      "recognition",
+      "fitness"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "boys-state",
+    "title": "American Legion Boys State",
+    "organization": "The American Legion",
+    "cluster": "Civics",
+    "type": "Summer Program",
+    "format": "In-person",
+    "location": "Every state",
+    "cost": "Free",
+    "costNote": "Usually sponsored by local Legion posts",
+    "financialAid": false,
+    "grades": [
+      11
+    ],
+    "minGPA": null,
+    "deadline": "Winter-spring (via local posts or schools)",
+    "deadlineMonth": 3,
+    "season": "Summer",
+    "description": "Week-long program where rising seniors build a mock state government, run for office, and pass legislation. Two delegates from each state go on to Boys Nation in Washington, DC.",
+    "url": "https://www.legion.org/get-involved/youth-programs/boys-state-boys-nation/about-boys-state-boys-nation",
+    "tags": [
+      "government",
+      "leadership",
+      "elections",
+      "residential"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "girls-state",
+    "title": "American Legion Auxiliary Girls State",
+    "organization": "American Legion Auxiliary",
+    "cluster": "Civics",
+    "type": "Summer Program",
+    "format": "In-person",
+    "location": "Every state",
+    "cost": "Free",
+    "costNote": "Usually sponsored by local Auxiliary units",
+    "financialAid": false,
+    "grades": [
+      11
+    ],
+    "minGPA": null,
+    "deadline": "Winter-spring (via local units or schools)",
+    "deadlineMonth": 3,
+    "season": "Summer",
+    "description": "Week-long leadership program where rising seniors learn how government works by running for office and governing a mock state. Two delegates per state go on to Girls Nation.",
+    "url": "https://www.alaforveterans.org/ALA-Girls-State",
+    "tags": [
+      "government",
+      "leadership",
+      "elections",
+      "residential"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "ymca-youth-and-government",
+    "title": "YMCA Youth & Government",
+    "organization": "YMCA",
+    "cluster": "Civics",
+    "type": "Club / Organization",
+    "format": "In-person",
+    "location": "Most states",
+    "cost": "Fee",
+    "costNote": "Program fees vary by state; scholarships often available",
+    "financialAid": true,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Join in the fall",
+    "deadlineMonth": 10,
+    "season": "School year",
+    "description": "Students serve as legislators, lobbyists, attorneys, judges, and journalists in a model state government, culminating in a session at the state capitol.",
+    "url": "https://www.ymca.org",
+    "tags": [
+      "government",
+      "law",
+      "debate",
+      "leadership"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "close-up-washington",
+    "title": "Close Up Washington Programs",
+    "organization": "Close Up Foundation",
+    "cluster": "Civics",
+    "type": "Exchange / Travel",
+    "format": "In-person",
+    "location": "Washington, DC",
+    "cost": "Tuition",
+    "costNote": "Program fee with need-based fellowships",
+    "financialAid": true,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Rolling",
+    "deadlineMonth": null,
+    "season": "School year",
+    "description": "Week-long civic education trips to Washington, DC, where students meet with members of Congress, debate policy issues, and study government at monuments and memorials.",
+    "url": "https://www.closeup.org",
+    "tags": [
+      "government",
+      "travel",
+      "policy",
+      "washington dc"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "junior-state-of-america",
+    "title": "Junior State of America (JSA)",
+    "organization": "Junior State of America",
+    "cluster": "Civics",
+    "type": "Club / Organization",
+    "format": "Hybrid",
+    "location": "School chapters and summer schools",
+    "cost": "Fee",
+    "costNote": "Chapter dues; summer schools charge tuition with aid",
+    "financialAid": true,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Join anytime",
+    "deadlineMonth": null,
+    "season": "Year-round",
+    "description": "Student-run organization for political debate and civic engagement, with chapter conventions and summer schools at universities focused on government and leadership.",
+    "url": "https://jsa.org",
+    "tags": [
+      "debate",
+      "politics",
+      "leadership",
+      "civic engagement"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "national-speech-debate-association",
+    "title": "National Speech & Debate Association",
+    "organization": "NSDA",
+    "cluster": "Civics",
+    "type": "Club / Organization",
+    "format": "Hybrid",
+    "location": "School teams nationwide",
+    "cost": "Fee",
+    "costNote": "Membership through your school team",
+    "financialAid": false,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Join anytime",
+    "deadlineMonth": null,
+    "season": "School year",
+    "description": "The national honor society and league for speech and debate, with events like policy, Lincoln-Douglas, public forum, congressional debate, and original oratory.",
+    "url": "https://www.speechanddebate.org",
+    "tags": [
+      "debate",
+      "public speaking",
+      "argumentation"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "model-united-nations",
+    "title": "Model United Nations",
+    "organization": "United Nations & conference hosts",
+    "cluster": "Civics",
+    "type": "Club / Organization",
+    "format": "In-person",
+    "location": "Conferences worldwide",
+    "cost": "Fee",
+    "costNote": "Conference fees vary",
+    "financialAid": false,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Conferences throughout the school year",
+    "deadlineMonth": null,
+    "season": "School year",
+    "description": "Students represent countries in simulated UN committees, researching global issues, negotiating, and drafting resolutions at conferences hosted by schools and universities.",
+    "url": "https://www.un.org/en/model-united-nations",
+    "tags": [
+      "international relations",
+      "debate",
+      "diplomacy",
+      "public speaking"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "national-history-day",
+    "title": "National History Day",
+    "organization": "National History Day",
+    "cluster": "Civics",
+    "type": "Competition",
+    "format": "In-person",
+    "location": "Regional, state, and national contests",
+    "cost": "Fee",
+    "costNote": "Small contest fees vary by state",
+    "financialAid": false,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Regional contests in late winter",
+    "deadlineMonth": 2,
+    "season": "School year",
+    "description": "Year-long research program where students create papers, exhibits, documentaries, performances, or websites on a historical topic tied to an annual theme.",
+    "url": "https://nhd.org",
+    "tags": [
+      "history",
+      "research",
+      "documentary",
+      "writing"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "we-the-people",
+    "title": "We the People: The Citizen and the Constitution",
+    "organization": "Center for Civic Education",
+    "cluster": "Civics",
+    "type": "Competition",
+    "format": "In-person",
+    "location": "Participating schools nationwide",
+    "cost": "Free",
+    "costNote": "Offered through participating teachers",
+    "financialAid": false,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Through participating classes",
+    "deadlineMonth": null,
+    "season": "School year",
+    "description": "Classes study the Constitution and Bill of Rights, then compete in simulated congressional hearings in front of judges, advancing from state to national finals.",
+    "url": "https://www.civiced.org/we-the-people",
+    "tags": [
+      "constitution",
+      "government",
+      "public speaking",
+      "teamwork"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "national-mock-trial",
+    "title": "National High School Mock Trial Championship",
+    "organization": "National High School Mock Trial Championship",
+    "cluster": "Civics",
+    "type": "Competition",
+    "format": "In-person",
+    "location": "State competitions to nationals",
+    "cost": "Fee",
+    "costNote": "Fees vary by state program",
+    "financialAid": false,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "State seasons in winter",
+    "deadlineMonth": 1,
+    "season": "School year",
+    "description": "Teams act as attorneys and witnesses in a simulated trial judged by real attorneys and judges, advancing from state championships to the national championship.",
+    "url": "https://www.nationalmocktrial.org",
+    "tags": [
+      "law",
+      "public speaking",
+      "teamwork",
+      "argumentation"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "national-high-school-ethics-bowl",
+    "title": "National High School Ethics Bowl",
+    "organization": "Parr Center for Ethics, UNC Chapel Hill",
+    "cluster": "Civics",
+    "type": "Competition",
+    "format": "Hybrid",
+    "location": "Regional bowls nationwide",
+    "cost": "Free",
+    "costNote": "Usually free for teams",
+    "financialAid": false,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Regional bowls in winter",
+    "deadlineMonth": 1,
+    "season": "School year",
+    "description": "A collaborative discussion competition where teams analyze real ethical dilemmas and are judged on the quality of their reasoning, not on beating opponents.",
+    "url": "https://nhseb.unc.edu",
+    "tags": [
+      "ethics",
+      "philosophy",
+      "discussion",
+      "teamwork"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "cspan-studentcam",
+    "title": "C-SPAN StudentCam",
+    "organization": "C-SPAN",
+    "cluster": "Civics",
+    "type": "Competition",
+    "format": "Virtual",
+    "location": "Online",
+    "cost": "Award",
+    "costNote": "Free to enter; cash prizes",
+    "financialAid": false,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "January",
+    "deadlineMonth": 1,
+    "season": "School year",
+    "description": "National video documentary competition for students in grades 6-12. Students create short documentaries on a yearly civics theme for cash prizes and a chance to air on C-SPAN.",
+    "url": "https://www.studentcam.org",
+    "tags": [
+      "documentary",
+      "film",
+      "civics",
+      "journalism"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "jfk-profile-in-courage-essay",
+    "title": "JFK Profile in Courage Essay Contest",
+    "organization": "John F. Kennedy Presidential Library and Museum",
+    "cluster": "Civics",
+    "type": "Competition",
+    "format": "Virtual",
+    "location": "Online",
+    "cost": "Award",
+    "costNote": "Free to enter; cash awards for winners",
+    "financialAid": false,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "January",
+    "deadlineMonth": 1,
+    "season": "School year",
+    "description": "Students write an essay about an act of political courage by a U.S. elected official since 1917. Winners receive cash awards and are honored at the Kennedy Library.",
+    "url": "https://www.jfklibrary.org/learn/education/profile-in-courage-essay-contest",
+    "tags": [
+      "essay",
+      "writing",
+      "history",
+      "politics"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "telluride-association-summer-seminar",
+    "title": "Telluride Association Summer Seminar (TASS)",
+    "organization": "Telluride Association",
+    "cluster": "Civics",
+    "type": "Summer Program",
+    "format": "In-person",
+    "location": "Partner universities",
+    "cost": "Free",
+    "costNote": "Free, including tuition, housing, and travel",
+    "financialAid": false,
+    "grades": [
+      10,
+      11
+    ],
+    "minGPA": null,
+    "deadline": "Early December",
+    "deadlineMonth": 12,
+    "season": "Summer",
+    "description": "Free six-week college-level seminar in the humanities and social sciences focused on critical Black studies and anti-oppressive studies, with no grades or credit, just learning.",
+    "url": "https://tellurideassociation.org/tass/",
+    "tags": [
+      "humanities",
+      "social justice",
+      "seminar",
+      "residential"
+    ],
+    "needBased": false,
+    "featured": true
+  },
+  {
+    "id": "hoby-leadership-seminar",
+    "title": "HOBY State Leadership Seminars",
+    "organization": "Hugh O'Brian Youth Leadership",
+    "cluster": "Civics",
+    "type": "Summer Program",
+    "format": "In-person",
+    "location": "Every state",
+    "cost": "Fee",
+    "costNote": "Fees are often covered by schools or sponsors",
+    "financialAid": true,
+    "grades": [
+      10
+    ],
+    "minGPA": null,
+    "deadline": "Schools nominate students in winter",
+    "deadlineMonth": 2,
+    "season": "Summer",
+    "description": "Multi-day leadership seminars for high school sophomores focused on personal leadership, group collaboration, and community service, followed by a service commitment.",
+    "url": "https://www.hoby.org",
+    "tags": [
+      "leadership",
+      "service",
+      "sophomores"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "running-start-ywpl",
+    "title": "Running Start Young Women's Political Leadership Program",
+    "organization": "Running Start",
+    "cluster": "Civics",
+    "type": "Summer Program",
+    "format": "In-person",
+    "location": "Washington, DC",
+    "cost": "Free",
+    "costNote": "Free, with travel and lodging covered",
+    "financialAid": false,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Spring",
+    "deadlineMonth": 3,
+    "season": "Summer",
+    "description": "Week-long program in Washington, DC that introduces high school young women to political leadership through workshops with elected officials and campaign experts.",
+    "url": "https://runningstartonline.org",
+    "tags": [
+      "politics",
+      "women in leadership",
+      "public speaking",
+      "washington dc"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "nsli-y",
+    "title": "National Security Language Initiative for Youth (NSLI-Y)",
+    "organization": "U.S. Department of State",
+    "cluster": "Civics",
+    "type": "Exchange / Travel",
+    "format": "In-person",
+    "location": "Abroad",
+    "cost": "Free",
+    "costNote": "Merit-based scholarship covering travel, tuition, and homestay",
+    "financialAid": false,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Late fall",
+    "deadlineMonth": 11,
+    "season": "Summer",
+    "description": "Full scholarships for students ages 15-18 to learn critical languages such as Arabic, Chinese, Korean, Russian, or Turkish through summer or academic-year programs abroad.",
+    "url": "https://www.nsliforyouth.org",
+    "tags": [
+      "languages",
+      "study abroad",
+      "scholarship",
+      "international relations"
+    ],
+    "needBased": false,
+    "featured": true
+  },
+  {
+    "id": "cbyx",
+    "title": "Congress-Bundestag Youth Exchange (CBYX)",
+    "organization": "U.S. Congress & German Bundestag",
+    "cluster": "Civics",
+    "type": "Exchange / Travel",
+    "format": "In-person",
+    "location": "Germany",
+    "cost": "Free",
+    "costNote": "Full scholarship for a year in Germany",
+    "financialAid": false,
+    "grades": [
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Fall",
+    "deadlineMonth": 11,
+    "season": "School year",
+    "description": "Scholarship for students ages 15-18.5 to spend an academic year in Germany living with a host family and attending a German high school.",
+    "url": "https://www.usagermanyscholarship.org",
+    "tags": [
+      "study abroad",
+      "germany",
+      "languages",
+      "scholarship"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "yes-abroad",
+    "title": "Kennedy-Lugar YES Abroad",
+    "organization": "U.S. Department of State",
+    "cluster": "Civics",
+    "type": "Exchange / Travel",
+    "format": "In-person",
+    "location": "Abroad",
+    "cost": "Free",
+    "costNote": "Full scholarship for an academic year abroad",
+    "financialAid": false,
+    "grades": [
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Fall",
+    "deadlineMonth": 11,
+    "season": "School year",
+    "description": "Merit-based scholarships for U.S. students ages 15-18.5 to spend an academic year in countries with significant Muslim populations, living with a host family.",
+    "url": "https://www.yes-abroad.org",
+    "tags": [
+      "study abroad",
+      "cultural exchange",
+      "scholarship"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "us-presidential-scholars",
+    "title": "U.S. Presidential Scholars Program",
+    "organization": "U.S. Department of Education",
+    "cluster": "Civics",
+    "type": "Fellowship",
+    "format": "In-person",
+    "location": "National",
+    "cost": "Free",
+    "costNote": "Honor by invitation only; students cannot apply on their own",
+    "financialAid": false,
+    "grades": [
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Candidates invited in winter",
+    "deadlineMonth": 2,
+    "season": "School year",
+    "description": "One of the nation's highest honors for graduating high school seniors, recognizing academic, artistic, and career and technical achievement.",
+    "url": "https://www.ed.gov/grants-and-programs/recognition-programs/us-presidential-scholars-program",
+    "tags": [
+      "honor",
+      "recognition",
+      "academics",
+      "seniors"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "west-point-summer-leaders-experience",
+    "title": "West Point Summer Leaders Experience",
+    "organization": "United States Military Academy",
+    "cluster": "Civics",
+    "type": "Summer Program",
+    "format": "In-person",
+    "location": "West Point, NY",
+    "cost": "Fee",
+    "costNote": "Program fee with financial assistance available",
+    "financialAid": true,
+    "grades": [
+      11
+    ],
+    "minGPA": null,
+    "deadline": "Winter",
+    "deadlineMonth": 1,
+    "season": "Summer",
+    "description": "Week-long program for high school juniors to experience academics, military training, and athletics at West Point.",
+    "url": "https://www.westpoint.edu/admissions/summer-leaders-experience",
+    "tags": [
+      "military",
+      "leadership",
+      "service academy",
+      "residential"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "naval-academy-summer-seminar",
+    "title": "U.S. Naval Academy Summer Seminar",
+    "organization": "United States Naval Academy",
+    "cluster": "Civics",
+    "type": "Summer Program",
+    "format": "In-person",
+    "location": "Annapolis, MD",
+    "cost": "Fee",
+    "costNote": "Program fee with financial assistance available",
+    "financialAid": true,
+    "grades": [
+      11
+    ],
+    "minGPA": null,
+    "deadline": "Winter",
+    "deadlineMonth": 1,
+    "season": "Summer",
+    "description": "Week-long program for rising seniors to experience life as a midshipman, with academic workshops, leadership training, and physical fitness.",
+    "url": "https://www.usna.edu/Admissions/Programs/NASS.php",
+    "tags": [
+      "military",
+      "leadership",
+      "service academy",
+      "residential"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "american-legion-oratorical",
+    "title": "American Legion Oratorical Contest",
+    "organization": "The American Legion",
+    "cluster": "Civics",
+    "type": "Competition",
+    "format": "In-person",
+    "location": "Local posts to national finals",
+    "cost": "Award",
+    "costNote": "Free to enter; college scholarships for winners",
+    "financialAid": false,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Local contests in late fall/winter",
+    "deadlineMonth": 12,
+    "season": "School year",
+    "description": "Students deliver a prepared speech on the U.S. Constitution and an assigned topic, competing from local and state levels to national finals for college scholarships.",
+    "url": "https://www.legion.org/oratorical",
+    "tags": [
+      "public speaking",
+      "constitution",
+      "scholarship"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "educators-rising",
+    "title": "Educators Rising",
+    "organization": "Educators Rising",
+    "cluster": "Civics",
+    "type": "Club / Organization",
+    "format": "In-person",
+    "location": "School chapters nationwide",
+    "cost": "Fee",
+    "costNote": "Membership through your school chapter",
+    "financialAid": false,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Join anytime",
+    "deadlineMonth": null,
+    "season": "School year",
+    "description": "Career organization for high school students interested in becoming teachers, with hands-on teaching experience, competitions, and a national conference.",
+    "url": "https://educatorsrising.org",
+    "tags": [
+      "teaching",
+      "education",
+      "career organization"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "student-poll-worker",
+    "title": "Student Poll Worker Programs",
+    "organization": "U.S. Election Assistance Commission & local election offices",
+    "cluster": "Civics",
+    "type": "Volunteering",
+    "format": "In-person",
+    "location": "Your county election office",
+    "cost": "Stipend",
+    "costNote": "Poll workers are usually paid; many states accept workers ages 16-17",
+    "financialAid": false,
+    "grades": [
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Before each election",
+    "deadlineMonth": null,
+    "season": "School year",
+    "description": "Many states allow high school students to serve as paid poll workers on Election Day, helping voters and seeing democracy in action. Rules vary by state.",
+    "url": "https://www.eac.gov",
+    "tags": [
+      "elections",
+      "democracy",
+      "paid",
+      "local"
+    ],
+    "needBased": false
+  },
+  {
+    "financialAid": false,
+    "minGPA": null,
+    "needBased": false,
+    "tags": [
+      "essay",
+      "philosophy",
+      "economics",
+      "politics",
+      "writing"
+    ],
+    "id": "john-locke-essay-competition",
+    "title": "John Locke Institute Global Essay Prize",
+    "organization": "John Locke Institute",
+    "cluster": "Civics",
+    "type": "Competition",
+    "format": "Virtual",
+    "location": "Online (global)",
+    "cost": "Award",
+    "costNote": "Free to enter; scholarships and prizes for winners",
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "deadline": "Late spring",
+    "deadlineMonth": 6,
+    "season": "School year",
+    "description": "Global essay competition for students under 19. Entrants answer a challenging question in philosophy, politics, economics, history, psychology, theology, or law in 2,000 words or fewer.",
+    "url": "https://www.johnlockeinstitute.com"
+  },
+  {
+    "financialAid": false,
+    "minGPA": null,
+    "needBased": false,
+    "tags": [
+      "history",
+      "research",
+      "writing",
+      "published"
+    ],
+    "id": "concord-review",
+    "title": "The Concord Review",
+    "organization": "The Concord Review",
+    "cluster": "Civics",
+    "type": "Competition",
+    "format": "Virtual",
+    "location": "Online submission",
+    "cost": "Fee",
+    "costNote": "Submission fee",
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "deadline": "Rolling",
+    "deadlineMonth": null,
+    "season": "Year-round",
+    "description": "The only quarterly journal that publishes academic history research papers written by high school students. Publication is a highly respected signal of serious independent research.",
+    "url": "https://www.tcr.org"
+  }
+]

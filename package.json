@@ -1,0 +1,25 @@
+{
+  "name": "student-atlas",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Student Atlas: a personalized directory of opportunities for high school students.",
+  "type": "module",
+  "main": "server/index.js",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node --watch --env-file-if-exists=.env server/index.js",
+    "test": "node --test tests/*.test.js",
+    "validate-data": "node scripts/validate-data.js"
+  },
+  "license": "UNLICENSED",
+  "dependencies": {
+    "express": "^5.3.0",
+    "express-rate-limit": "^8.7.1",
+    "helmet": "^8.3.0",
+    "lucide": "^1.56.0",
+    "zod": "^4.6.7"
+  }
+}

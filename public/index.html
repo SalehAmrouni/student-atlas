@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Student Atlas | Find your pathway</title>
+  <meta name="description" content="Student Atlas is a free, personalized directory that helps high school students discover research programs, internships, competitions, scholarships, and service opportunities that fit them.">
+  <meta name="theme-color" content="#0e9f6e">
+  <link rel="icon" type="image/png" href="/image/icon.png">
+  <link rel="stylesheet" href="/css/app.css">
+  <script src="/js/theme-init.js"></script>
+  <script src="/vendor/lucide/lucide.min.js" defer></script>
+  <script type="module" src="/js/pages/home.js"></script>
+</head>
+<body>
+  <main id="main" tabindex="-1">
+    <section class="hero">
+      <div class="container hero-inner">
+        <div>
+          <span class="eyebrow"><i data-lucide="sparkles"></i> Free for every student</span>
+          <h1>Find the opportunities that <span class="highlight">fit your future.</span></h1>
+          <p class="lead">Student Atlas maps hundreds of real programs, internships, competitions, and scholarships for high schoolers, and Zeus, your built-in pathway guide, helps you pick the right ones and plan your next steps.</p>
+          <div class="hero-cta">
+            <button class="btn btn-primary btn-lg" type="button" id="start-wizard"><i data-lucide="compass"></i> Find my pathway</button>
+            <a class="btn btn-outline btn-lg" href="/dashboard"><i data-lucide="search"></i> Browse opportunities</a>
+          </div>
+          <div class="hero-stats" aria-live="polite">
+            <div><strong id="stat-total">190+</strong><span>curated opportunities</span></div>
+            <div><strong id="stat-free">100+</strong><span>free, paid, or with aid</span></div>
+            <div><strong>7</strong><span>interest areas</span></div>
+          </div>
+        </div>
+        <div class="hero-preview" aria-hidden="true">
+          <div class="card preview-chat">
+            <div class="zeus-head mb-2">
+              <div class="zeus-avatar"><i data-lucide="sparkles"></i></div>
+              <div><div class="title">Zeus</div><div class="subtitle"><span class="status-dot online"></span> Pathway guide</div></div>
+            </div>
+            <div class="stack">
+              <div class="bubble user">I'm a sophomore who loves biology. Are there summer programs that won't cost my family money?</div>
+              <div class="bubble assistant"><p class="mb-0">Definitely! Since you're in 10th grade, look at <strong>Summer Science Program</strong> (need-based aid, many students attend free) and <strong>ACS Project SEED</strong> (a paid chemistry research experience). Want me to build a timeline for applying?</p></div>
+            </div>
+            <p class="faint small mt-2 mb-0">Example conversation</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Explore by interest</span>
+          <h2>Seven areas, one map</h2>
+          <p class="muted">Jump straight into the area you care about, or let the wizard suggest where to start.</p>
+        </div>
+        <div class="grid grid-4" id="cluster-tiles"></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="row-between mb-3">
+          <div class="section-head mb-0">
+            <span class="eyebrow">Spotlight</span>
+            <h2 id="featured-title">Featured opportunities</h2>
+            <p class="muted mb-0" id="featured-subtitle">Standout programs that are free, paid, or offer generous aid.</p>
+          </div>
+          <a class="btn btn-ghost" href="/dashboard">See all <i data-lucide="arrow-right"></i></a>
+        </div>
+        <div class="results-grid" id="featured-grid">
+          <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head center">
+          <span class="eyebrow">How it works</span>
+          <h2>From "I don't know where to start" to a real plan</h2>
+        </div>
+        <div class="steps">
+          <div class="card step"><h3>Build your profile</h3><p class="muted mb-0">Answer a few quick questions in the Pathway Wizard. It's saved only on your device.</p></div>
+          <div class="card step"><h3>Get matched</h3><p class="muted mb-0">Every opportunity shows a fit score and the reasons behind it, plus eligibility warnings.</p></div>
+          <div class="card step"><h3>Ask Zeus</h3><p class="muted mb-0">Ask Zeus in plain English. It figures out what you mean, searches the directory, and helps you plan.</p></div>
+          <div class="card step"><h3>Apply with confidence</h3><p class="muted mb-0">Save favorites, track typical deadlines, and go straight to each official site.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="grid grid-3">
+          <div class="card feature-card"><div class="icon-tile"><i data-lucide="brain-circuit"></i></div><h3>A guide that gets you</h3><p class="muted mb-0">Zeus picks up your grade, interests, budget, and timing from what you type, remembers the conversation, and only recommends real programs.</p></div>
+          <div class="card feature-card"><div class="icon-tile"><i data-lucide="hand-coins"></i></div><h3>Cost-aware by default</h3><p class="muted mb-0">Tell us cost matters and free, paid, and need-based options rise to the top.</p></div>
+          <div class="card feature-card"><div class="icon-tile"><i data-lucide="shield-check"></i></div><h3>Private and secure</h3><p class="muted mb-0">No accounts, no passwords, no AI services. Your profile and chats stay in your browser.</p></div>
+          <div class="card feature-card"><div class="icon-tile"><i data-lucide="accessibility"></i></div><h3>Built for everyone</h3><p class="muted mb-0">Text sizing, high contrast, readable fonts, color-blind friendly palettes, and read-aloud.</p></div>
+          <div class="card feature-card"><div class="icon-tile"><i data-lucide="users"></i></div><h3>Community powered</h3><p class="muted mb-0">Know a great program? Suggest it and our team reviews it for the directory.</p></div>
+          <div class="card feature-card"><div class="icon-tile"><i data-lucide="landmark"></i></div><h3>Civic-minded</h3><p class="muted mb-0">From the Congressional App Challenge to the Senate Youth Program, discover ways to make an impact.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="cta-band">
+          <h2>Your next opportunity is out there.</h2>
+          <p class="muted">It takes about two minutes to build your pathway.</p>
+          <button class="btn btn-primary btn-lg" type="button" id="start-wizard-2"><i data-lucide="rocket"></i> Start the Pathway Wizard</button>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

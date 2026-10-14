@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About & Sources | Student Atlas</title>
+  <meta name="description" content="Why Student Atlas exists, how the Zeus guide works, how we protect student privacy, and the official sources behind every opportunity.">
+  <meta name="theme-color" content="#0e9f6e">
+  <link rel="icon" type="image/png" href="/image/icon.png">
+  <link rel="stylesheet" href="/css/app.css">
+  <script src="/js/theme-init.js"></script>
+  <script src="/vendor/lucide/lucide.min.js" defer></script>
+  <script type="module" src="/js/pages/about.js"></script>
+</head>
+<body>
+  <main id="main" tabindex="-1">
+    <div class="container section-tight prose">
+      <span class="eyebrow">About</span>
+      <h1>Opportunity shouldn't depend on who you know.</h1>
+      <p class="lead muted">Many of the best programs for high schoolers are free or even pay students, yet countless students never hear about them. Student Atlas brings them together in one place and pairs them with an AI counselor that helps every student find a path, whether or not they have access to a college advisor.</p>
+
+      <h2 id="how">How Student Atlas works</h2>
+      <ul>
+        <li><strong>A curated directory.</strong> <span id="count-text">Hundreds of</span> opportunities across seven interest areas, each linked to its official website and tagged with grades, cost, format, and typical deadline.</li>
+        <li><strong>Explainable matching.</strong> Your Pathway profile is scored against every opportunity, and each card tells you <em>why</em> it fits, or what might make you ineligible.</li>
+        <li><strong>Zeus, your pathway guide.</strong> Zeus is a predictive assistant built into Student Atlas. It reads your question, picks out what you're looking for (interest area, grade, cost, online or in person, timing), searches the directory, and ranks results with your profile. It remembers the conversation, so follow-ups like "only free ones" or "tell me about the second one" just work.</li>
+        <li><strong>Community suggestions.</strong> Anyone can suggest a resource. Every suggestion is reviewed by a person before it's added.</li>
+      </ul>
+
+      <h2 id="zeus">How Zeus works</h2>
+      <ul>
+        <li><strong>No AI service, no API key.</strong> Zeus runs entirely in your browser using a ranking engine (BM25 keyword search with typo tolerance) combined with your match scores and a library of counseling advice.</li>
+        <li><strong>It only recommends real programs</strong> from the directory, and loosens filters out loud when nothing matches exactly.</li>
+        <li><strong>It predicts what you're typing</strong> and suggests next questions after every answer.</li>
+        <li>Program details change every year, so always confirm dates, costs, and eligibility on the official site.</li>
+        <li>If you ever feel unsafe or overwhelmed, talk to a trusted adult. In the U.S. you can call or text <strong>988</strong> any time.</li>
+      </ul>
+
+      <h2 id="privacy">Privacy &amp; security</h2>
+      <ul>
+        <li><strong>No accounts, no passwords.</strong> Your profile, saved list, and settings are stored only in your browser. You can download or delete them anytime from <a href="/profile#privacy">My Pathway</a>.</li>
+        <li><strong>Chats never leave your device.</strong> Zeus runs in your browser, so your questions are not sent to our server or any AI company. Chat history clears when you close the tab.</li>
+        <li><strong>Hardened by default.</strong> The site uses a strict Content Security Policy, secure headers, input validation, and rate limiting.</li>
+        <li><strong>No ads or trackers.</strong> We don't use third-party analytics or sell data.</li>
+      </ul>
+
+      <h2 id="accessibility">Accessibility</h2>
+      <p>Use the <i data-lucide="accessibility"></i> button in the header to adjust text size, switch themes, turn on high contrast, use a readable font with extra spacing, swap to a color-blind friendly palette, reduce motion, or have the page read aloud. The site supports keyboard navigation and screen readers.</p>
+
+      <h2 id="built-with">Built with</h2>
+      <ul>
+        <li>HTML, CSS, and modern JavaScript (no front-end framework)</li>
+        <li><a href="https://nodejs.org" target="_blank" rel="noopener noreferrer">Node.js</a> and <a href="https://expressjs.com" target="_blank" rel="noopener noreferrer">Express</a> (MIT License)</li>
+        <li><a href="https://helmetjs.github.io" target="_blank" rel="noopener noreferrer">Helmet</a>, <a href="https://github.com/express-rate-limit/express-rate-limit" target="_blank" rel="noopener noreferrer">express-rate-limit</a>, and <a href="https://zod.dev" target="_blank" rel="noopener noreferrer">Zod</a> for security and validation (MIT License)</li>
+        <li><a href="https://lucide.dev" target="_blank" rel="noopener noreferrer">Lucide</a> icons (ISC License)</li>
+      </ul>
+
+      <h2 id="sources">Sources</h2>
+      <p class="muted">Every opportunity links to the organization that runs it. Information was compiled from these official websites; details are summarized and may change.</p>
+      <div id="sources-list"><p class="muted">Loading sources…</p></div>
+    </div>
+  </main>
+</body>
+</html>

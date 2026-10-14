@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Suggest a Resource | Student Atlas</title>
+  <meta name="description" content="Know a great program, internship, competition, or scholarship for high school students? Suggest it for the Student Atlas directory.">
+  <meta name="theme-color" content="#0e9f6e">
+  <link rel="icon" type="image/png" href="/image/icon.png">
+  <link rel="stylesheet" href="/css/app.css">
+  <script src="/js/theme-init.js"></script>
+  <script src="/vendor/lucide/lucide.min.js" defer></script>
+  <script type="module" src="/js/pages/submit.js"></script>
+</head>
+<body>
+  <main id="main" tabindex="-1">
+    <div class="container container-narrow section-tight">
+      <span class="eyebrow">Community</span>
+      <h1>Suggest a resource</h1>
+      <p class="muted">Student Atlas grows with help from students, families, educators, and organizations. Every suggestion is reviewed by a person for accuracy and safety before it's added. Nothing is published automatically.</p>
+
+      <div class="callout mb-3"><i data-lucide="info"></i><span>We accept free or reputable programs for high school students: research, internships, competitions, scholarships, service, and college access. We don't list paid tutoring, ads, or programs that charge application fees without clear value.</span></div>
+
+      <form class="card stack" id="submit-form" novalidate>
+        <fieldset>
+          <legend>About the opportunity</legend>
+          <div class="form-grid">
+            <div class="field">
+              <label class="label" for="title">Program name *</label>
+              <input class="input" id="title" name="title" required minlength="3" maxlength="120" autocomplete="off">
+            </div>
+            <div class="field">
+              <label class="label" for="organization">Organization *</label>
+              <input class="input" id="organization" name="organization" required minlength="2" maxlength="120" autocomplete="organization">
+            </div>
+          </div>
+          <div class="field mt-2">
+            <label class="label" for="url">Official website *</label>
+            <input class="input" id="url" name="url" type="url" required maxlength="500" placeholder="https://" inputmode="url">
+          </div>
+          <div class="field">
+            <label class="label" for="description">Description *</label>
+            <textarea class="textarea" id="description" name="description" required minlength="30" maxlength="1000" placeholder="What do students do, who is it for, and what makes it worthwhile?"></textarea>
+            <span class="hint"><span id="desc-count">0</span>/1000 characters</span>
+          </div>
+        </fieldset>
+
+        <hr class="divider">
+
+        <fieldset>
+          <legend>Details</legend>
+          <div class="form-grid">
+            <div class="field">
+              <label class="label" for="cluster">Interest area *</label>
+              <select class="select" id="cluster" name="cluster" required><option value="">Choose one</option></select>
+            </div>
+            <div class="field">
+              <label class="label" for="type">Type *</label>
+              <select class="select" id="type" name="type" required><option value="">Choose one</option></select>
+            </div>
+            <div class="field">
+              <label class="label" for="cost">Cost to students</label>
+              <input class="input" id="cost" name="cost" maxlength="80" placeholder="e.g. Free, $50 fee, paid stipend">
+            </div>
+            <div class="field">
+              <label class="label" for="deadline">Typical deadline</label>
+              <input class="input" id="deadline" name="deadline" maxlength="80" placeholder="e.g. Early February">
+            </div>
+          </div>
+          <div class="field mt-2">
+            <span class="label" id="grades-label">Eligible grades *</span>
+            <div class="chip-group" role="group" aria-labelledby="grades-label" id="grades">
+              <label class="check"><input type="checkbox" name="grades" value="9"> 9th</label>
+              <label class="check"><input type="checkbox" name="grades" value="10"> 10th</label>
+              <label class="check"><input type="checkbox" name="grades" value="11"> 11th</label>
+              <label class="check"><input type="checkbox" name="grades" value="12"> 12th</label>
+            </div>
+          </div>
+        </fieldset>
+
+        <hr class="divider">
+
+        <fieldset>
+          <legend>About you</legend>
+          <div class="form-grid">
+            <div class="field">
+              <label class="label" for="submitterRole">Your connection *</label>
+              <select class="select" id="submitterRole" name="submitterRole" required>
+                <option value="">Choose one</option>
+                <option>Student</option>
+                <option>Parent or guardian</option>
+                <option>Teacher or counselor</option>
+                <option>Organization staff</option>
+                <option>Program alumni</option>
+                <option>Community member</option>
+              </select>
+            </div>
+            <div class="field">
+              <label class="label" for="contactEmail">Contact email <span class="faint">(optional)</span></label>
+              <input class="input" id="contactEmail" name="contactEmail" type="email" maxlength="200" autocomplete="email">
+              <span class="hint">Only if you're an adult or organization and want us to follow up. Students don't need to share this.</span>
+            </div>
+          </div>
+          <div class="honeypot" aria-hidden="true">
+            <label for="website2">Leave this field empty</label>
+            <input id="website2" name="website2" tabindex="-1" autocomplete="off">
+          </div>
+          <label class="check mt-2"><input type="checkbox" id="consent" name="consent" required> <span>I confirm this information is accurate to the best of my knowledge. *</span></label>
+        </fieldset>
+
+        <div id="form-status" role="alert"></div>
+        <div class="row-between">
+          <span class="small faint">* Required</span>
+          <button class="btn btn-primary btn-lg" type="submit" id="submit-btn"><i data-lucide="send"></i> Submit for review</button>
+        </div>
+      </form>
+
+      <div class="card text-center" id="success" hidden tabindex="-1">
+        <div class="zeus-avatar zeus-avatar-lg" aria-hidden="true"><i data-lucide="check"></i></div>
+        <h2>Thank you!</h2>
+        <p class="muted">Your suggestion is in our review queue. If it meets our guidelines, it will appear in the directory after we verify the details.</p>
+        <div class="row row-center">
+          <button class="btn btn-outline" type="button" id="submit-another">Suggest another</button>
+          <a class="btn btn-primary" href="/dashboard">Back to exploring</a>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

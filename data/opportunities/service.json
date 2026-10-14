@@ -1,0 +1,677 @@
+[
+  {
+    "id": "red-cross-youth",
+    "title": "American Red Cross Youth Volunteering",
+    "organization": "American Red Cross",
+    "cluster": "Humanitarian",
+    "type": "Volunteering",
+    "format": "In-person",
+    "location": "Local chapters nationwide",
+    "cost": "Free",
+    "costNote": "Free",
+    "financialAid": false,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Rolling",
+    "deadlineMonth": null,
+    "season": "Year-round",
+    "description": "Volunteer with your local Red Cross through blood drives, disaster preparedness education, and school Red Cross clubs. Great for building service hours and leadership.",
+    "url": "https://www.redcross.org",
+    "tags": [
+      "volunteering",
+      "disaster relief",
+      "blood drives",
+      "clubs"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "habitat-for-humanity-youth",
+    "title": "Habitat for Humanity Youth Programs",
+    "organization": "Habitat for Humanity",
+    "cluster": "Humanitarian",
+    "type": "Volunteering",
+    "format": "In-person",
+    "location": "Local affiliates and campus chapters",
+    "cost": "Free",
+    "costNote": "Free to volunteer locally",
+    "financialAid": false,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Rolling",
+    "deadlineMonth": null,
+    "season": "Year-round",
+    "description": "Students ages 5-25 can help build and repair homes, fundraise, and advocate for affordable housing through local affiliates and high school campus chapters. Build-site age rules vary.",
+    "url": "https://www.habitat.org/volunteer/near-you/youth-programs",
+    "tags": [
+      "volunteering",
+      "housing",
+      "construction",
+      "clubs"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "dosomething",
+    "title": "DoSomething.org Campaigns",
+    "organization": "DoSomething.org",
+    "cluster": "Humanitarian",
+    "type": "Volunteering",
+    "format": "Varies",
+    "location": "Online and in your community",
+    "cost": "Free",
+    "costNote": "Free; some campaigns offer scholarship entries",
+    "financialAid": false,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Rolling",
+    "deadlineMonth": null,
+    "season": "Year-round",
+    "description": "Join youth-led campaigns for social change on issues like mental health, the environment, and voting. Many campaigns include scholarship opportunities for participants.",
+    "url": "https://dosomething.org",
+    "tags": [
+      "social change",
+      "activism",
+      "scholarship",
+      "online"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "key-club",
+    "title": "Key Club International",
+    "organization": "Kiwanis International",
+    "cluster": "Humanitarian",
+    "type": "Club / Organization",
+    "format": "In-person",
+    "location": "School clubs worldwide",
+    "cost": "Fee",
+    "costNote": "Small annual dues",
+    "financialAid": false,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Join anytime",
+    "deadlineMonth": null,
+    "season": "School year",
+    "description": "The oldest and largest student-led service organization for high school students, focused on community service, leadership development, and character building.",
+    "url": "https://www.keyclub.org",
+    "tags": [
+      "service",
+      "leadership",
+      "clubs",
+      "volunteering"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "interact-club",
+    "title": "Interact Clubs",
+    "organization": "Rotary International",
+    "cluster": "Humanitarian",
+    "type": "Club / Organization",
+    "format": "In-person",
+    "location": "Schools and communities worldwide",
+    "cost": "Free",
+    "costNote": "Usually free; sponsored by local Rotary clubs",
+    "financialAid": false,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Join anytime",
+    "deadlineMonth": null,
+    "season": "School year",
+    "description": "Service clubs for ages 12-18 sponsored by Rotary. Members plan local and international service projects and develop leadership skills.",
+    "url": "https://www.rotary.org/en/get-involved/interact-clubs",
+    "tags": [
+      "service",
+      "leadership",
+      "international",
+      "clubs"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "rotary-youth-exchange",
+    "title": "Rotary Youth Exchange",
+    "organization": "Rotary International",
+    "cluster": "Humanitarian",
+    "type": "Exchange / Travel",
+    "format": "In-person",
+    "location": "Abroad (100+ countries)",
+    "cost": "Fee",
+    "costNote": "Costs vary by district; housing and meals provided by hosts",
+    "financialAid": false,
+    "grades": [
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Fall (varies by district)",
+    "deadlineMonth": 10,
+    "season": "School year",
+    "description": "Students ages 15-19 spend a few weeks or a full year abroad living with host families and attending school, building global understanding and a new language.",
+    "url": "https://www.rotary.org/en/our-programs/youth-exchanges",
+    "tags": [
+      "study abroad",
+      "cultural exchange",
+      "languages"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "americorps-nccc",
+    "title": "AmeriCorps NCCC",
+    "organization": "AmeriCorps",
+    "cluster": "Humanitarian",
+    "type": "Volunteering",
+    "format": "In-person",
+    "location": "Teams deployed across the U.S.",
+    "cost": "Stipend",
+    "costNote": "Living allowance, housing, and an education award after service",
+    "financialAid": false,
+    "grades": [
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Rolling",
+    "deadlineMonth": null,
+    "season": "Year-round",
+    "description": "Full-time team-based national service for ages 18-26 responding to disasters, building trails, and supporting communities. Members earn an education award toward college.",
+    "url": "https://americorps.gov/serve/americorps/americorps-nccc",
+    "tags": [
+      "national service",
+      "gap year",
+      "disaster relief",
+      "education award"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "best-buddies",
+    "title": "Best Buddies High School Chapters",
+    "organization": "Best Buddies International",
+    "cluster": "Humanitarian",
+    "type": "Club / Organization",
+    "format": "In-person",
+    "location": "School chapters nationwide",
+    "cost": "Free",
+    "costNote": "Free to join a school chapter",
+    "financialAid": false,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Join anytime",
+    "deadlineMonth": null,
+    "season": "School year",
+    "description": "Build one-to-one friendships with peers who have intellectual and developmental disabilities, and lead inclusion efforts in your school.",
+    "url": "https://www.bestbuddies.org",
+    "tags": [
+      "inclusion",
+      "disability",
+      "friendship",
+      "clubs"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "special-olympics-unified-champion-schools",
+    "title": "Special Olympics Unified Champion Schools",
+    "organization": "Special Olympics",
+    "cluster": "Humanitarian",
+    "type": "Club / Organization",
+    "format": "In-person",
+    "location": "Participating schools",
+    "cost": "Free",
+    "costNote": "Free for students",
+    "financialAid": false,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Join anytime",
+    "deadlineMonth": null,
+    "season": "School year",
+    "description": "Students with and without intellectual disabilities play on Unified Sports teams and lead inclusive youth leadership activities at school.",
+    "url": "https://www.specialolympics.org",
+    "tags": [
+      "inclusion",
+      "sports",
+      "disability",
+      "leadership"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "girl-up",
+    "title": "Girl Up Clubs",
+    "organization": "Girl Up (United Nations Foundation)",
+    "cluster": "Humanitarian",
+    "type": "Club / Organization",
+    "format": "Hybrid",
+    "location": "Clubs worldwide",
+    "cost": "Free",
+    "costNote": "Free to start or join a club",
+    "financialAid": false,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Join anytime",
+    "deadlineMonth": null,
+    "season": "Year-round",
+    "description": "Youth-led clubs that advance gender equality through advocacy, fundraising, and leadership training, with an annual leadership summit.",
+    "url": "https://girlup.org",
+    "tags": [
+      "gender equality",
+      "advocacy",
+      "leadership",
+      "clubs"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "earthecho-international",
+    "title": "EarthEcho International Youth Programs",
+    "organization": "EarthEcho International",
+    "cluster": "Humanitarian",
+    "type": "Volunteering",
+    "format": "Hybrid",
+    "location": "Online and local",
+    "cost": "Free",
+    "costNote": "Free",
+    "financialAid": false,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Rolling",
+    "deadlineMonth": null,
+    "season": "Year-round",
+    "description": "Environmental programs for young people, including the EarthEcho Water Challenge and a Youth Leadership Council for teens working to protect water and oceans.",
+    "url": "https://www.earthecho.org",
+    "tags": [
+      "environment",
+      "water",
+      "oceans",
+      "leadership"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "project-green-challenge",
+    "title": "Project Green Challenge",
+    "organization": "Turning Green",
+    "cluster": "Humanitarian",
+    "type": "Competition",
+    "format": "Virtual",
+    "location": "Online (global)",
+    "cost": "Award",
+    "costNote": "Free; prizes and a trip to the finals for top participants",
+    "financialAid": false,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "October",
+    "deadlineMonth": 10,
+    "season": "School year",
+    "description": "A 30-day environmental challenge each October for students ages 13-25, with daily sustainability actions. Finalists attend an eco-summit.",
+    "url": "https://turninggreen.org/project-green-challenge/",
+    "tags": [
+      "environment",
+      "sustainability",
+      "climate",
+      "online"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "brower-youth-awards",
+    "title": "Brower Youth Awards",
+    "organization": "Earth Island Institute",
+    "cluster": "Humanitarian",
+    "type": "Competition",
+    "format": "Virtual",
+    "location": "North America",
+    "cost": "Award",
+    "costNote": "Free to apply; cash award for winners",
+    "financialAid": false,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Spring",
+    "deadlineMonth": 5,
+    "season": "School year",
+    "description": "Honors young environmental leaders ages 13-22 in North America for outstanding activism and achievement, with a cash prize and support for their work.",
+    "url": "https://broweryouthawards.org",
+    "tags": [
+      "environment",
+      "activism",
+      "award",
+      "climate"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "gloria-barron-prize",
+    "title": "Gloria Barron Prize for Young Heroes",
+    "organization": "Barron Prize",
+    "cluster": "Humanitarian",
+    "type": "Scholarship",
+    "format": "Virtual",
+    "location": "U.S. and Canada",
+    "cost": "Award",
+    "costNote": "Free to apply; winners receive a cash award",
+    "financialAid": false,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "April",
+    "deadlineMonth": 4,
+    "season": "School year",
+    "description": "Celebrates young people ages 8-18 who have made a significant positive difference to people, their communities, or the environment.",
+    "url": "https://barronprize.org",
+    "tags": [
+      "service",
+      "environment",
+      "award",
+      "leadership"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "paradigm-challenge",
+    "title": "Paradigm Challenge",
+    "organization": "Project Paradigm",
+    "cluster": "Humanitarian",
+    "type": "Competition",
+    "format": "Virtual",
+    "location": "Online (global)",
+    "cost": "Award",
+    "costNote": "Free to enter; cash prizes",
+    "financialAid": false,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Spring",
+    "deadlineMonth": 3,
+    "season": "School year",
+    "description": "Annual competition for ages 4-18 to use creativity, kindness, and science to help solve real-world problems, with a different focus each year.",
+    "url": "https://www.paradigmchallenge.org",
+    "tags": [
+      "innovation",
+      "kindness",
+      "problem solving",
+      "award"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "volunteermatch",
+    "title": "VolunteerMatch",
+    "organization": "VolunteerMatch",
+    "cluster": "Humanitarian",
+    "type": "Resource",
+    "format": "Varies",
+    "location": "Online search for local and virtual roles",
+    "cost": "Free",
+    "costNote": "Free",
+    "financialAid": false,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Rolling",
+    "deadlineMonth": null,
+    "season": "Year-round",
+    "description": "Search thousands of local and virtual volunteer opportunities by cause and location. Filter for roles open to teens to build service hours around your interests.",
+    "url": "https://www.volunteermatch.org",
+    "tags": [
+      "volunteering",
+      "search",
+      "local",
+      "virtual"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "feeding-america-food-banks",
+    "title": "Volunteer at Your Local Food Bank",
+    "organization": "Feeding America",
+    "cluster": "Humanitarian",
+    "type": "Volunteering",
+    "format": "In-person",
+    "location": "Food banks nationwide",
+    "cost": "Free",
+    "costNote": "Free; age requirements vary by site",
+    "financialAid": false,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Rolling",
+    "deadlineMonth": null,
+    "season": "Year-round",
+    "description": "Find your local Feeding America food bank to sort and pack food, help at distributions, or run a food drive at school.",
+    "url": "https://www.feedingamerica.org/find-your-local-foodbank",
+    "tags": [
+      "hunger",
+      "volunteering",
+      "local",
+      "food drive"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "leo-clubs",
+    "title": "Leo Clubs",
+    "organization": "Lions Clubs International",
+    "cluster": "Humanitarian",
+    "type": "Club / Organization",
+    "format": "In-person",
+    "location": "Clubs worldwide",
+    "cost": "Fee",
+    "costNote": "Low or no dues; sponsored by local Lions clubs",
+    "financialAid": false,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Join anytime",
+    "deadlineMonth": null,
+    "season": "Year-round",
+    "description": "Youth service clubs sponsored by Lions Clubs, where members plan service projects on hunger, vision, the environment, and more.",
+    "url": "https://www.lionsclubs.org",
+    "tags": [
+      "service",
+      "leadership",
+      "clubs"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "4-h",
+    "title": "4-H",
+    "organization": "National 4-H Council & Cooperative Extension",
+    "cluster": "Humanitarian",
+    "type": "Club / Organization",
+    "format": "In-person",
+    "location": "Clubs in every county",
+    "cost": "Fee",
+    "costNote": "Free or low cost, varies by county",
+    "financialAid": false,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Join anytime",
+    "deadlineMonth": null,
+    "season": "Year-round",
+    "description": "The nation's largest youth development organization, with hands-on projects in STEM, agriculture, civic engagement, and healthy living through local clubs.",
+    "url": "https://4-h.org",
+    "tags": [
+      "agriculture",
+      "stem",
+      "leadership",
+      "community"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "national-honor-society",
+    "title": "National Honor Society",
+    "organization": "National Association of Secondary School Principals",
+    "cluster": "Humanitarian",
+    "type": "Club / Organization",
+    "format": "In-person",
+    "location": "School chapters nationwide",
+    "cost": "Fee",
+    "costNote": "Chapter dues vary",
+    "financialAid": false,
+    "grades": [
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Selection by school chapters",
+    "deadlineMonth": null,
+    "season": "School year",
+    "description": "Recognizes students for scholarship, service, leadership, and character. Members complete service projects and can apply for the NHS Scholarship.",
+    "url": "https://www.nhs.us",
+    "tags": [
+      "honor society",
+      "service",
+      "leadership",
+      "scholarship"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "unicef-usa-clubs",
+    "title": "UNICEF USA Clubs",
+    "organization": "UNICEF USA",
+    "cluster": "Humanitarian",
+    "type": "Club / Organization",
+    "format": "Hybrid",
+    "location": "School clubs nationwide",
+    "cost": "Free",
+    "costNote": "Free to start or join",
+    "financialAid": false,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Join anytime",
+    "deadlineMonth": null,
+    "season": "Year-round",
+    "description": "Student clubs that advocate, fundraise, and educate to help UNICEF protect the rights and wellbeing of children worldwide.",
+    "url": "https://www.unicefusa.org",
+    "tags": [
+      "children's rights",
+      "global health",
+      "advocacy",
+      "clubs"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "amnesty-youth",
+    "title": "Amnesty International USA Student Groups",
+    "organization": "Amnesty International USA",
+    "cluster": "Humanitarian",
+    "type": "Club / Organization",
+    "format": "Hybrid",
+    "location": "School groups nationwide",
+    "cost": "Free",
+    "costNote": "Free",
+    "financialAid": false,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Join anytime",
+    "deadlineMonth": null,
+    "season": "Year-round",
+    "description": "Start or join a student group that campaigns for human rights through letter writing, awareness events, and advocacy.",
+    "url": "https://www.amnestyusa.org",
+    "tags": [
+      "human rights",
+      "advocacy",
+      "clubs",
+      "letter writing"
+    ],
+    "needBased": false
+  }
+]

@@ -1,0 +1,489 @@
+[
+  {
+    "id": "fbla",
+    "title": "Future Business Leaders of America (FBLA)",
+    "organization": "FBLA",
+    "cluster": "Business",
+    "type": "Club / Organization",
+    "format": "In-person",
+    "location": "School chapters nationwide",
+    "cost": "Fee",
+    "costNote": "Membership dues through your school chapter",
+    "financialAid": false,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Join in the fall",
+    "deadlineMonth": 10,
+    "season": "School year",
+    "description": "The largest business career student organization. Members build leadership skills and compete in events in accounting, marketing, public speaking, coding, and entrepreneurship.",
+    "url": "https://www.fbla.org",
+    "tags": [
+      "business",
+      "leadership",
+      "competitions",
+      "career organization"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "deca",
+    "title": "DECA",
+    "organization": "DECA Inc.",
+    "cluster": "Business",
+    "type": "Club / Organization",
+    "format": "In-person",
+    "location": "School chapters worldwide",
+    "cost": "Fee",
+    "costNote": "Membership dues through your school chapter",
+    "financialAid": false,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Join in the fall",
+    "deadlineMonth": 10,
+    "season": "School year",
+    "description": "Prepares emerging leaders in marketing, finance, hospitality, and management through role-play competitions, business plans, and conferences up to the International Career Development Conference.",
+    "url": "https://www.deca.org",
+    "tags": [
+      "marketing",
+      "finance",
+      "competitions",
+      "career organization"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "bpa",
+    "title": "Business Professionals of America (BPA)",
+    "organization": "Business Professionals of America",
+    "cluster": "Business",
+    "type": "Club / Organization",
+    "format": "In-person",
+    "location": "School chapters nationwide",
+    "cost": "Fee",
+    "costNote": "Membership dues through your school chapter",
+    "financialAid": false,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Join anytime",
+    "deadlineMonth": null,
+    "season": "School year",
+    "description": "Career and technical student organization for business management, IT, finance, and office careers, with workplace skills competitions at regional, state, and national levels.",
+    "url": "https://bpa.org",
+    "tags": [
+      "business",
+      "it",
+      "finance",
+      "career organization"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "ja-company-program",
+    "title": "JA Company Program",
+    "organization": "Junior Achievement USA",
+    "cluster": "Business",
+    "type": "Club / Organization",
+    "format": "Hybrid",
+    "location": "Schools and local JA areas",
+    "cost": "Free",
+    "costNote": "Free through schools and local JA offices",
+    "financialAid": false,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Offered through schools and local JA areas",
+    "deadlineMonth": null,
+    "season": "School year",
+    "description": "Students launch and run a real business from idea to liquidation with a volunteer mentor, learning product development, marketing, and finance along the way.",
+    "url": "https://jausa.ja.org",
+    "tags": [
+      "entrepreneurship",
+      "startup",
+      "mentorship",
+      "financial literacy"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "diamond-challenge",
+    "title": "Diamond Challenge",
+    "organization": "University of Delaware Horn Entrepreneurship",
+    "cluster": "Business",
+    "type": "Competition",
+    "format": "Hybrid",
+    "location": "Online with in-person summit",
+    "cost": "Award",
+    "costNote": "Free to enter; prize money for winning teams",
+    "financialAid": false,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "January",
+    "deadlineMonth": 1,
+    "season": "School year",
+    "description": "Global entrepreneurship competition for teams of high school students ages 14-18. Teams pitch a business or social innovation concept for a chance at prize money and a trip to the summit.",
+    "url": "https://diamondchallenge.org",
+    "tags": [
+      "entrepreneurship",
+      "pitch",
+      "social innovation",
+      "teamwork"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "wharton-investment-competition",
+    "title": "Wharton Global High School Investment Competition",
+    "organization": "Wharton Global Youth Program",
+    "cluster": "Business",
+    "type": "Competition",
+    "format": "Virtual",
+    "location": "Online (global)",
+    "cost": "Free",
+    "costNote": "Free to enter",
+    "financialAid": false,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Registration in early fall",
+    "deadlineMonth": 9,
+    "season": "School year",
+    "description": "Teams of high school students manage a virtual investment portfolio for a client case, then write and present an investment strategy. Top teams compete at the global finale.",
+    "url": "https://globalyouth.wharton.upenn.edu/competitions/investment-competition/",
+    "tags": [
+      "investing",
+      "finance",
+      "stock market",
+      "teamwork"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "nfte-world-series-of-innovation",
+    "title": "NFTE World Series of Innovation",
+    "organization": "Network for Teaching Entrepreneurship",
+    "cluster": "Business",
+    "type": "Competition",
+    "format": "Virtual",
+    "location": "Online (global)",
+    "cost": "Award",
+    "costNote": "Free to enter; cash prizes for winners",
+    "financialAid": false,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Spring",
+    "deadlineMonth": 3,
+    "season": "School year",
+    "description": "Young people ages 13-24 submit innovative product or service ideas tied to the UN Sustainable Development Goals and partner company challenges.",
+    "url": "https://www.nfte.com",
+    "tags": [
+      "entrepreneurship",
+      "innovation",
+      "sustainability"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "national-economics-challenge",
+    "title": "National Economics Challenge",
+    "organization": "Council for Economic Education",
+    "cluster": "Business",
+    "type": "Competition",
+    "format": "Virtual",
+    "location": "Online with national finals",
+    "cost": "Free",
+    "costNote": "Free to enter",
+    "financialAid": false,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Spring",
+    "deadlineMonth": 3,
+    "season": "School year",
+    "description": "Team academic competition testing knowledge of microeconomics, macroeconomics, and current events. Top teams advance to the national finals.",
+    "url": "https://www.councilforeconed.org",
+    "tags": [
+      "economics",
+      "teamwork",
+      "academic competition"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "national-personal-finance-challenge",
+    "title": "National Personal Finance Challenge",
+    "organization": "Council for Economic Education",
+    "cluster": "Business",
+    "type": "Competition",
+    "format": "Virtual",
+    "location": "Online with national finals",
+    "cost": "Free",
+    "costNote": "Free to enter",
+    "financialAid": false,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Spring",
+    "deadlineMonth": 3,
+    "season": "School year",
+    "description": "Teams demonstrate personal finance knowledge (budgeting, credit, saving, investing, and taxes) through tests and a case study, competing from state to national level.",
+    "url": "https://www.councilforeconed.org",
+    "tags": [
+      "personal finance",
+      "financial literacy",
+      "teamwork"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "stock-market-game",
+    "title": "The Stock Market Game",
+    "organization": "SIFMA Foundation",
+    "cluster": "Business",
+    "type": "Competition",
+    "format": "Virtual",
+    "location": "Online through classrooms",
+    "cost": "Free",
+    "costNote": "Usually free or low cost through participating teachers",
+    "financialAid": false,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Fall and spring sessions",
+    "deadlineMonth": 9,
+    "season": "School year",
+    "description": "Online simulation where student teams invest a virtual portfolio in real markets, learning about investing, saving, and the economy. Usually joined through a teacher.",
+    "url": "https://www.stockmarketgame.org",
+    "tags": [
+      "investing",
+      "stock market",
+      "financial literacy"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "fed-challenge",
+    "title": "High School Fed Challenge",
+    "organization": "Federal Reserve Banks",
+    "cluster": "Business",
+    "type": "Competition",
+    "format": "Hybrid",
+    "location": "Varies by Federal Reserve district",
+    "cost": "Free",
+    "costNote": "Free to enter",
+    "financialAid": false,
+    "grades": [
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Varies by district",
+    "deadlineMonth": 1,
+    "season": "School year",
+    "description": "Teams act as the Federal Reserve's policy committee, analyzing economic conditions and presenting a monetary policy recommendation to a panel of Fed economists.",
+    "url": "https://www.federalreserveeducation.org",
+    "tags": [
+      "economics",
+      "monetary policy",
+      "presentation",
+      "teamwork"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "young-entrepreneurs-academy",
+    "title": "Young Entrepreneurs Academy (YEA!)",
+    "organization": "Young Entrepreneurs Academy",
+    "cluster": "Business",
+    "type": "Summer Program",
+    "format": "Hybrid",
+    "location": "Local host communities and online",
+    "cost": "Tuition",
+    "costNote": "Tuition varies; scholarships often available",
+    "financialAid": true,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Varies by location",
+    "deadlineMonth": null,
+    "season": "School year",
+    "description": "Year-long program where students ages 11-18 start real businesses or social movements, pitch to investors, and learn from local business mentors.",
+    "url": "https://yeausa.org",
+    "tags": [
+      "entrepreneurship",
+      "startup",
+      "pitch",
+      "mentorship"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "launchx",
+    "title": "LaunchX Entrepreneurship Programs",
+    "organization": "LaunchX",
+    "cluster": "Business",
+    "type": "Summer Program",
+    "format": "Hybrid",
+    "location": "Online and select campuses",
+    "cost": "Tuition",
+    "costNote": "Tuition-based with need-based financial aid",
+    "financialAid": true,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Rolling admissions in winter and spring",
+    "deadlineMonth": 3,
+    "season": "Summer",
+    "description": "Summer entrepreneurship programs where student teams identify a real problem, build a startup around it, and pitch to investors and founders at the end.",
+    "url": "https://www.launchx.com",
+    "tags": [
+      "entrepreneurship",
+      "startup",
+      "teamwork"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "economics-for-leaders",
+    "title": "Economics for Leaders",
+    "organization": "Foundation for Teaching Economics",
+    "cluster": "Business",
+    "type": "Summer Program",
+    "format": "In-person",
+    "location": "University campuses nationwide",
+    "cost": "Tuition",
+    "costNote": "Tuition with scholarships available",
+    "financialAid": true,
+    "grades": [
+      10,
+      11
+    ],
+    "minGPA": null,
+    "deadline": "Spring",
+    "deadlineMonth": 4,
+    "season": "Summer",
+    "description": "One-week summer program that teaches economic reasoning and leadership skills through simulations, lectures, and group activities on college campuses.",
+    "url": "https://www.fte.org",
+    "tags": [
+      "economics",
+      "leadership",
+      "residential"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "blue-ocean-competition",
+    "title": "Blue Ocean Entrepreneurship Competition",
+    "organization": "Blue Ocean Competition",
+    "cluster": "Business",
+    "type": "Competition",
+    "format": "Virtual",
+    "location": "Online (global)",
+    "cost": "Award",
+    "costNote": "Free to enter; cash prizes",
+    "financialAid": false,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Winter",
+    "deadlineMonth": 2,
+    "season": "School year",
+    "description": "Global pitch competition for high school students using Blue Ocean Strategy: students submit a short video pitch for an innovative idea that creates new market space.",
+    "url": "https://blueoceancompetition.org",
+    "tags": [
+      "entrepreneurship",
+      "pitch",
+      "video",
+      "innovation"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "fccla",
+    "title": "Family, Career and Community Leaders of America (FCCLA)",
+    "organization": "FCCLA",
+    "cluster": "Business",
+    "type": "Club / Organization",
+    "format": "In-person",
+    "location": "School chapters nationwide",
+    "cost": "Fee",
+    "costNote": "Membership dues through your school chapter",
+    "financialAid": false,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Join anytime",
+    "deadlineMonth": null,
+    "season": "School year",
+    "description": "Career and technical student organization focused on family and consumer sciences careers, including culinary arts, hospitality, early childhood education, and fashion.",
+    "url": "https://fcclainc.org",
+    "tags": [
+      "culinary",
+      "hospitality",
+      "education",
+      "career organization"
+    ],
+    "needBased": false
+  }
+]

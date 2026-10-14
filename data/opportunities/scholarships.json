@@ -1,0 +1,1048 @@
+[
+  {
+    "id": "fafsa",
+    "title": "FAFSA (Free Application for Federal Student Aid)",
+    "organization": "U.S. Department of Education",
+    "cluster": "Scholarships",
+    "type": "College Access",
+    "format": "Virtual",
+    "location": "Online",
+    "cost": "Free",
+    "costNote": "Always free; never pay to file",
+    "financialAid": false,
+    "grades": [
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Opens October 1 for the next school year; state deadlines vary",
+    "deadlineMonth": 10,
+    "season": "School year",
+    "description": "The single most important form for paying for college. Filing the FAFSA unlocks federal Pell Grants, work-study, and loans, and many states and colleges use it to award their own aid.",
+    "url": "https://studentaid.gov/h/apply-for-aid/fafsa",
+    "tags": [
+      "financial aid",
+      "pell grant",
+      "federal",
+      "seniors"
+    ],
+    "needBased": true,
+    "featured": true
+  },
+  {
+    "id": "careeronestop-scholarship-finder",
+    "title": "CareerOneStop Scholarship Finder",
+    "organization": "U.S. Department of Labor",
+    "cluster": "Scholarships",
+    "type": "Resource",
+    "format": "Virtual",
+    "location": "Online",
+    "cost": "Free",
+    "costNote": "Free search tool",
+    "financialAid": false,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Anytime",
+    "deadlineMonth": null,
+    "season": "Year-round",
+    "description": "A free, government-run search tool covering thousands of scholarships, fellowships, and grants. A safe alternative to sites that charge fees.",
+    "url": "https://www.careeronestop.org/Toolkit/Training/find-scholarships.aspx",
+    "tags": [
+      "scholarship search",
+      "federal",
+      "free tool"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "coca-cola-scholars",
+    "title": "Coca-Cola Scholars Program",
+    "organization": "Coca-Cola Scholars Foundation",
+    "cluster": "Scholarships",
+    "type": "Scholarship",
+    "format": "Virtual",
+    "location": "National",
+    "cost": "Award",
+    "costNote": "Achievement-based college scholarship",
+    "financialAid": false,
+    "grades": [
+      12
+    ],
+    "minGPA": 3.0,
+    "deadline": "September 30",
+    "deadlineMonth": 9,
+    "season": "School year",
+    "description": "Achievement-based scholarship for high school seniors who demonstrate leadership, service, and impact in their schools and communities. 150 scholars are selected each year.",
+    "url": "https://www.coca-colascholarsfoundation.org",
+    "tags": [
+      "leadership",
+      "service",
+      "merit",
+      "seniors"
+    ],
+    "needBased": false,
+    "featured": true
+  },
+  {
+    "id": "gates-scholarship",
+    "title": "The Gates Scholarship",
+    "organization": "The Gates Scholarship",
+    "cluster": "Scholarships",
+    "type": "Scholarship",
+    "format": "Virtual",
+    "location": "National",
+    "cost": "Award",
+    "costNote": "Last-dollar scholarship covering the full cost of attendance",
+    "financialAid": false,
+    "grades": [
+      12
+    ],
+    "minGPA": 3.3,
+    "deadline": "September",
+    "deadlineMonth": 9,
+    "season": "School year",
+    "description": "Highly selective, last-dollar scholarship for outstanding, Pell-eligible minority high school seniors with significant financial need, covering the full cost of attendance not met by other aid.",
+    "url": "https://www.thegatesscholarship.org",
+    "tags": [
+      "full ride",
+      "minority",
+      "pell-eligible",
+      "seniors"
+    ],
+    "needBased": true,
+    "featured": true
+  },
+  {
+    "id": "questbridge-national-college-match",
+    "title": "QuestBridge National College Match",
+    "organization": "QuestBridge",
+    "cluster": "Scholarships",
+    "type": "Scholarship",
+    "format": "Virtual",
+    "location": "National",
+    "cost": "Award",
+    "costNote": "Full four-year scholarships at partner colleges",
+    "financialAid": false,
+    "grades": [
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Late September",
+    "deadlineMonth": 9,
+    "season": "School year",
+    "description": "Connects high-achieving seniors from low-income backgrounds with full four-year scholarships to top colleges and universities through an early-decision-style match.",
+    "url": "https://www.questbridge.org/high-school-students/national-college-match",
+    "tags": [
+      "full ride",
+      "low-income",
+      "selective colleges",
+      "seniors"
+    ],
+    "needBased": true,
+    "featured": true
+  },
+  {
+    "id": "questbridge-college-prep-scholars",
+    "title": "QuestBridge College Prep Scholars",
+    "organization": "QuestBridge",
+    "cluster": "Scholarships",
+    "type": "College Access",
+    "format": "Virtual",
+    "location": "National",
+    "cost": "Free",
+    "costNote": "Free; awards include college admissions support and prizes",
+    "financialAid": false,
+    "grades": [
+      11
+    ],
+    "minGPA": null,
+    "deadline": "March",
+    "deadlineMonth": 3,
+    "season": "School year",
+    "description": "For high-achieving juniors from low-income backgrounds. Scholars receive college admissions support, invitations to college visits and conferences, and a head start on the National College Match.",
+    "url": "https://www.questbridge.org/high-school-students/college-prep-scholars",
+    "tags": [
+      "college prep",
+      "low-income",
+      "juniors"
+    ],
+    "needBased": true
+  },
+  {
+    "id": "jack-kent-cooke-college-scholarship",
+    "title": "Jack Kent Cooke College Scholarship",
+    "organization": "Jack Kent Cooke Foundation",
+    "cluster": "Scholarships",
+    "type": "Scholarship",
+    "format": "Virtual",
+    "location": "National",
+    "cost": "Award",
+    "costNote": "Large multi-year scholarship plus advising",
+    "financialAid": false,
+    "grades": [
+      12
+    ],
+    "minGPA": 3.5,
+    "deadline": "November",
+    "deadlineMonth": 11,
+    "season": "School year",
+    "description": "One of the largest undergraduate scholarships in the country, for high-achieving seniors with financial need. Includes college planning support and ongoing advising.",
+    "url": "https://www.jkcf.org/our-scholarships/college-scholarship-program/",
+    "tags": [
+      "merit",
+      "financial need",
+      "advising",
+      "seniors"
+    ],
+    "needBased": true
+  },
+  {
+    "id": "dell-scholars",
+    "title": "Dell Scholars Program",
+    "organization": "Michael & Susan Dell Foundation",
+    "cluster": "Scholarships",
+    "type": "Scholarship",
+    "format": "Virtual",
+    "location": "National",
+    "cost": "Award",
+    "costNote": "Scholarship plus a laptop, textbook credits, and support",
+    "financialAid": false,
+    "grades": [
+      12
+    ],
+    "minGPA": 2.4,
+    "deadline": "December 1",
+    "deadlineMonth": 12,
+    "season": "School year",
+    "description": "For Pell-eligible seniors who have participated in an approved college readiness program. Values grit and determination over perfect grades, with wraparound support through college.",
+    "url": "https://www.dellscholars.org",
+    "tags": [
+      "pell-eligible",
+      "grit",
+      "support",
+      "seniors"
+    ],
+    "needBased": true
+  },
+  {
+    "id": "horatio-alger-national-scholarship",
+    "title": "Horatio Alger National Scholarship",
+    "organization": "Horatio Alger Association",
+    "cluster": "Scholarships",
+    "type": "Scholarship",
+    "format": "Virtual",
+    "location": "National and state programs",
+    "cost": "Award",
+    "costNote": "College scholarship for students with critical financial need",
+    "financialAid": false,
+    "grades": [
+      11,
+      12
+    ],
+    "minGPA": 2.0,
+    "deadline": "October (for juniors applying ahead of senior year)",
+    "deadlineMonth": 10,
+    "season": "School year",
+    "description": "For students who have overcome significant adversity, have critical financial need, and are involved in community service. Includes national and state-level awards.",
+    "url": "https://scholars.horatioalger.org",
+    "tags": [
+      "adversity",
+      "financial need",
+      "service"
+    ],
+    "needBased": true
+  },
+  {
+    "id": "ron-brown-scholar",
+    "title": "Ron Brown Scholar Program",
+    "organization": "Ron Brown Scholar Fund",
+    "cluster": "Scholarships",
+    "type": "Scholarship",
+    "format": "Virtual",
+    "location": "National",
+    "cost": "Award",
+    "costNote": "Four-year scholarship plus mentoring",
+    "financialAid": false,
+    "grades": [
+      12
+    ],
+    "minGPA": null,
+    "deadline": "January",
+    "deadlineMonth": 1,
+    "season": "School year",
+    "description": "For academically talented Black high school seniors who show leadership and a commitment to community service, with lifelong mentoring and networking.",
+    "url": "https://www.ronbrown.org",
+    "tags": [
+      "black students",
+      "leadership",
+      "service",
+      "mentoring"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "jackie-robinson-foundation-scholarship",
+    "title": "Jackie Robinson Foundation Scholarship",
+    "organization": "Jackie Robinson Foundation",
+    "cluster": "Scholarships",
+    "type": "Scholarship",
+    "format": "Virtual",
+    "location": "National",
+    "cost": "Award",
+    "costNote": "Four-year scholarship plus mentoring",
+    "financialAid": false,
+    "grades": [
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Winter",
+    "deadlineMonth": 1,
+    "season": "School year",
+    "description": "For minority high school seniors with financial need and leadership potential, combining four years of funding with mentoring, internships, and leadership training.",
+    "url": "https://jackierobinson.org",
+    "tags": [
+      "minority",
+      "leadership",
+      "mentoring",
+      "financial need"
+    ],
+    "needBased": true
+  },
+  {
+    "id": "elks-most-valuable-student",
+    "title": "Elks Most Valuable Student Competition",
+    "organization": "Elks National Foundation",
+    "cluster": "Scholarships",
+    "type": "Scholarship",
+    "format": "Virtual",
+    "location": "National (judged locally first)",
+    "cost": "Award",
+    "costNote": "Hundreds of scholarships awarded each year",
+    "financialAid": false,
+    "grades": [
+      12
+    ],
+    "minGPA": null,
+    "deadline": "November",
+    "deadlineMonth": 11,
+    "season": "School year",
+    "description": "Seniors are judged on scholarship, leadership, and financial need, starting at the local Elks lodge and advancing to state and national levels.",
+    "url": "https://www.elks.org/scholars/scholarships/mvs.cfm",
+    "tags": [
+      "leadership",
+      "financial need",
+      "seniors"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "burger-king-scholars",
+    "title": "Burger King Scholars",
+    "organization": "Restaurant Brands International Foundation",
+    "cluster": "Scholarships",
+    "type": "Scholarship",
+    "format": "Virtual",
+    "location": "U.S., Canada, and Puerto Rico",
+    "cost": "Award",
+    "costNote": "College scholarships of varying amounts",
+    "financialAid": false,
+    "grades": [
+      12
+    ],
+    "minGPA": 2.5,
+    "deadline": "December",
+    "deadlineMonth": 12,
+    "season": "School year",
+    "description": "Scholarships for graduating seniors based on GPA, work experience, extracurricular involvement, community service, and financial need.",
+    "url": "https://www.burgerkingfoundation.org/programs/burger-king-scholars",
+    "tags": [
+      "work experience",
+      "service",
+      "seniors"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "national-merit-scholarship",
+    "title": "National Merit Scholarship Program",
+    "organization": "National Merit Scholarship Corporation",
+    "cluster": "Scholarships",
+    "type": "Scholarship",
+    "format": "In-person",
+    "location": "National (through your school)",
+    "cost": "Award",
+    "costNote": "Enter by taking the PSAT/NMSQT in junior year",
+    "financialAid": false,
+    "grades": [
+      10,
+      11
+    ],
+    "minGPA": null,
+    "deadline": "PSAT/NMSQT in October of junior year",
+    "deadlineMonth": 10,
+    "season": "School year",
+    "description": "Students enter by taking the PSAT/NMSQT as juniors. High scorers can become Semifinalists and Finalists, and compete for National Merit and corporate- or college-sponsored scholarships.",
+    "url": "https://www.nationalmerit.org",
+    "tags": [
+      "psat",
+      "merit",
+      "testing",
+      "juniors"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "hispanic-scholarship-fund",
+    "title": "Hispanic Scholarship Fund",
+    "organization": "Hispanic Scholarship Fund",
+    "cluster": "Scholarships",
+    "type": "Scholarship",
+    "format": "Virtual",
+    "location": "National",
+    "cost": "Award",
+    "costNote": "Merit-based scholarships plus support services",
+    "financialAid": false,
+    "grades": [
+      12
+    ],
+    "minGPA": 3.0,
+    "deadline": "February",
+    "deadlineMonth": 2,
+    "season": "School year",
+    "description": "Scholarships and support services for students of Hispanic heritage planning to enroll in college full-time, with mentoring and career resources.",
+    "url": "https://www.hsf.net",
+    "tags": [
+      "hispanic",
+      "latino",
+      "merit",
+      "mentoring"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "uncf-scholarships",
+    "title": "UNCF Scholarships",
+    "organization": "UNCF",
+    "cluster": "Scholarships",
+    "type": "Scholarship",
+    "format": "Virtual",
+    "location": "National",
+    "cost": "Award",
+    "costNote": "Many scholarships with different criteria",
+    "financialAid": false,
+    "grades": [
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Varies by scholarship",
+    "deadlineMonth": null,
+    "season": "Year-round",
+    "description": "UNCF administers hundreds of scholarship programs, many for students attending historically Black colleges and universities (HBCUs). Search by eligibility on their site.",
+    "url": "https://uncf.org/scholarships",
+    "tags": [
+      "hbcu",
+      "black students",
+      "scholarship search"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "apia-scholars",
+    "title": "APIA Scholars",
+    "organization": "Asian & Pacific Islander American Scholarship Fund",
+    "cluster": "Scholarships",
+    "type": "Scholarship",
+    "format": "Virtual",
+    "location": "National",
+    "cost": "Award",
+    "costNote": "Scholarships plus leadership programming",
+    "financialAid": false,
+    "grades": [
+      12
+    ],
+    "minGPA": null,
+    "deadline": "January",
+    "deadlineMonth": 1,
+    "season": "School year",
+    "description": "The nation's largest nonprofit providing college scholarships to Asian American and Pacific Islander students, with priority for those with financial need.",
+    "url": "https://apiascholars.org",
+    "tags": [
+      "asian american",
+      "pacific islander",
+      "financial need"
+    ],
+    "needBased": true
+  },
+  {
+    "id": "american-indian-college-fund",
+    "title": "American Indian College Fund Scholarships",
+    "organization": "American Indian College Fund",
+    "cluster": "Scholarships",
+    "type": "Scholarship",
+    "format": "Virtual",
+    "location": "National",
+    "cost": "Award",
+    "costNote": "Scholarships for Native American and Alaska Native students",
+    "financialAid": false,
+    "grades": [
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Spring",
+    "deadlineMonth": 5,
+    "season": "School year",
+    "description": "Scholarships for American Indian and Alaska Native students attending tribal colleges and other accredited institutions, with one application for many awards.",
+    "url": "https://collegefund.org",
+    "tags": [
+      "native american",
+      "tribal colleges"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "davidson-fellows",
+    "title": "Davidson Fellows Scholarship",
+    "organization": "Davidson Institute",
+    "cluster": "Scholarships",
+    "type": "Scholarship",
+    "format": "Virtual",
+    "location": "National",
+    "cost": "Award",
+    "costNote": "Large scholarships for exceptional projects",
+    "financialAid": false,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "February",
+    "deadlineMonth": 2,
+    "season": "School year",
+    "description": "Awards students 18 and under who have completed a significant piece of work in STEM, literature, music, or philosophy that has the potential to benefit society.",
+    "url": "https://www.davidsongifted.org/gifted-programs/fellows-scholarship/",
+    "tags": [
+      "research",
+      "stem",
+      "music",
+      "writing",
+      "exceptional"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "coolidge-scholarship",
+    "title": "Coolidge Scholarship",
+    "organization": "Calvin Coolidge Presidential Foundation",
+    "cluster": "Scholarships",
+    "type": "Scholarship",
+    "format": "Virtual",
+    "location": "National",
+    "cost": "Award",
+    "costNote": "Full-tuition, merit-based scholarship",
+    "financialAid": false,
+    "grades": [
+      11
+    ],
+    "minGPA": null,
+    "deadline": "January",
+    "deadlineMonth": 1,
+    "season": "School year",
+    "description": "A full-ride, merit-based scholarship for high school juniors with an interest in public policy, economics, and public service, usable at any accredited U.S. college.",
+    "url": "https://coolidgescholars.org",
+    "tags": [
+      "full ride",
+      "merit",
+      "public service",
+      "juniors"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "cameron-impact-scholarship",
+    "title": "Cameron Impact Scholarship",
+    "organization": "Bryan Cameron Education Foundation",
+    "cluster": "Scholarships",
+    "type": "Scholarship",
+    "format": "Virtual",
+    "location": "National",
+    "cost": "Award",
+    "costNote": "Four-year, full-tuition merit scholarship",
+    "financialAid": false,
+    "grades": [
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Early September",
+    "deadlineMonth": 9,
+    "season": "School year",
+    "description": "Full-tuition scholarship for seniors who show leadership, community service, and impact, along with strong academics.",
+    "url": "https://www.bryancameroneducationfoundation.org",
+    "tags": [
+      "full tuition",
+      "leadership",
+      "service",
+      "seniors"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "equitable-excellence-scholarship",
+    "title": "Equitable Excellence Scholarship",
+    "organization": "Equitable Foundation",
+    "cluster": "Scholarships",
+    "type": "Scholarship",
+    "format": "Virtual",
+    "location": "National",
+    "cost": "Award",
+    "costNote": "Scholarships for graduating seniors",
+    "financialAid": false,
+    "grades": [
+      12
+    ],
+    "minGPA": null,
+    "deadline": "December",
+    "deadlineMonth": 12,
+    "season": "School year",
+    "description": "Recognizes seniors who demonstrate ambition, self-drive, and a commitment to making a difference in their communities.",
+    "url": "https://equitable.com/foundation/equitable-excellence-scholarship",
+    "tags": [
+      "ambition",
+      "community impact",
+      "seniors"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "posse-foundation",
+    "title": "Posse Foundation Scholarship",
+    "organization": "The Posse Foundation",
+    "cluster": "Scholarships",
+    "type": "Scholarship",
+    "format": "In-person",
+    "location": "Posse cities nationwide",
+    "cost": "Award",
+    "costNote": "Full-tuition leadership scholarships at partner colleges",
+    "financialAid": false,
+    "grades": [
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Nominations by schools and community organizations in the fall of senior year",
+    "deadlineMonth": 9,
+    "season": "School year",
+    "description": "Identifies students with extraordinary leadership potential who may be overlooked by traditional admissions and sends them to top colleges in supportive teams, or posses.",
+    "url": "https://www.possefoundation.org",
+    "tags": [
+      "full tuition",
+      "leadership",
+      "nomination",
+      "seniors"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "morehead-cain",
+    "title": "Morehead-Cain Scholarship",
+    "organization": "UNC-Chapel Hill",
+    "cluster": "Scholarships",
+    "type": "Scholarship",
+    "format": "Varies",
+    "location": "Chapel Hill, NC",
+    "cost": "Award",
+    "costNote": "Covers all four years at UNC plus summer enrichment",
+    "financialAid": false,
+    "grades": [
+      12
+    ],
+    "minGPA": null,
+    "deadline": "October",
+    "deadlineMonth": 10,
+    "season": "School year",
+    "description": "The first merit scholarship program in the U.S., covering the full cost of attendance at UNC-Chapel Hill plus funded summer experiences.",
+    "url": "https://www.moreheadcain.org",
+    "tags": [
+      "full ride",
+      "merit",
+      "leadership"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "robertson-scholars",
+    "title": "Robertson Scholars Leadership Program",
+    "organization": "Duke University & UNC-Chapel Hill",
+    "cluster": "Scholarships",
+    "type": "Scholarship",
+    "format": "Varies",
+    "location": "Durham and Chapel Hill, NC",
+    "cost": "Award",
+    "costNote": "Full scholarship plus funded summer experiences",
+    "financialAid": false,
+    "grades": [
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Fall of senior year",
+    "deadlineMonth": 11,
+    "season": "School year",
+    "description": "Full scholarship for students at Duke or UNC-Chapel Hill with full access to both campuses and three funded summer experiences.",
+    "url": "https://robertsonscholars.org",
+    "tags": [
+      "full ride",
+      "leadership",
+      "merit"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "stamps-scholars",
+    "title": "Stamps Scholars Program",
+    "organization": "Stamps Scholars",
+    "cluster": "Scholarships",
+    "type": "Scholarship",
+    "format": "Varies",
+    "location": "Partner universities nationwide",
+    "cost": "Award",
+    "costNote": "Merit scholarships with enrichment funds at partner schools",
+    "financialAid": false,
+    "grades": [
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Varies by partner university",
+    "deadlineMonth": null,
+    "season": "School year",
+    "description": "Merit scholarships at dozens of partner universities that typically cover tuition and fees, plus enrichment funds for study abroad, research, or other experiences.",
+    "url": "https://www.stampsscholars.org",
+    "tags": [
+      "merit",
+      "full ride",
+      "enrichment"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "vfw-voice-of-democracy",
+    "title": "VFW Voice of Democracy",
+    "organization": "Veterans of Foreign Wars",
+    "cluster": "Scholarships",
+    "type": "Competition",
+    "format": "Virtual",
+    "location": "Local posts to national",
+    "cost": "Award",
+    "costNote": "Free to enter; college scholarships for winners",
+    "financialAid": false,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "October 31",
+    "deadlineMonth": 10,
+    "season": "School year",
+    "description": "Students write and record an audio essay on a patriotic theme, competing at local, state, and national levels for college scholarships.",
+    "url": "https://www.vfw.org/community/youth-and-education/youth-scholarships",
+    "tags": [
+      "essay",
+      "audio",
+      "civics",
+      "public speaking"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "society-of-women-engineers-scholarships",
+    "title": "Society of Women Engineers Scholarships",
+    "organization": "Society of Women Engineers",
+    "cluster": "Scholarships",
+    "type": "Scholarship",
+    "format": "Virtual",
+    "location": "National",
+    "cost": "Award",
+    "costNote": "Many scholarships for future engineers",
+    "financialAid": false,
+    "grades": [
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Winter",
+    "deadlineMonth": 2,
+    "season": "School year",
+    "description": "Scholarships for women and gender-diverse students planning to study engineering, computer science, or engineering technology in college.",
+    "url": "https://swe.org/scholarships/",
+    "tags": [
+      "engineering",
+      "computer science",
+      "women in stem"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "amazon-future-engineer-scholarship",
+    "title": "Amazon Future Engineer Scholarship",
+    "organization": "Amazon",
+    "cluster": "Scholarships",
+    "type": "Scholarship",
+    "format": "Virtual",
+    "location": "National",
+    "cost": "Award",
+    "costNote": "Scholarship plus a paid internship offer",
+    "financialAid": false,
+    "grades": [
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Mid-January (applications open in late fall)",
+    "deadlineMonth": 1,
+    "season": "School year",
+    "description": "For seniors from underserved and historically underrepresented communities planning to study computer science, including a scholarship and a paid internship at Amazon.",
+    "url": "https://www.amazonfutureengineer.com/scholarships",
+    "tags": [
+      "computer science",
+      "internship",
+      "underrepresented"
+    ],
+    "needBased": true
+  },
+  {
+    "id": "taco-bell-live-mas-scholarship",
+    "title": "Live Más Scholarship",
+    "organization": "Taco Bell Foundation",
+    "cluster": "Scholarships",
+    "type": "Scholarship",
+    "format": "Virtual",
+    "location": "National",
+    "cost": "Award",
+    "costNote": "Passion-based scholarships; no grades or essays required",
+    "financialAid": false,
+    "grades": [
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Winter",
+    "deadlineMonth": 1,
+    "season": "School year",
+    "description": "Passion-based scholarship for ages 16-26: applicants submit a short video about their passion and goals instead of transcripts or essays.",
+    "url": "https://www.tacobellfoundation.org/live-mas-scholarship/",
+    "tags": [
+      "video",
+      "passion",
+      "no essay"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "boys-girls-clubs-youth-of-the-year",
+    "title": "Boys & Girls Clubs Youth of the Year",
+    "organization": "Boys & Girls Clubs of America",
+    "cluster": "Scholarships",
+    "type": "Competition",
+    "format": "In-person",
+    "location": "Local clubs to national",
+    "cost": "Award",
+    "costNote": "Free for club members; scholarships at state and national levels",
+    "financialAid": false,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Selected through local clubs",
+    "deadlineMonth": null,
+    "season": "School year",
+    "description": "Club members ages 14-18 are honored for leadership, service, and academic excellence, competing at local, state, regional, and national levels for scholarships.",
+    "url": "https://www.bgca.org/programs/youth-of-the-year",
+    "tags": [
+      "leadership",
+      "service",
+      "public speaking"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "air-force-rotc-scholarship",
+    "title": "Air Force ROTC High School Scholarship",
+    "organization": "U.S. Air Force",
+    "cluster": "Scholarships",
+    "type": "Scholarship",
+    "format": "Virtual",
+    "location": "National",
+    "cost": "Award",
+    "costNote": "Tuition scholarship with a service commitment after graduation",
+    "financialAid": false,
+    "grades": [
+      12
+    ],
+    "minGPA": 3.0,
+    "deadline": "January",
+    "deadlineMonth": 1,
+    "season": "School year",
+    "description": "Merit-based scholarships that cover college tuition for students who commit to serving as Air Force or Space Force officers after graduation.",
+    "url": "https://www.afrotc.com/scholarships/",
+    "tags": [
+      "military",
+      "rotc",
+      "tuition",
+      "service commitment"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "upward-bound",
+    "title": "Upward Bound (TRIO)",
+    "organization": "U.S. Department of Education",
+    "cluster": "Scholarships",
+    "type": "College Access",
+    "format": "In-person",
+    "location": "Host colleges nationwide",
+    "cost": "Free",
+    "costNote": "Free; many programs include a small stipend",
+    "financialAid": false,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Varies by local program",
+    "deadlineMonth": null,
+    "season": "Year-round",
+    "description": "Federally funded program for students from low-income families or who would be first-generation college students, with tutoring, summer programs on college campuses, and help applying to college.",
+    "url": "https://www.ed.gov/grants-and-programs/grants-higher-education/federal-trio-programs/upward-bound-program",
+    "tags": [
+      "first-generation",
+      "low-income",
+      "tutoring",
+      "federal"
+    ],
+    "needBased": true,
+    "featured": true
+  },
+  {
+    "id": "college-possible",
+    "title": "College Possible",
+    "organization": "College Possible",
+    "cluster": "Scholarships",
+    "type": "College Access",
+    "format": "Hybrid",
+    "location": "Partner high schools and online",
+    "cost": "Free",
+    "costNote": "Free coaching",
+    "financialAid": false,
+    "grades": [
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Varies by partner school",
+    "deadlineMonth": null,
+    "season": "School year",
+    "description": "Free near-peer coaching for students from low-income backgrounds on test prep, college applications, financial aid, and the transition to college.",
+    "url": "https://collegepossible.org",
+    "tags": [
+      "coaching",
+      "low-income",
+      "applications",
+      "financial aid"
+    ],
+    "needBased": true
+  },
+  {
+    "id": "leda-scholars",
+    "title": "LEDA Scholars Program",
+    "organization": "Leadership Enterprise for a Diverse America",
+    "cluster": "Scholarships",
+    "type": "College Access",
+    "format": "Hybrid",
+    "location": "Princeton, NJ and online",
+    "cost": "Free",
+    "costNote": "Free, including a summer institute",
+    "financialAid": false,
+    "grades": [
+      11
+    ],
+    "minGPA": null,
+    "deadline": "Winter",
+    "deadlineMonth": 1,
+    "season": "Summer",
+    "description": "Free program for high-achieving juniors from low-income and underrepresented backgrounds, with a summer institute and college admissions advising through senior year.",
+    "url": "https://ledascholars.org",
+    "tags": [
+      "college prep",
+      "low-income",
+      "advising",
+      "juniors"
+    ],
+    "needBased": true
+  },
+  {
+    "id": "seo-scholars",
+    "title": "SEO Scholars",
+    "organization": "Sponsors for Educational Opportunity",
+    "cluster": "Scholarships",
+    "type": "College Access",
+    "format": "In-person",
+    "location": "New York City and San Francisco Bay Area",
+    "cost": "Free",
+    "costNote": "Free eight-year program",
+    "financialAid": false,
+    "grades": [
+      9
+    ],
+    "minGPA": null,
+    "deadline": "Spring of 9th grade",
+    "deadlineMonth": 4,
+    "season": "Year-round",
+    "description": "Free eight-year program that starts in 9th grade, providing academic coaching, mentoring, and college and career support for students from low-income families.",
+    "url": "https://www.seo-usa.org/scholars/",
+    "tags": [
+      "mentoring",
+      "low-income",
+      "academic coaching",
+      "new york",
+      "san francisco"
+    ],
+    "needBased": true
+  },
+  {
+    "id": "official-sat-practice-khan",
+    "title": "Free Official SAT and AP Practice",
+    "organization": "College Board & Khan Academy",
+    "cluster": "Scholarships",
+    "type": "Resource",
+    "format": "Virtual",
+    "location": "Online",
+    "cost": "Free",
+    "costNote": "Free",
+    "financialAid": false,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Anytime",
+    "deadlineMonth": null,
+    "season": "Year-round",
+    "description": "Free official digital SAT practice tests through College Board's Bluebook app and personalized practice on Khan Academy. Fee waivers are available for eligible students.",
+    "url": "https://satsuite.collegeboard.org/practice",
+    "tags": [
+      "sat",
+      "test prep",
+      "free tool"
+    ],
+    "needBased": false
+  }
+]

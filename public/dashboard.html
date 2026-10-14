@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Explore Opportunities | Student Atlas</title>
+  <meta name="description" content="Search and filter hundreds of research programs, internships, competitions, scholarships, and service opportunities for high school students, with a built-in guide to help.">
+  <meta name="theme-color" content="#0e9f6e">
+  <link rel="icon" type="image/png" href="/image/icon.png">
+  <link rel="stylesheet" href="/css/app.css">
+  <script src="/js/theme-init.js"></script>
+  <script src="/vendor/lucide/lucide.min.js" defer></script>
+  <script type="module" src="/js/pages/explore.js"></script>
+</head>
+<body>
+  <main id="main" tabindex="-1">
+    <div class="explore-layout">
+      <aside class="card filters" id="filters" aria-label="Filters">
+        <div class="row-between">
+          <h2 class="mb-0"><i data-lucide="sliders-horizontal"></i> Filters</h2>
+          <button class="btn btn-ghost btn-sm" type="button" id="reset-filters">Reset</button>
+        </div>
+
+        <div class="filter-block mt-2">
+          <span class="label" id="cluster-label">Interest area</span>
+          <div class="chip-group" id="cluster-chips" role="group" aria-labelledby="cluster-label"></div>
+        </div>
+
+        <div class="filter-block">
+          <label class="label" for="f-type">Type</label>
+          <select class="select" id="f-type"><option value="">Any type</option></select>
+        </div>
+
+        <div class="filter-block">
+          <label class="label" for="f-grade">Grade</label>
+          <select class="select" id="f-grade">
+            <option value="">Any grade</option>
+            <option value="9">9th grade</option>
+            <option value="10">10th grade</option>
+            <option value="11">11th grade</option>
+            <option value="12">12th grade</option>
+          </select>
+        </div>
+
+        <div class="filter-block">
+          <label class="label" for="f-cost">Cost</label>
+          <select class="select" id="f-cost">
+            <option value="">Any cost</option>
+            <option value="Free">Free</option>
+            <option value="Stipend">Paid / stipend</option>
+            <option value="Award">Award or prize money</option>
+            <option value="Fee">Small fee</option>
+            <option value="Tuition">Tuition</option>
+          </select>
+        </div>
+
+        <div class="filter-block">
+          <label class="label" for="f-format">Format</label>
+          <select class="select" id="f-format">
+            <option value="">In person or online</option>
+            <option value="In-person">In person</option>
+            <option value="Virtual">Online</option>
+            <option value="Hybrid">Hybrid</option>
+          </select>
+        </div>
+
+        <div class="filter-block filter-toggles">
+          <label class="switch"><input type="checkbox" id="f-affordable"> Free, paid, or aid available</label>
+          <label class="switch"><input type="checkbox" id="f-soon"> Deadline in the next 3 months</label>
+          <label class="switch"><input type="checkbox" id="f-eligible"> Only ones I'm eligible for</label>
+          <label class="switch"><input type="checkbox" id="f-saved"> Saved only</label>
+        </div>
+
+        <button class="btn btn-primary btn-block mt-3 filters-toggle" type="button" id="close-filters">Show results</button>
+      </aside>
+
+      <section aria-labelledby="results-title">
+        <h1 class="visually-hidden" id="results-title">Explore opportunities</h1>
+        <div id="profile-nudge"></div>
+        <div class="results-head">
+          <div class="search-wrap">
+            <i data-lucide="search"></i>
+            <label for="search" class="visually-hidden">Search opportunities</label>
+            <input class="input" id="search" type="search" placeholder="Search by keyword, organization, or topic" autocomplete="off" maxlength="120">
+          </div>
+          <div class="row">
+            <button class="btn btn-outline filters-toggle" type="button" id="open-filters" aria-controls="filters" aria-expanded="false"><i data-lucide="sliders-horizontal"></i> Filters</button>
+            <label for="sort" class="visually-hidden">Sort results</label>
+            <select class="select" id="sort">
+              <option value="match">Best match</option>
+              <option value="deadline">Upcoming deadline</option>
+              <option value="title">A to Z</option>
+            </select>
+          </div>
+        </div>
+        <p class="muted small" id="result-count" aria-live="polite">Loading opportunities…</p>
+        <div class="results-grid" id="results">
+          <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
+        </div>
+        <div class="text-center mt-3"><button class="btn btn-outline" type="button" id="load-more" hidden>Show more</button></div>
+      </section>
+
+      <aside id="zeus" aria-label="Zeus, your pathway guide"></aside>
+    </div>
+    <button class="btn btn-primary btn-lg chat-fab" type="button" id="chat-fab" aria-controls="zeus" aria-expanded="false"><i data-lucide="sparkles"></i> Ask Zeus</button>
+  </main>
+</body>
+</html>

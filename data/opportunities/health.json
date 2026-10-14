@@ -1,0 +1,512 @@
+[
+  {
+    "id": "nih-hs-sip",
+    "title": "NIH Summer Internship Program (SIP)",
+    "organization": "National Institutes of Health",
+    "cluster": "Health",
+    "type": "Internship",
+    "format": "In-person",
+    "location": "NIH campuses (mainly Bethesda, MD)",
+    "cost": "Stipend",
+    "costNote": "Paid stipend; check current age and grade rules",
+    "financialAid": false,
+    "grades": [
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Mid-February",
+    "deadlineMonth": 2,
+    "season": "Summer",
+    "description": "Summer biomedical research internships in NIH labs alongside leading scientists. NIH has recently changed how high school students apply, so check the current eligibility rules (age and grade) on the NIH training site before applying.",
+    "url": "https://www.training.nih.gov",
+    "tags": [
+      "biomedical research",
+      "lab",
+      "paid",
+      "federal",
+      "medicine"
+    ],
+    "needBased": false,
+    "featured": true
+  },
+  {
+    "id": "stanford-simr",
+    "title": "Stanford Institutes of Medicine Summer Research Program (SIMR)",
+    "organization": "Stanford School of Medicine",
+    "cluster": "Health",
+    "type": "Research",
+    "format": "In-person",
+    "location": "Stanford, CA",
+    "cost": "Stipend",
+    "costNote": "No tuition; participants receive a minimum stipend",
+    "financialAid": false,
+    "grades": [
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Late February",
+    "deadlineMonth": 2,
+    "season": "Summer",
+    "description": "Eight-week research program where high school juniors and seniors work in Stanford medical labs in areas like immunology, neuroscience, cancer biology, and bioengineering.",
+    "url": "https://simr.stanford.edu",
+    "tags": [
+      "medical research",
+      "neuroscience",
+      "immunology",
+      "lab"
+    ],
+    "needBased": false,
+    "featured": true
+  },
+  {
+    "id": "stanford-medical-youth-science-program",
+    "title": "Stanford Medical Youth Science Program (SMYSP)",
+    "organization": "Stanford School of Medicine",
+    "cluster": "Health",
+    "type": "Summer Program",
+    "format": "In-person",
+    "location": "Stanford, CA",
+    "cost": "Free",
+    "costNote": "Free residential program",
+    "financialAid": false,
+    "grades": [
+      11
+    ],
+    "minGPA": null,
+    "deadline": "Late winter",
+    "deadlineMonth": 3,
+    "season": "Summer",
+    "description": "Free five-week residential program for low-income and first-generation high school juniors from Northern and Central California who are interested in science and medicine.",
+    "url": "https://smysp.stanford.edu",
+    "tags": [
+      "medicine",
+      "first-generation",
+      "low-income",
+      "california",
+      "residential"
+    ],
+    "needBased": true
+  },
+  {
+    "id": "hosa",
+    "title": "HOSA-Future Health Professionals",
+    "organization": "HOSA",
+    "cluster": "Health",
+    "type": "Club / Organization",
+    "format": "In-person",
+    "location": "School chapters nationwide",
+    "cost": "Fee",
+    "costNote": "Membership dues through your school chapter",
+    "financialAid": false,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Join in the fall",
+    "deadlineMonth": 10,
+    "season": "School year",
+    "description": "Student organization for future health professionals. Members compete in events like medical terminology, clinical skills, and health career exploration, from regional to international levels.",
+    "url": "https://hosa.org",
+    "tags": [
+      "medicine",
+      "nursing",
+      "competitions",
+      "career organization"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "fred-hutch-summer-internship",
+    "title": "Fred Hutch Summer High School Internship Program",
+    "organization": "Fred Hutchinson Cancer Center",
+    "cluster": "Health",
+    "type": "Internship",
+    "format": "In-person",
+    "location": "Seattle, WA (Greater Seattle residents)",
+    "cost": "Stipend",
+    "costNote": "Paid internship",
+    "financialAid": false,
+    "grades": [
+      11
+    ],
+    "minGPA": null,
+    "deadline": "Winter",
+    "deadlineMonth": 2,
+    "season": "Summer",
+    "description": "Paid eight-week research internship for Greater Seattle students entering their senior year. Students learn lab safety and techniques, then spend six weeks in a Fred Hutch research group. No prior research experience is required.",
+    "url": "https://www.fredhutch.org/en/education-training/high-school-students/summer-high-school-internship-program.html",
+    "tags": [
+      "cancer research",
+      "lab",
+      "paid",
+      "washington"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "teen-mental-health-first-aid",
+    "title": "teen Mental Health First Aid",
+    "organization": "National Council for Mental Wellbeing",
+    "cluster": "Health",
+    "type": "Resource",
+    "format": "In-person",
+    "location": "Participating schools and youth organizations",
+    "cost": "Free",
+    "costNote": "Usually free to students through a participating school",
+    "financialAid": false,
+    "grades": [
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Offered through schools",
+    "deadlineMonth": null,
+    "season": "School year",
+    "description": "Training that teaches high school students how to recognize signs of mental health and substance use challenges in friends and how to connect them with a trusted adult.",
+    "url": "https://www.mentalhealthfirstaid.org",
+    "tags": [
+      "mental health",
+      "wellness",
+      "peer support",
+      "certification"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "red-cross-first-aid-cpr",
+    "title": "Red Cross First Aid, CPR & Lifeguard Training",
+    "organization": "American Red Cross",
+    "cluster": "Health",
+    "type": "Resource",
+    "format": "Hybrid",
+    "location": "Local classes and online",
+    "cost": "Fee",
+    "costNote": "Course fees vary",
+    "financialAid": false,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Rolling",
+    "deadlineMonth": null,
+    "season": "Year-round",
+    "description": "Certifications in first aid, CPR/AED, babysitting, and lifeguarding. Useful for summer jobs and a strong foundation for students interested in healthcare.",
+    "url": "https://www.redcross.org/take-a-class",
+    "tags": [
+      "first aid",
+      "cpr",
+      "certification",
+      "lifeguard",
+      "jobs"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "aamc-aspiring-docs",
+    "title": "AAMC Students & Applicants Resources",
+    "organization": "Association of American Medical Colleges",
+    "cluster": "Health",
+    "type": "Resource",
+    "format": "Virtual",
+    "location": "Online",
+    "cost": "Free",
+    "costNote": "Free online resources",
+    "financialAid": false,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Anytime",
+    "deadlineMonth": null,
+    "season": "Year-round",
+    "description": "Free guidance from the organization behind the MCAT on what it takes to become a doctor, including career exploration, the path through college, and how medical school admissions work.",
+    "url": "https://students-residents.aamc.org",
+    "tags": [
+      "medicine",
+      "pre-med",
+      "career exploration"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "explore-health-careers",
+    "title": "ExploreHealthCareers.org",
+    "organization": "American Dental Education Association",
+    "cluster": "Health",
+    "type": "Resource",
+    "format": "Virtual",
+    "location": "Online",
+    "cost": "Free",
+    "costNote": "Free online resource",
+    "financialAid": false,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Anytime",
+    "deadlineMonth": null,
+    "season": "Year-round",
+    "description": "A free guide to more than 100 health careers, from nursing and pharmacy to public health and physical therapy, with education requirements, salaries, and summer program listings.",
+    "url": "https://explorehealthcareers.org",
+    "tags": [
+      "career exploration",
+      "nursing",
+      "public health",
+      "dentistry"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "cdc-museum-disease-detective-camp",
+    "title": "CDC Museum Disease Detective Camp",
+    "organization": "Centers for Disease Control and Prevention",
+    "cluster": "Health",
+    "type": "Summer Program",
+    "format": "In-person",
+    "location": "Atlanta, GA",
+    "cost": "Free",
+    "costNote": "Free day camp",
+    "financialAid": false,
+    "grades": [
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Early spring",
+    "deadlineMonth": 2,
+    "season": "Summer",
+    "description": "Free day camp for rising juniors and seniors that introduces public health and epidemiology through outbreak investigations, lab activities, and conversations with CDC scientists.",
+    "url": "https://www.cdc.gov/museum/camp/detective",
+    "tags": [
+      "public health",
+      "epidemiology",
+      "atlanta",
+      "federal"
+    ],
+    "needBased": false
+  },
+  {
+    "id": "exploring-health-careers",
+    "title": "Health Career Explorer Posts (Exploring)",
+    "organization": "Exploring (Learning for Life)",
+    "cluster": "Health",
+    "type": "Club / Organization",
+    "format": "In-person",
+    "location": "Hospitals and local posts nationwide",
+    "cost": "Fee",
+    "costNote": "Small registration fee",
+    "financialAid": false,
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "minGPA": null,
+    "deadline": "Join anytime",
+    "deadlineMonth": null,
+    "season": "Year-round",
+    "description": "Career exploration program for ages 14-20 run with local hospitals, EMS agencies, and health organizations, giving hands-on experience with professionals in the field.",
+    "url": "https://www.exploring.org",
+    "tags": [
+      "career exploration",
+      "hospital",
+      "ems",
+      "mentorship"
+    ],
+    "needBased": false
+  },
+  {
+    "financialAid": false,
+    "minGPA": null,
+    "needBased": false,
+    "tags": [
+      "neuroscience",
+      "biology",
+      "medicine",
+      "competition"
+    ],
+    "id": "usa-brain-bee",
+    "title": "USA Brain Bee",
+    "organization": "USA Brain Bee",
+    "cluster": "Health",
+    "type": "Competition",
+    "format": "In-person",
+    "location": "Local chapters nationwide; national championship",
+    "cost": "Award",
+    "costNote": "Free or low cost locally; cash prizes at nationals",
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "deadline": "Local competitions in winter and early spring",
+    "deadlineMonth": 2,
+    "season": "School year",
+    "description": "The national neuroscience competition for students ages 13-19. Students study the brain, compete at local chapter events, and top finishers advance to the national championship and the International Brain Bee.",
+    "url": "https://www.usabrainbee.org"
+  },
+  {
+    "financialAid": false,
+    "minGPA": null,
+    "needBased": false,
+    "tags": [
+      "biomedical research",
+      "lab",
+      "new york",
+      "mentorship"
+    ],
+    "id": "rockefeller-ssrp",
+    "title": "Rockefeller University Summer Science Research Program (SSRP)",
+    "organization": "The Rockefeller University (RockEDU)",
+    "cluster": "Health",
+    "type": "Research",
+    "format": "In-person",
+    "location": "New York, NY",
+    "cost": "Free",
+    "costNote": "No program fee; need-based stipends may be available",
+    "grades": [
+      11,
+      12
+    ],
+    "deadline": "Early January",
+    "deadlineMonth": 1,
+    "season": "Summer",
+    "description": "Mentored biomedical research program where high school juniors and seniors (16+) work in teams modeled on a Rockefeller lab, design experiments with scientist-mentors, and present their findings.",
+    "url": "https://www.rockefeller.edu/outreach/ssrp/"
+  },
+  {
+    "financialAid": false,
+    "minGPA": null,
+    "needBased": false,
+    "tags": [
+      "cancer research",
+      "lab",
+      "paid",
+      "new york"
+    ],
+    "id": "msk-hopp-summer-student",
+    "title": "MSK HOPP Summer Student Program",
+    "organization": "Memorial Sloan Kettering Cancer Center",
+    "cluster": "Health",
+    "type": "Research",
+    "format": "In-person",
+    "location": "New York, NY",
+    "cost": "Stipend",
+    "costNote": "Stipend after completing the program; strong science grades expected",
+    "grades": [
+      9,
+      10,
+      11
+    ],
+    "deadline": "Winter",
+    "deadlineMonth": 1,
+    "season": "Summer",
+    "description": "Eight-week cancer research program in MSK's Human Oncology and Pathogenesis Program. Students learn lab techniques, complete an independent project with a mentor, and present a poster. Students from disadvantaged backgrounds are encouraged to apply.",
+    "url": "https://www.mskcc.org/education-training/high-school-college/summer-student/about-us"
+  },
+  {
+    "financialAid": false,
+    "minGPA": 3.0,
+    "needBased": false,
+    "tags": [
+      "medical research",
+      "lab",
+      "california",
+      "underrepresented"
+    ],
+    "id": "ucsf-summer-student-research",
+    "title": "UCSF Summer Student Research Program",
+    "organization": "University of California, San Francisco",
+    "cluster": "Health",
+    "type": "Research",
+    "format": "In-person",
+    "location": "San Francisco, CA",
+    "cost": "Free",
+    "costNote": "No tuition; check the site for current stipend details",
+    "grades": [
+      11,
+      12
+    ],
+    "deadline": "Mid-February",
+    "deadlineMonth": 2,
+    "season": "Summer",
+    "description": "About nine weeks of mentored research in UCSF clinics and basic science labs, with workshops, seminars, and a closing research symposium. Prioritizes students from backgrounds underrepresented in science.",
+    "url": "https://summerstudents.ucsf.edu"
+  },
+  {
+    "financialAid": false,
+    "minGPA": null,
+    "needBased": true,
+    "tags": [
+      "cancer research",
+      "biology",
+      "washington",
+      "beginner-friendly"
+    ],
+    "id": "fred-hutch-research-explorers",
+    "title": "Fred Hutch Pathways Research Explorers",
+    "organization": "Fred Hutchinson Cancer Center",
+    "cluster": "Health",
+    "type": "Summer Program",
+    "format": "In-person",
+    "location": "Seattle, WA",
+    "cost": "Free",
+    "costNote": "Participant costs are covered",
+    "grades": [
+      9,
+      10
+    ],
+    "deadline": "Mid-March",
+    "deadlineMonth": 3,
+    "season": "Summer",
+    "description": "Two-week introduction to cancer research for rising 10th and 11th graders who have completed high school biology, with hands-on lab work, conversations with scientists, and a final project. Focused on students from groups excluded from biomedical careers.",
+    "url": "https://www.fredhutch.org/en/education-training/high-school-students/high-school-explorers-program.html"
+  },
+  {
+    "financialAid": false,
+    "minGPA": null,
+    "needBased": true,
+    "tags": [
+      "health careers",
+      "shadowing",
+      "rural",
+      "underrepresented"
+    ],
+    "id": "ahec-health-careers",
+    "title": "Area Health Education Center (AHEC) Health Careers Programs",
+    "organization": "National AHEC Organization & state AHECs",
+    "cluster": "Health",
+    "type": "Summer Program",
+    "format": "In-person",
+    "location": "Programs in most states",
+    "cost": "Free",
+    "costNote": "Usually free or low cost; varies by state",
+    "grades": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "deadline": "Varies by state program",
+    "deadlineMonth": null,
+    "season": "Year-round",
+    "description": "State Area Health Education Centers run health career camps, job shadowing, mentoring, and clinical exposure programs for high school students, with a focus on rural, underserved, and underrepresented communities.",
+    "url": "https://www.nationalahec.org"
+  }
+]
