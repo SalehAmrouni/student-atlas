@@ -15,7 +15,8 @@
 // This module has no DOM dependencies so it can be unit-tested in Node.
 
 import { scoreOpportunity } from './match.js';
-import { monthsUntilDeadline, gradeLabel } from './data.js';
+import { monthsUntilDeadline, gradeLabel, isExpired } from './data.js';
+import { effectiveFinancialNeed } from './finance.js';
 
 // ---------------------------------------------------------------------------
 // Text utilities
@@ -558,7 +559,7 @@ export function createEngine({ opportunities, clusters = {}, rng = Math.random, 
       if (f.cost && o.cost !== f.cost) continue;
       if (f.affordable && !(o.cost === 'Free' || o.cost === 'Stipend' || o.cost === 'Award' || o.needBased || o.financialAid)) continue;
       if (f.format && !(o.format === f.format || o.format === 'Hybrid' || o.format === 'Varies')) continue;
-      if (f.soon) { const m = monthsUntilDeadline(o, date); if (m === null || m > 3) continue; }
+      if (f.soon) { const m = monthsUntilDeadline(o, date); if (m === null || m > 3 || isExpired(o, date)) continue; }
       if (f.month && o.deadlineMonth !== f.month) continue;
       const rel = terms.size ? bm25(d, terms, index) : 0;
       if (terms.size && rel <= 0 && !(f.cluster || f.type)) continue;
@@ -850,7 +851,7 @@ export function createEngine({ opportunities, clusters = {}, rng = Math.random, 
       firstName: profile?.firstName,
       grade: state.grade ?? profile?.grade,
       interests: state.interests?.length ? state.interests : profile?.interests,
-      financialNeed: state.financialNeed ?? profile?.financialNeed,
+      financialNeed: state.financialNeed ?? effectiveFinancialNeed(profile),
     };
   }
 

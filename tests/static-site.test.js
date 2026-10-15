@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 
-const { loadOpportunities, searchOpportunities, CLUSTERS, TYPES } = await import('../server/opportunities.js');
+const { loadOpportunities, loadStatus, withStatus, searchOpportunities, CLUSTERS, TYPES } = await import('../server/opportunities.js');
 const { SECURITY_HEADERS } = await import('../server/headers.js');
 const { createApp } = await import('../server/index.js');
 
@@ -42,7 +42,7 @@ describe('opportunities database', () => {
 describe('static build', () => {
   test('public/data/opportunities.json is up to date (run `npm run build` after editing data)', () => {
     const built = JSON.parse(sourceOf(path.join(PUBLIC, 'data', 'opportunities.json')));
-    assert.deepEqual(built, JSON.parse(JSON.stringify({ clusters: CLUSTERS, types: TYPES, count: opportunities.length, opportunities })));
+    assert.deepEqual(built, JSON.parse(JSON.stringify({ clusters: CLUSTERS, types: TYPES, count: opportunities.length, opportunities: withStatus(opportunities, loadStatus()) })));
   });
 
   test('the icon bundle is vendored locally', () => {

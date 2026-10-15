@@ -1,10 +1,13 @@
 import { boot } from '../lib/layout.js';
-import { h, icon, $, clear, refreshIcons, toast, pluralize, externalLink } from '../lib/dom.js';
+import { h, icon, $, clear, refreshIcons, toast, pluralize, externalLink, downloadFile } from '../lib/dom.js';
 import { loadData, monthsUntilDeadline, deadlineHint } from '../lib/data.js';
 import { opportunityCard, showOpportunity, setClusterMeta, clusterLabel } from '../lib/cards.js';
 import { getProfile, getSaved, toggleSaved, clearSaved, exportAllData, deleteAllData, onStoreChange } from '../lib/store.js';
 import { scoreOpportunity, clusterAffinity } from '../lib/match.js';
-import { openWizard } from '../lib/wizard.js';
+import { openWizard, FINANCE_STEP } from '../lib/wizard.js';
+import { financeSummary, financeTier, TIER_LABELS } from '../lib/finance.js';
+import { shareList } from '../lib/share.js';
+import { openTrackEditor } from '../lib/tracker-ui.js';
 
 const TABS = [
   { id: 'overview', label: 'Overview', icon: 'layout-dashboard' },
@@ -38,11 +41,15 @@ boot('profile', async () => {
         row('GPA', profile.gpa !== undefined ? profile.gpa.toFixed(2) : undefined),
         row('Volunteer hours', profile.serviceHours !== undefined ? String(profile.serviceHours) : undefined),
         row('Format', { any: 'In person or online', 'In-person': 'In person', Virtual: 'Online' }[profile.formatPreference]),
-        row('Cost matters', profile.financialNeed === undefined ? undefined : profile.financialNeed ? 'Yes' : 'No')),
+        row('Cost matters', profile.financialNeed === undefined ? undefined : profile.financialNeed ? 'Yes' : 'No'),
+        row('Family finances', financeSummary(profile) ?? 'Not shared')),
+      financeTier(profile) ? h('p', { class: 'small muted mt-1 mb-0' }, icon('hand-coins'), ` ${TIER_LABELS[financeTier(profile)]}. Programs with income limits are marked in your matches.`) : null,
       profile.goals ? h('p', { class: 'small muted mt-2 mb-0' }, h('strong', {}, 'Your goal: '), profile.goals) : null,
       h('div', { class: 'row mt-3' },
         h('button', { type: 'button', class: 'btn btn-primary', onclick: rebuild }, icon('pencil'), 'Edit profile'),
-        h('a', { class: 'btn btn-ghost', href: '/dashboard.html?welcome=1' }, icon('sparkles'), 'Ask Zeus for a plan')));
+        h('a', { class: 'btn btn-ghost', href: '/dashboard.html?welcome=1' }, icon('sparkles'), 'Ask Zeus for a plan')),
+      h('button', { type: 'button', class: 'btn btn-ghost btn-sm mt-1', onclick: () => openWizard({ onComplete: render, startStep: FINANCE_STEP }) },
+        icon('hand-coins'), financeSummary(profile) ? 'Edit family finances' : 'Add family finances (optional)'));
   }
 
   function overview(profile, scored) {
@@ -91,13 +98,19 @@ boot('profile', async () => {
     return h('div', { class: 'card card-flat' },
       h('div', { class: 'row-between' },
         h('p', { class: 'muted mb-0', text: pluralize(items.length, 'saved opportunity', 'saved opportunities') }),
-        h('button', { type: 'button', class: 'btn btn-ghost btn-sm', onclick: () => { if (confirm('Remove all saved opportunities?')) { clearSaved(); toast('Cleared saved list'); } } }, icon('trash-2'), 'Clear all')),
+        h('div', { class: 'row' },
+          h('button', {
+            type: 'button', class: 'btn btn-outline btn-sm',
+            onclick: () => shareList(items.map((o) => ({ id: o.id, title: o.title, organization: o.organization, deadline: o.deadline, url: o.url })), { heading: 'Send my saved list' }),
+          }, icon('share-2'), 'Send list'),
+          h('button', { type: 'button', class: 'btn btn-ghost btn-sm', onclick: () => { if (confirm('Remove all saved opportunities?')) { clearSaved(); toast('Cleared saved list'); } } }, icon('trash-2'), 'Clear all'))),
       items.map((o) => h('div', { class: 'saved-item', dataset: { cluster: o.cluster } },
         h('div', {},
           h('button', { type: 'button', class: 'opp-link', onclick: () => showOpportunity(o) }, o.title),
           h('div', { class: 'small muted', text: `${o.organization} · ${o.deadline}` })),
         h('div', { class: 'row' },
           h('span', { class: 'badge badge-cluster', dataset: { cluster: o.cluster } }, clusterLabel(o.cluster)),
+          h('button', { type: 'button', class: 'btn btn-outline btn-sm', 'aria-label': `Track ${o.title}`, onclick: () => openTrackEditor({ opp: o }) }, icon('list-plus'), 'Track'),
           externalLink(o.url, [icon('external-link'), 'Site'], 'btn btn-outline btn-sm'),
           h('button', { type: 'button', class: 'btn btn-ghost btn-icon btn-sm', 'aria-label': `Remove ${o.title}`, onclick: () => toggleSaved(o.id) }, icon('x'))))));
   }
@@ -110,7 +123,9 @@ boot('profile', async () => {
       .filter((x) => x.months !== null && x.months <= 6)
       .sort((a, b) => a.months - b.months || a.o.title.localeCompare(b.o.title));
     return h('div', { class: 'card card-flat' },
-      h('h3', {}, 'Coming up in the next 6 months'),
+      h('div', { class: 'row-between' },
+        h('h3', { class: 'mb-0' }, 'Coming up in the next 6 months'),
+        h('a', { class: 'btn btn-ghost btn-sm', href: '/tracker.html#calendar' }, icon('calendar-days'), 'Open calendar')),
       h('p', { class: 'muted small' }, 'Your saved opportunities and strong matches, ordered by their typical deadline month. Always check the official site for exact dates.'),
       upcoming.length
         ? upcoming.map(({ o }) => h('div', { class: 'saved-item' },
@@ -125,17 +140,11 @@ boot('profile', async () => {
 
   function privacyTab() {
     const download = () => {
-      const blob = new Blob([JSON.stringify(exportAllData(), null, 2)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = h('a', { href: url, download: 'student-atlas-data.json' });
-      document.body.append(a);
-      a.click();
-      a.remove();
-      URL.revokeObjectURL(url);
+      downloadFile('student-atlas-data.json', JSON.stringify(exportAllData(), null, 2), 'application/json');
       toast('Downloaded your data', 'success');
     };
     const wipe = () => {
-      if (!confirm('Delete your profile, saved opportunities, chat, and settings from this browser? This cannot be undone.')) return;
+      if (!confirm('Delete your profile, saved opportunities, application tracker, chat, and settings from this browser? This cannot be undone.')) return;
       deleteAllData();
       toast('All of your data was deleted from this browser', 'success');
       render();
@@ -145,6 +154,8 @@ boot('profile', async () => {
       h('ul', { class: 'reasons' },
         h('li', { class: 'good' }, icon('check-circle-2'), 'No account or password: your profile and saved list live only in this browser (localStorage).'),
         h('li', { class: 'good' }, icon('check-circle-2'), 'Zeus runs entirely in your browser. Your questions and profile are never sent anywhere.'),
+        h('li', { class: 'good' }, icon('check-circle-2'), 'Family finance answers are optional ranges, never exact numbers, and are only used to match you with programs that have income limits.'),
+        h('li', { class: 'good' }, icon('check-circle-2'), 'Your application tracker, dates, and notes stay in this browser. Sending a list only shares the opportunities you choose, never your profile.'),
         h('li', { class: 'good' }, icon('check-circle-2'), 'Chat history is kept only for this browser tab and clears when you close it.'),
         h('li', { class: 'good' }, icon('check-circle-2'), 'No ads, no tracking, no third-party analytics.')),
       h('div', { class: 'row' },

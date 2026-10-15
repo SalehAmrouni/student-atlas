@@ -1,8 +1,8 @@
 import { boot } from '../lib/layout.js';
 import { h, icon, $, clear, refreshIcons, debounce, pluralize } from '../lib/dom.js';
-import { loadData, monthsUntilDeadline } from '../lib/data.js';
+import { loadData, monthsUntilDeadline, isExpired } from '../lib/data.js';
 import { opportunityCard, showOpportunity, setClusterMeta, clusterLabel } from '../lib/cards.js';
-import { getProfile, getSaved, getChat, onStoreChange } from '../lib/store.js';
+import { getProfile, getSaved, isSaved, toggleSaved, getChat, onStoreChange } from '../lib/store.js';
 import { scoreOpportunity } from '../lib/match.js';
 import { mountZeus } from '../lib/zeus.js';
 import { openWizard } from '../lib/wizard.js';
@@ -29,12 +29,16 @@ boot('explore', async () => {
     sort: ['match', 'deadline', 'title'].includes(params.get('sort')) ? params.get('sort') : 'match',
   };
   for (const k of BOOL_KEYS) state[k] = params.get(k) === '1';
+  // A list someone shared (?ids=a,b,c) and a single shared opportunity (?open=id).
+  state.ids = (params.get('ids') ?? '').split(',').filter((id) => data.byId.has(id)).slice(0, 60);
+  const openId = data.byId.has(params.get('open')) ? params.get('open') : null;
   const welcome = params.get('welcome') === '1';
 
   const syncUrl = () => {
     const p = new URLSearchParams();
     for (const [k, v] of Object.entries(state)) {
       if (BOOL_KEYS.includes(k)) { if (v) p.set(k, '1'); }
+      else if (k === 'ids') { if (v.length) p.set(k, v.join(',')); }
       else if (v && !(k === 'sort' && v === 'match')) p.set(k, v);
     }
     const qs = p.toString();
@@ -73,7 +77,8 @@ boot('explore', async () => {
   search.addEventListener('input', debounce(() => { state.q = search.value.trim(); update(); }, 200));
 
   $('#reset-filters').addEventListener('click', () => {
-    Object.assign(state, { q: '', cluster: '', type: '', grade: '', cost: '', format: '', sort: 'match', affordable: false, soon: false, eligible: false, saved: false });
+    Object.assign(state, { q: '', cluster: '', type: '', grade: '', cost: '', format: '', sort: 'match', affordable: false, soon: false, eligible: false, saved: false, ids: [] });
+    renderShared();
     search.value = '';
     for (const id of ['#f-type', '#f-grade', '#f-cost', '#f-format']) $(id).value = '';
     $('#sort').value = 'match';
@@ -125,20 +130,47 @@ boot('explore', async () => {
     refreshIcons();
   }
 
+  // ---- shared list banner -----------------------------------------------------
+  const sharedBox = h('div', { id: 'shared-list' });
+  $('#profile-nudge').before(sharedBox);
+  function renderShared() {
+    clear(sharedBox);
+    if (!state.ids.length) return;
+    const unsaved = () => state.ids.filter((id) => !isSaved(id));
+    const saveAll = h('button', {
+      type: 'button', class: 'btn btn-primary btn-sm',
+      onclick: () => {
+        for (const id of unsaved()) toggleSaved(id);
+        saveAll.disabled = true;
+        saveAll.replaceChildren(icon('bookmark-check'), 'All saved');
+        refreshIcons();
+      },
+    }, icon('bookmark-plus'), 'Save all');
+    if (!unsaved().length) { saveAll.disabled = true; saveAll.replaceChildren(icon('bookmark-check'), 'All saved'); }
+    sharedBox.append(h('div', { class: 'profile-nudge shared-nudge', role: 'region', 'aria-label': 'Shared list' },
+      h('div', {}, h('strong', {}, icon('share-2'), ` ${pluralize(state.ids.length, 'opportunity', 'opportunities')} shared with you`),
+        h('div', { class: 'small muted' }, 'Someone sent you this list. Save the ones you like to track them.')),
+      h('div', { class: 'row' }, saveAll,
+        h('button', { type: 'button', class: 'btn btn-outline btn-sm', onclick: () => { state.ids = []; renderShared(); update(); } }, 'Show everything'))));
+    refreshIcons();
+  }
+
   // ---- filtering ---------------------------------------------------------------
   function filtered() {
     const words = state.q.toLowerCase().split(/\s+/).filter(Boolean);
     const saved = state.saved ? new Set(getSaved()) : null;
     const grade = state.grade ? Number(state.grade) : null;
     const rows = [];
+    const only = state.ids.length ? new Set(state.ids) : null;
     for (const o of opps) {
+      if (only && !only.has(o.id)) continue;
       if (state.cluster && o.cluster !== state.cluster) continue;
       if (state.type && o.type !== state.type) continue;
       if (grade && !o.grades.includes(grade)) continue;
       if (state.cost && o.cost !== state.cost) continue;
       if (state.format && o.format !== state.format) continue;
       if (state.affordable && !(o.cost === 'Free' || o.cost === 'Stipend' || o.cost === 'Award' || o.financialAid || o.needBased)) continue;
-      if (state.soon) { const m = monthsUntilDeadline(o); if (m === null || m > 3) continue; }
+      if (state.soon) { const m = monthsUntilDeadline(o); if (m === null || m > 3 || isExpired(o)) continue; }
       if (saved && !saved.has(o.id)) continue;
       let textScore = 0;
       if (words.length) {
@@ -213,8 +245,10 @@ boot('explore', async () => {
   }
 
   renderNudge();
+  renderShared();
   paintChips();
   update();
+  if (openId) showOpportunity(data.byId.get(openId), { onAsk });
 
   // update() already rewrote the URL without ?welcome=1, so a refresh won't re-trigger this.
   if (welcome && profile && !getChat().length) greetAfterWizard();

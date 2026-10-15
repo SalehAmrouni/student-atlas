@@ -7,6 +7,7 @@ const NAV = [
   { href: '/', label: 'Home', page: 'home' },
   { href: '/dashboard.html', label: 'Explore', page: 'explore' },
   { href: '/profile.html', label: 'My Pathway', page: 'profile' },
+  { href: '/tracker.html', label: 'Applications', page: 'tracker' },
   { href: '/submission.html', label: 'Suggest a Resource', page: 'submit' },
   { href: '/references.html', label: 'About', page: 'about' },
 ];
@@ -146,7 +147,7 @@ export function renderLayout(activePage) {
   };
   menuToggle.addEventListener('click', () => setNavOpen(!nav.classList.contains('open')));
   // Close the drawer if the window grows past the mobile breakpoint.
-  window.matchMedia('(max-width: 860px)').addEventListener('change', (e) => { if (!e.matches) setNavOpen(false); });
+  window.matchMedia('(max-width: 1200px)').addEventListener('change', (e) => { if (!e.matches) setNavOpen(false); });
 
   const ctaLabel = h('span', { class: 'btn-label' });
   const cta = h('a', { class: 'btn btn-primary btn-sm header-cta', href: '/profile.html' }, icon('compass'), ctaLabel);
@@ -182,7 +183,9 @@ export function renderLayout(activePage) {
         h('ul', {},
           h('li', {}, h('a', { href: '/dashboard.html' }, 'Opportunity directory')),
           h('li', {}, h('a', { href: '/?wizard=1' }, 'Pathway Wizard')),
-          h('li', {}, h('a', { href: '/profile.html' }, 'My Pathway')))),
+          h('li', {}, h('a', { href: '/profile.html' }, 'My Pathway')),
+          h('li', {}, h('a', { href: '/tracker.html' }, 'Application tracker')),
+          h('li', {}, h('a', { href: '/tracker.html#calendar' }, 'Calendar')))),
       h('div', {},
         h('h2', { class: 'footer-heading' }, 'Project'),
         h('ul', {},
