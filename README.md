@@ -20,7 +20,13 @@ Student Atlas helps students find research programs, internships, competitions, 
 - **Calendar** of applied, planned, and bookmarked opportunities: a keyboard-navigable month view plus a phone-friendly list, estimated "usually due" months for bookmarks, and `.ics` export for Google Calendar, Apple Calendar, or Outlook.
 - **Send opportunities** to a friend, parent, or counselor: copy a link, email, text, or the phone's share sheet. Lists open on the Explore page with a "Save all" button; status and dates are only included if the student chooses.
 - **Optional family finances** (household size, income range, assistance programs, first-generation status), banded and stored only in the browser, so programs with income limits are flagged and ranked appropriately.
-- **My Pathway** dashboard: fit by interest area, top matches, saved list, upcoming deadlines, plus data export and deletion.
+- **My Pathway** dashboard: fit by interest area, top matches, saved list, upcoming deadlines, plus data export and deletion. Signed-in students land here instead of the homepage (the homepage is still at `/?home=1`).
+- **Anonymous accounts and cloud sync.** Starting the Pathway Wizard creates a random username (e.g. 🪐 CosmicZeus42) and a sign-in code, kept in an HttpOnly cookie session. Profile, saved list, tracker, My Story, Zeus chat, and College Lab sync automatically; existing browser-only data moves into the account. **Log Out** ends the session and wipes the browser for the next class period.
+- **School rooms** (`/join.html`): a student types the teacher's room code, their real name, and grade and gets a random username. Students who already have one use **Join a School Room** in My Pathway → Account and keep all their data. Real names are encrypted in the student's browser with the room's public key; only the teacher's key can read them.
+- **Teacher & counselor dashboard** (`/teacher.html`): create a room in under a minute (room code + private teacher key), a live roster pairing real names with usernames and grades, triage filters, and a portfolio per student: Zeus Counselor Insights (a 10-second summary and the supports they need, e.g. financial aid guidance for a student who mostly saves free programs), application pipeline, milestones, saved opportunities, and My Story. Teachers can reset a student's sign-in code, remove students, close joining, and **work with Zeus on strategies** (Claude when configured, on-device otherwise; Zeus gets an anonymized brief).
+- **My Story** (My Pathway): academics and goals, extracurriculars and leadership, work/internships/volunteering, and personal insight. Zeus tailors the sections to the student's post–high school goal (e.g. ASVAB for military, certifications instead of test scores for trade and workforce). The Overcoming obstacles answer is shared with a teacher only if the student turns that on.
+- **Milestone checklist** by grade and path, plus custom items, with **Zeus nudges** in the College Lab ("I noticed you have 3 junior year milestones checked off, but you haven't opened Khan Academy yet…").
+- **Confetti** when an application moves into Applied (skipped with reduced motion).
 - **Community suggestions** that open as a pre-filled GitHub issue for the team to review.
 - **Student reviews**: star ratings and written reviews on every opportunity, with rating summaries on cards, reporting, and a moderation page. See [Turning on reviews](#turning-on-reviews).
 - **Accessibility (WCAG 2.1 AA)**: text sizing, light/dark/auto theme, high contrast, readable font, color-blind friendly palette (Okabe-Ito), reduced motion, read-aloud, keyboard navigation, visible focus, Windows High Contrast support, screen-reader labels, and layouts that reflow down to 320px. See the accessibility statement on the About page.
@@ -28,7 +34,8 @@ Student Atlas helps students find research programs, internships, competitions, 
 
 ## Security & privacy
 
-- No accounts or passwords. The profile (including optional family finance ranges), saved list, application tracker, College Lab work, settings, and Zeus conversations live in the student's browser.
+- Accounts are anonymous: a random username plus a sign-in code (stored hashed), no email, password, or real name. Without an account everything stays in the browser. With one, the student's data is stored in Redis under the username and expires after ~13 months of inactivity. Log Out wipes the browser.
+- In school rooms, real names are encrypted in the student's browser (RSA-OAEP) with the room's public key; the private key is wrapped with a key derived from the teacher key, which never reaches the server. A database breach does not reveal names. It does reveal the progress data itself (grades, goals, milestones, and anything students write in My Story), which can identify a student in context, so treat it as student information. This is **not** a FERPA/COPPA exemption: schools should review it under their own policies and get parental consent where required.
 - No ads, analytics, or third-party scripts. Zeus uses no AI service. College Lab can use Claude for feedback, only when the site owner sets an API key and the student opts in; nothing it sends is stored or logged on the server.
 - A strict Content Security Policy (no inline scripts or styles, no third-party origins) and security headers defined once in `server/headers.js` and shared by the local server and `vercel.json`.
 - The site is static except for optional functions in `api/`: reviews, which store only what a reviewer chooses to post plus a salted hash of their IP for rate limiting, and College Lab AI feedback, which stores nothing.
@@ -58,7 +65,7 @@ No API keys or accounts are needed. Reviews run from memory locally; see [Turnin
 
 ## Deploying to Vercel
 
-The site is static apart from the functions in `api/` (reviews and College Lab AI feedback), and `vercel.json` configures everything (build, output folder, clean URLs, function timeouts, and security headers).
+The site is static apart from the functions in `api/` (reviews, accounts and rooms, and College Lab AI feedback), and `vercel.json` configures everything (build, output folder, clean URLs, function timeouts, and security headers).
 
 1. In Vercel, **Add New → Project** and import this GitHub repository.
 2. Leave **Root Directory** as the repository root (`./`), not `public`.
@@ -69,6 +76,16 @@ The site is static apart from the functions in `api/` (reviews and College Lab A
 If you already created the project with Root Directory set to `public`, change it under **Settings → Build and Deployment → Root Directory** to the repository root, then redeploy. (The site still loads from `public`, but you'd miss the security headers and clean URLs.)
 
 Because everything in `public/` is plain static files, it also works on GitHub Pages, Netlify, or any static host (without reviews, which need the Vercel functions in `api/`).
+
+### Turning on accounts and school rooms
+
+Accounts, cloud sync, school rooms, and the teacher dashboard use the same Upstash Redis database as reviews. Until it's connected, the site works browser-only and the join and teacher pages say rooms aren't turned on.
+
+1. Connect **Upstash for Redis** as in step 1 of [Turning on reviews](#turning-on-reviews) (one database serves both).
+2. Under **Settings → Environment Variables**, add `ACCOUNTS_SALT`, a long random string used to hash sign-in codes and IPs. Set it once and don't change it: changing it makes every existing sign-in code stop working.
+3. Redeploy. Students sign in at `/join.html`; teachers start at `/teacher.html`.
+
+Locally, `npm run dev` keeps accounts and rooms in memory.
 
 ### Turning on reviews
 

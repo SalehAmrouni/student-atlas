@@ -6,6 +6,7 @@ import { getLab, saveLab } from '../lib/lab-store.js';
 import { assessProfile, computeGpa } from '../lib/lab-engine.js';
 import { getProfile } from '../lib/store.js';
 import { field, scoreMeter, barRow, mergedStats } from './common.js';
+import { zeusNudges } from '../lib/story-ui.js';
 
 const LIST_DEFS = {
   activities: {
@@ -17,6 +18,7 @@ const LIST_DEFS = {
       { name: 'hoursPerWeek', label: 'Hours per week', type: 'number', min: 0, max: 80 },
       { name: 'weeksPerYear', label: 'Weeks per year', type: 'number', min: 0, max: 52 },
       { name: 'leadership', label: 'Leadership role', type: 'checkbox' },
+      { name: 'description', label: 'What you did or achieved', type: 'text', max: 300, wide: true, placeholder: 'e.g. Led 12 members to the state finals' },
     ],
   },
   awards: {
@@ -106,6 +108,7 @@ export function renderOverview(root, { go }) {
     const stepTab = { essays: 'essays', academics: 'transcript', rigor: 'transcript' };
 
     snapshot.replaceChildren(
+      zeusNudges() ?? '',
       h('section', { class: 'card lab-snapshot', 'aria-labelledby': 'snap-h' },
         h('div', { class: 'row-between' },
           h('div', {},

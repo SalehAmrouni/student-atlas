@@ -2,18 +2,24 @@ import { boot } from '../lib/layout.js';
 import { h, icon, $, clear, refreshIcons, toast, pluralize, externalLink, downloadFile } from '../lib/dom.js';
 import { loadData, monthsUntilDeadline, deadlineHint } from '../lib/data.js';
 import { opportunityCard, showOpportunity, setClusterMeta, clusterLabel } from '../lib/cards.js';
-import { getProfile, getSaved, toggleSaved, clearSaved, exportAllData, deleteAllData, onStoreChange } from '../lib/store.js';
+import { getProfile, getSaved, toggleSaved, clearSaved, exportAllData, deleteAllData, onStoreChange, setAccount, emit, readKey, writeKey, STORAGE_KEYS } from '../lib/store.js';
 import { scoreOpportunity, clusterAffinity } from '../lib/match.js';
 import { openWizard, FINANCE_STEP } from '../lib/wizard.js';
 import { financeSummary, financeTier, TIER_LABELS } from '../lib/finance.js';
 import { shareList } from '../lib/share.js';
 import { openTrackEditor } from '../lib/tracker-ui.js';
+import { renderStory, renderMilestones } from '../lib/story-ui.js';
+import { accountPanel } from '../lib/account-ui.js';
+import { getAccount } from '../lib/store.js';
+import { clearLab } from '../lib/lab-store.js';
 
 const TABS = [
   { id: 'overview', label: 'Overview', icon: 'layout-dashboard' },
+  { id: 'story', label: 'My Story', icon: 'book-user' },
+  { id: 'milestones', label: 'Milestones', icon: 'list-checks' },
   { id: 'saved', label: 'Saved', icon: 'bookmark' },
   { id: 'deadlines', label: 'Deadlines', icon: 'calendar-clock' },
-  { id: 'privacy', label: 'Data & privacy', icon: 'shield-check' },
+  { id: 'account', label: 'Account & privacy', icon: 'shield-check' },
 ];
 
 boot('profile', async () => {
@@ -21,7 +27,8 @@ boot('profile', async () => {
   setClusterMeta(data.clusters);
   const opps = data.opportunities;
   const root = $('#profile-root');
-  let activeTab = TABS.some((t) => t.id === location.hash.slice(1)) ? location.hash.slice(1) : 'overview';
+  const hashTab = location.hash.slice(1) === 'privacy' ? 'account' : location.hash.slice(1);
+  let activeTab = TABS.some((t) => t.id === hashTab) ? hashTab : 'overview';
 
   const rebuild = () => openWizard({ onComplete: render });
 
@@ -144,23 +151,41 @@ boot('profile', async () => {
       toast('Downloaded your data', 'success');
     };
     const wipe = () => {
-      if (!confirm('Delete your profile, saved opportunities, application tracker, chat, and settings from this browser? This cannot be undone.')) return;
+      if (!confirm(account
+        ? 'Clear your profile, saved opportunities, application tracker, My Story, chat, and settings? This also clears the copy saved in your account. This cannot be undone.'
+        : 'Delete your profile, saved opportunities, application tracker, chat, and settings from this browser? This cannot be undone.')) return;
+      if (account) {
+        // Keep the account but empty it: wipe local data, then sync the empty sections.
+        const sync = readKey(STORAGE_KEYS.sync, null);
+        deleteAllData();
+        setAccount(account);
+        if (sync) writeKey(STORAGE_KEYS.sync, sync);
+        clearLab();
+        for (const what of ['profile', 'saved', 'tracker', 'portfolio', 'chat']) emit(what);
+        toast('Your data was cleared', 'success');
+        render();
+        return;
+      }
       deleteAllData();
       toast('All of your data was deleted from this browser', 'success');
       render();
     };
+    const account = getAccount();
     return h('div', { class: 'card card-flat stack' },
-      h('h3', {}, 'Your data stays with you'),
+      h('h3', {}, 'Your data, your choice'),
       h('ul', { class: 'reasons' },
-        h('li', { class: 'good' }, icon('check-circle-2'), 'No account or password: your profile and saved list live only in this browser (localStorage).'),
-        h('li', { class: 'good' }, icon('check-circle-2'), 'Zeus runs entirely in your browser. Your questions and profile are never sent anywhere.'),
+        account
+          ? h('li', { class: 'good' }, icon('check-circle-2'), 'Your pathway is backed up under your random Atlas username. There’s no email, password, or real name in your account. Log out to clear this browser.')
+          : h('li', { class: 'good' }, icon('check-circle-2'), 'You’re not signed in, so your profile and saved list live only in this browser (localStorage).'),
+        account?.room ? h('li', { class: 'warn' }, icon('info'), `Your teacher in ${account.room.name} can see your profile, My Story, milestones, saved opportunities, and application statuses, plus your real name, which only their key can unlock.`) : null,
+        h('li', { class: 'good' }, icon('check-circle-2'), 'Zeus runs in your browser. Your questions are saved with your account so you can pick up where you left off, and teachers never see them.'),
         h('li', { class: 'good' }, icon('check-circle-2'), 'Family finance answers are optional ranges, never exact numbers, and are only used to match you with programs that have income limits.'),
-        h('li', { class: 'good' }, icon('check-circle-2'), 'Your application tracker, dates, and notes stay in this browser. Sending a list only shares the opportunities you choose, never your profile.'),
-        h('li', { class: 'good' }, icon('check-circle-2'), 'Chat history is kept only for this browser tab and clears when you close it.'),
+        h('li', { class: 'good' }, icon('check-circle-2'), 'Private notes in your application tracker are never shown to a teacher. Sending a list only shares the opportunities you choose, never your profile.'),
+        account ? null : h('li', { class: 'good' }, icon('check-circle-2'), 'Chat history is kept only for this browser tab and clears when you close it.'),
         h('li', { class: 'good' }, icon('check-circle-2'), 'No ads, no tracking, no third-party analytics.')),
       h('div', { class: 'row' },
         h('button', { type: 'button', class: 'btn btn-outline', onclick: download }, icon('download'), 'Download my data'),
-        h('button', { type: 'button', class: 'btn btn-danger', onclick: wipe }, icon('trash-2'), 'Delete all my data')),
+        h('button', { type: 'button', class: 'btn btn-danger', onclick: wipe }, icon('trash-2'), account ? 'Clear all my data' : 'Delete all my data')),
       h('p', { class: 'small faint mb-0' }, 'Read the full ', h('a', { href: '/references.html#privacy' }, 'privacy summary'), '.'));
   }
 
@@ -176,6 +201,7 @@ boot('profile', async () => {
         h('p', { class: 'muted', text: 'Answer a few quick questions and Student Atlas will rank every opportunity for you, track deadlines, and give Zeus the context it needs to help.' }),
         h('div', { class: 'row row-center mt-2' },
           h('button', { type: 'button', class: 'btn btn-primary btn-lg', onclick: rebuild }, icon('sparkles'), 'Start the Pathway Wizard'))),
+        h('div', { class: 'mt-3' }, accountPanel({ rerender: render })),
         h('div', { class: 'mt-3' }, privacyTab()));
       refreshIcons();
       return;
@@ -207,11 +233,16 @@ boot('profile', async () => {
         b.tabIndex = on ? 0 : -1;
       }
       panel.setAttribute('aria-labelledby', `tab-${id}`);
-      panel.replaceChildren(...[].concat(
-        id === 'overview' ? overview(profile, scored)
-          : id === 'saved' ? savedTab()
-            : id === 'deadlines' ? deadlinesTab(profile, scored)
-              : privacyTab()));
+      panel.replaceChildren();
+      if (id === 'story') renderStory(panel);
+      else if (id === 'milestones') renderMilestones(panel);
+      else {
+        panel.append(...[].concat(
+          id === 'overview' ? overview(profile, scored)
+            : id === 'saved' ? savedTab()
+              : id === 'deadlines' ? deadlinesTab(profile, scored)
+                : [accountPanel({ rerender: render }), h('div', { class: 'mt-3' }, privacyTab())]));
+      }
       refreshIcons();
     }
 
@@ -219,6 +250,13 @@ boot('profile', async () => {
     selectTab(activeTab);
   }
 
-  onStoreChange(() => render());
+  // Re-render when data changes (here, in another tab, or from cloud sync), but
+  // not for edits made inside My Story or Milestones, which update themselves.
+  onStoreChange((what) => {
+    if (['portfolio', 'chat'].includes(what)) return;
+    const focusedId = document.activeElement?.id;
+    render();
+    if (focusedId) document.getElementById(focusedId)?.focus();
+  });
   render();
 });

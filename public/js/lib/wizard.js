@@ -5,6 +5,7 @@ import { h, icon, openModal, modalHeader, refreshIcons, toast } from './dom.js';
 import { getProfile, saveProfile, CLUSTER_KEYS } from './store.js';
 import { CAREER_GOALS, US_STATES } from './data.js';
 import { INCOME_BANDS, HOUSEHOLD_SIZES, TIER_LABELS, financeTier } from './finance.js';
+import { ensureAccount } from './account.js';
 
 const CLUSTER_INFO = {
   STEM: ['STEM', 'Science, tech, engineering, math & coding'],
@@ -44,6 +45,16 @@ export function openWizard({ onComplete, startStep = 0 } = {}) {
   let step = existing?.grade && existing.interests?.length ? Math.min(Math.max(0, startStep), STEPS.length - 1) : 0;
 
   const body = h('div', { class: 'modal-body' });
+  // Path A: starting the wizard gives the student a random, anonymous Atlas
+  // username so their progress saves to the cloud. Falls back to this browser
+  // only when accounts aren't available.
+  const accountNote = h('p', { class: 'wizard-account small', 'aria-live': 'polite' });
+  let newAccount = null;
+  ensureAccount().then((r) => {
+    if (!r?.user) return;
+    if (r.signInCode) newAccount = r;
+    accountNote.replaceChildren(h('span', { 'aria-hidden': 'true', text: r.user.emoji ?? '🧭' }), ' You’re ', h('strong', { text: r.user.username }), r.signInCode ? '. Your progress saves automatically.' : '. Your changes save to your account.');
+  });
   const progress = h('div', { class: 'wizard-progress', 'aria-hidden': 'true' }, STEPS.map(() => h('span')));
   const stepLabel = h('p', { class: 'muted small mb-0 mt-1', 'aria-live': 'polite' });
   const backBtn = h('button', { type: 'button', class: 'btn btn-ghost' }, icon('arrow-left'), 'Back');
@@ -80,7 +91,7 @@ export function openWizard({ onComplete, startStep = 0 } = {}) {
       h('div', { class: 'field' },
         h('label', { class: 'label', for: 'wz-name' }, 'First name or nickname ', h('span', { class: 'faint' }, '(optional)')),
         h('input', { id: 'wz-name', class: 'input', maxlength: '40', autocomplete: 'given-name', value: draft.firstName, oninput: (e) => { draft.firstName = e.target.value; } }),
-        h('span', { class: 'hint' }, 'Only stored in this browser. Never enter your full name.')),
+        h('span', { class: 'hint' }, 'Shown to you and Zeus. Never enter your full name.')),
       h('div', { class: 'field' },
         h('span', { class: 'label', id: 'wz-grade' }, 'What grade are you in? *'),
         singleChips('wz-grade', [[9, '9th'], [10, '10th'], [11, '11th'], [12, '12th']], draft.grade, (v) => { draft.grade = v; })),
@@ -135,7 +146,7 @@ export function openWizard({ onComplete, startStep = 0 } = {}) {
       return [
         h('div', { class: 'callout' }, icon('shield-check'),
           h('span', {}, h('strong', {}, 'Every question here is optional. '),
-            'Some scholarships and programs are only for students from lower-income families or first-generation college students. Your answers are saved only in this browser, are never sent anywhere, and you can delete them anytime.')),
+            'Some scholarships and programs are only for students from lower-income families or first-generation college students. Your answers are ranges, never exact numbers, and you can delete them anytime. If you join a school room, your teacher sees only a general “may qualify for aid” note, not these answers.')),
         h('div', { class: 'form-grid mt-2' },
           h('div', { class: 'field' },
             h('label', { class: 'label', for: 'wz-household' }, 'People in your household'),
@@ -164,7 +175,7 @@ export function openWizard({ onComplete, startStep = 0 } = {}) {
         h('textarea', { id: 'wz-goals', class: 'textarea', maxlength: '400', placeholder: 'e.g. "I love building things and want to try research this summer, but I need something close to home."', oninput: (e) => { draft.goals = e.target.value; } }, draft.goals),
         h('span', { class: 'hint' }, 'Avoid personal details like your school, address, or phone number.')),
       h('div', { class: 'callout mt-2' }, icon('shield-check'),
-        h('span', { text: 'Your profile is saved only in this browser. Zeus runs in your browser too, so nothing you enter here is sent to a server.' })),
+        h('span', { text: 'Your profile saves to your anonymous Atlas username (or only this browser if you aren’t signed in). Zeus runs in your browser.' })),
     ],
   ];
 
@@ -196,10 +207,16 @@ export function openWizard({ onComplete, startStep = 0 } = {}) {
         const profile = saveProfile({ ...draft, grade: Number(draft.grade) });
         close();
         toast('Your pathway profile is ready!', 'success');
-        onComplete?.(profile);
+        if (newAccount) {
+          const shown = newAccount;
+          newAccount = null;
+          import('./account-ui.js').then(({ showSignInCode }) => showSignInCode(shown)).then(() => onComplete?.(profile));
+        } else {
+          onComplete?.(profile);
+        }
       });
       const header = modalHeader('wizard-title', 'Pathway Wizard', null, close);
-      header.firstChild.append(stepLabel, progress);
+      header.firstChild.append(stepLabel, progress, accountNote);
       return [header, body, h('div', { class: 'modal-footer' }, backBtn, nextBtn)];
     },
   });

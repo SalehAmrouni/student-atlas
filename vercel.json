@@ -11,6 +11,14 @@
     },
     "api/college-lab.js": {
       "maxDuration": 120
+    },
+    "api/account.js": {
+      "includeFiles": "public/data/opportunities.json",
+      "maxDuration": 10
+    },
+    "api/rooms.js": {
+      "includeFiles": "public/data/opportunities.json",
+      "maxDuration": 10
     }
   },
   "headers": [

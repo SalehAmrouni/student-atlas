@@ -1,9 +1,11 @@
 // Client-side persistence. Everything a student enters (profile, saved list,
-// settings, Zeus conversations) stays in this browser and is never sent to
-// the server.
+// My Story, settings, Zeus conversations) is kept in this browser. When the
+// student has an Atlas account, account.js also backs these keys up to the
+// cloud; without one, nothing leaves the browser.
 
 import { INCOME_BAND_IDS } from './finance.js';
 import { sanitizeTracker } from './applications.js';
+import { sanitizePortfolio, emptyPortfolio } from './portfolio.js';
 
 const KEYS = {
   profile: 'atlas.profile.v2',
@@ -14,7 +16,11 @@ const KEYS = {
   reviews: 'atlas.reviews.v1',
   tracker: 'atlas.tracker.v1',
   lab: 'atlas.lab.v1', // College Lab (see lab-store.js)
+  portfolio: 'atlas.portfolio.v1', // My Story + milestone checklist
+  account: 'atlas.account.v1', // signed-in Atlas username (see account.js)
+  sync: 'atlas.sync.v1', // cloud sync bookkeeping (see account.js)
 };
+export const STORAGE_KEYS = KEYS;
 
 function read(key, fallback, storage = window.localStorage) {
   try {
@@ -34,6 +40,13 @@ function write(key, value, storage = window.localStorage) {
   }
 }
 
+export function readKey(key, fallback, storage) {
+  return read(key, fallback, storage);
+}
+export function writeKey(key, value, storage) {
+  return write(key, value, storage);
+}
+
 function remove(key, storage = window.localStorage) {
   try { storage.removeItem(key); } catch { /* ignore */ }
 }
@@ -43,7 +56,7 @@ export function onStoreChange(fn) {
   listeners.add(fn);
   return () => listeners.delete(fn);
 }
-function emit(what) {
+export function emit(what) {
   for (const fn of listeners) fn(what);
 }
 
@@ -52,6 +65,8 @@ window.addEventListener('storage', (e) => {
   if (e.key === KEYS.saved) emit('saved');
   if (e.key === KEYS.profile) emit('profile');
   if (e.key === KEYS.tracker) emit('tracker');
+  if (e.key === KEYS.portfolio) emit('portfolio');
+  if (e.key === KEYS.account) emit('account');
 });
 
 // ---- Profile ----------------------------------------------------------------
@@ -145,15 +160,44 @@ export function getTracker() {
 /** Replaces one tracked application (pass null to stop tracking it). */
 export function saveTrackerItem(id, item) {
   const tracker = getTracker();
+  const wasApplied = tracker[id]?.status === 'submitted';
   if (item) tracker[id] = { ...item, id, updatedAt: new Date().toISOString() };
   else delete tracker[id];
   write(KEYS.tracker, sanitizeTracker(tracker));
   emit('tracker');
+  // Moving an application into "Applied" is worth celebrating (see confetti.js).
+  if (item?.status === 'submitted' && !wasApplied) window.dispatchEvent(new CustomEvent('atlas:applied', { detail: { title: item.title } }));
   return getTracker()[id] ?? null;
 }
 export function clearTracker() {
   remove(KEYS.tracker);
   emit('tracker');
+}
+
+// ---- My Story portfolio and milestones ---------------------------------------
+export function getPortfolio() {
+  const p = read(KEYS.portfolio, null);
+  return p ? sanitizePortfolio(p) : emptyPortfolio();
+}
+/** Applies `mutate(portfolio)` and saves the result. */
+export function updatePortfolio(mutate) {
+  const p = getPortfolio();
+  mutate(p);
+  const clean = sanitizePortfolio(p);
+  write(KEYS.portfolio, clean);
+  emit('portfolio');
+  return clean;
+}
+
+// ---- Account marker (the signed-in username, never a password) -----------------
+export function getAccount() {
+  const a = read(KEYS.account, null);
+  return a && typeof a.username === 'string' ? a : null;
+}
+export function setAccount(account) {
+  if (account) write(KEYS.account, { username: account.username, emoji: account.emoji, createdAt: account.createdAt, room: account.room ?? null });
+  else remove(KEYS.account);
+  emit('account');
 }
 
 // ---- Settings -----------------------------------------------------------------
@@ -167,17 +211,23 @@ export function saveSettings(patch) {
   return next;
 }
 
-// ---- Chat history (per tab, cleared when the tab closes) -----------------------
+// ---- Chat history ---------------------------------------------------------------
+// Without an account the chat is kept only for this tab. With one, it's saved
+// in this browser and backed up to the account (Log Out clears it).
+const chatStorage = () => (getAccount() ? window.localStorage : window.sessionStorage);
 export function getChat() {
-  const c = read(KEYS.chat, [], window.sessionStorage);
+  const c = read(KEYS.chat, [], chatStorage());
   return Array.isArray(c) ? c.filter((m) => m && (m.role === 'user' || m.role === 'assistant') && typeof m.content === 'string') : [];
 }
 export function saveChat(messages) {
-  write(KEYS.chat, messages.slice(-40), window.sessionStorage);
+  write(KEYS.chat, messages.slice(-40), chatStorage());
+  emit('chat');
 }
 export function clearChat() {
   remove(KEYS.chat, window.sessionStorage);
+  remove(KEYS.chat);
   remove(KEYS.chatState, window.sessionStorage);
+  emit('chat');
 }
 /** Zeus's conversation memory (last results, filters, facts the student shared). */
 export function getChatState() {
@@ -195,6 +245,8 @@ export function exportAllData() {
     profile: getProfile(),
     savedOpportunities: getSaved(),
     applications: Object.values(getTracker()),
+    myStory: getPortfolio(),
+    account: getAccount() ? { username: getAccount().username, room: getAccount().room?.name ?? null } : null,
     settings: getSettings(),
     collegeLab: read(KEYS.lab, null),
   };
@@ -204,8 +256,11 @@ export function deleteAllData() {
     remove(key);
     remove(key, window.sessionStorage);
   }
-  emit('profile');
-  emit('saved');
-  emit('tracker');
-  emit('lab');
+  // Anything else Student Atlas kept in this browser (older versions, the teacher dashboard).
+  for (const storage of [window.localStorage, window.sessionStorage]) {
+    try {
+      for (const key of Object.keys(storage)) if (key.startsWith('atlas.')) storage.removeItem(key);
+    } catch { /* ignore */ }
+  }
+  for (const what of ['profile', 'saved', 'tracker', 'portfolio', 'chat', 'account', 'lab']) emit(what);
 }

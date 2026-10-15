@@ -108,7 +108,8 @@ export function openTrackEditor({ opp = null, item = null, onSaved } = {}) {
         }
         const saved = saveTrackerItem(draft.id, draft);
         close();
-        toast(existing ? 'Application updated' : `Tracking ${saved.title}`, 'success');
+        // A move into Applied gets its own celebration (celebrate.js).
+        if (draft.status !== 'submitted' || existing?.status === 'submitted') toast(existing ? 'Application updated' : `Tracking ${saved.title}`, 'success');
         onSaved?.(saved);
       };
       const remove = () => {

@@ -61,10 +61,10 @@ describe('static build', () => {
     }
   });
 
-  test('the only server APIs the site calls are reviews and College Lab', () => {
+  test('the only server APIs the site calls are reviews, College Lab, accounts, and rooms', () => {
     for (const file of siteFiles.filter((p) => /\.(html|js)$/.test(p))) {
       for (const m of sourceOf(file).matchAll(/['"`]\/api\/([a-z-]+)/g)) {
-        assert.ok(['reviews', 'reviews-admin', 'college-lab'].includes(m[1]), `${path.relative(PUBLIC, file)} calls /api/${m[1]}`);
+        assert.ok(['reviews', 'reviews-admin', 'college-lab', 'account', 'rooms'].includes(m[1]), `${path.relative(PUBLIC, file)} calls /api/${m[1]}`);
         assert.ok(fs.existsSync(path.join('api', `${m[1]}.js`)), `api/${m[1]}.js is missing`);
       }
     }
@@ -138,7 +138,7 @@ describe('local server', () => {
   });
 
   test('serves pages with and without .html, plus data and icons', async () => {
-    for (const p of ['/dashboard', '/dashboard.html', '/profile.html', '/college-lab', '/css/lab.css', '/submission.html', '/references.html', '/moderate.html', '/data/opportunities.json', '/vendor/lucide/lucide.min.js']) {
+    for (const p of ['/dashboard', '/dashboard.html', '/profile.html', '/join', '/teacher.html', '/college-lab', '/css/lab.css', '/submission.html', '/references.html', '/moderate.html', '/data/opportunities.json', '/vendor/lucide/lucide.min.js']) {
       assert.equal((await fetch(base + p)).status, 200, p);
     }
     assert.equal((await fetch(`${base}/missing-page`)).status, 404);
