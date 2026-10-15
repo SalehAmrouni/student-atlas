@@ -248,12 +248,21 @@ export function findClosedNotice(text) {
 // Discovery
 
 const OPPORTUNITY_WORDS = /\b(internships?|scholarships?|summer (?:programs?|institutes?|academy|camps?|research|scholars)|research (?:programs?|institutes?|internships?|apprenticeships?)|competitions?|challenges?|olympiads?|fellowships?|apprenticeships?|pre-college|precollege|youth (?:programs?|council|ambassadors?)|high school (?:programs?|students|scholars|internships?)|teen (?:programs?|council|internships?))\b/i;
-const NOT_A_PROGRAM = /\b(apply now|learn more|read more|click here|donate|give|log ?in|sign ?in|sign up for (?:our|the) newsletter|subscribe|privacy|terms|cookie|careers at|jobs at|press|news ?room|faq|contact|alumni|staff|board of|annual report|past winners|winners announced|results)\b/i;
+const NOT_A_PROGRAM = /\b(apply now|learn more|read more|click here|donate|give|log ?in|sign ?in|sign up for (?:our|the) newsletter|subscribe|privacy|terms|cookie|careers?|jobs?|employment|press|news ?room|faq|contact|alumni|staff|board of|annual report|past winners|winners?|wins|advance|launch(?:es|ed)|introduces|announc(?:es|ed|ement)|results|resource guide|educators?|teachers?|college internships?)\b/i;
+const GENERIC_LINK = /^(view|browse|see|explore|find|learn about|discover|about|more)\b/i;
+// News posts and blog articles mention programs but aren't program pages.
+const ARTICLE_PATH = /\/(news|blog|press|stories|story|articles?|posts?|events?)\//i;
 
-/** True when a link's text looks like it names a program a student could join. */
-export function looksLikeOpportunity(text) {
+/** True when a link looks like it leads to a program a high school student could join. */
+export function looksLikeOpportunity(text, url = '') {
   const t = text.trim();
-  return t.length >= 8 && t.length <= 120 && OPPORTUNITY_WORDS.test(t) && !NOT_A_PROGRAM.test(t);
+  if (t.length < 8 || t.length > 120 || /(…|\.\.\.)$/.test(t)) return false;
+  if (url && ARTICLE_PATH.test(new URL(url, 'https://x.invalid').pathname)) return false;
+  if (!OPPORTUNITY_WORDS.test(t) || NOT_A_PROGRAM.test(t) || GENERIC_LINK.test(t)) return false;
+  // Short labels need a name left over once category words are removed ("Summer Programs", "Competitions").
+  if (t.split(/\s+/).length > 3) return true;
+  const rest = t.replace(new RegExp(OPPORTUNITY_WORDS.source, 'gi'), ' ').replace(/\b(our|all|the|and|for|of|a|an|to|in|on|online|virtual|pre-?college|programs?|students?|youth|global|current|upcoming|\d{4})\b/gi, ' ');
+  return /[a-z]{3,}/i.test(rest);
 }
 
 // ---------------------------------------------------------------------------

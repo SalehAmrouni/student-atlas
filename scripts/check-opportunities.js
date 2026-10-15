@@ -98,7 +98,7 @@ async function checkOne(opp) {
     const host = new URL(res.finalUrl).hostname;
     for (const link of extractLinks(res.body, res.finalUrl)) {
       // Program pages often link to sibling programs on the same site.
-      if (new URL(link.url).hostname === host && looksLikeOpportunity(link.text)) {
+      if (new URL(link.url).hostname === host && looksLikeOpportunity(link.text, link.url)) {
         discovered.push({ url: link.url, title: link.text, foundOn: opp.url });
       }
     }
@@ -112,7 +112,7 @@ async function scanSource(source) {
   if (res.error || res.status >= 400 || !isHtml(res)) return { source, ok: false, reason: res.error ?? `HTTP ${res.status}` };
   let count = 0;
   for (const link of extractLinks(res.body, res.finalUrl)) {
-    if (looksLikeOpportunity(link.text)) {
+    if (looksLikeOpportunity(link.text, link.url)) {
       discovered.push({ url: link.url, title: link.text, foundOn: source.url, cluster: source.cluster ?? null });
       count += 1;
     }
