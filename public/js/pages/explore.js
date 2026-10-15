@@ -82,11 +82,27 @@ boot('explore', async () => {
     update();
   });
 
-  // Mobile filter drawer
+  // Mobile filter drawer: behaves like a modal while open (backdrop, Escape,
+  // and the rest of the page is inert so focus can't wander behind it).
   const filters = $('#filters');
   const openBtn = $('#open-filters');
-  openBtn.addEventListener('click', () => { filters.classList.add('open'); openBtn.setAttribute('aria-expanded', 'true'); filters.querySelector('button, select')?.focus(); });
-  $('#close-filters').addEventListener('click', () => { filters.classList.remove('open'); openBtn.setAttribute('aria-expanded', 'false'); openBtn.focus(); });
+  const backdrop = h('div', { class: 'drawer-backdrop', hidden: true });
+  document.body.append(backdrop);
+  const behindDrawer = () => [$('.explore-layout > section'), $('#zeus'), $('#chat-fab'), $('.site-header'), $('.site-footer'), $('.skip-link')].filter(Boolean);
+  const setDrawer = (open, { restoreFocus = true } = {}) => {
+    filters.classList.toggle('open', open);
+    backdrop.hidden = !open;
+    openBtn.setAttribute('aria-expanded', String(open));
+    for (const el of behindDrawer()) el.inert = open;
+    if (open) filters.querySelector('button, select')?.focus();
+    else if (restoreFocus) openBtn.focus();
+  };
+  openBtn.addEventListener('click', () => setDrawer(true));
+  $('#close-filters').addEventListener('click', () => setDrawer(false));
+  $('#dismiss-filters').addEventListener('click', () => setDrawer(false));
+  backdrop.addEventListener('click', () => setDrawer(false));
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && filters.classList.contains('open')) setDrawer(false); });
+  window.matchMedia('(max-width: 860px)').addEventListener('change', (e) => { if (!e.matches && filters.classList.contains('open')) setDrawer(false, { restoreFocus: false }); });
 
   // ---- profile nudge -----------------------------------------------------------
   const startWizard = () => openWizard({ onComplete: () => { profile = getProfile(); renderNudge(); update(); greetAfterWizard(); } });
@@ -174,6 +190,10 @@ boot('explore', async () => {
     if (open) zeus.focus();
   };
   closeDock.addEventListener('click', () => { toggleDock(false); fab.focus(); });
+  dock.addEventListener('keydown', (e) => {
+    // Escape closes the floating chat (the predictions list handles its own Escape first).
+    if (e.key === 'Escape' && dock.classList.contains('open') && !e.defaultPrevented) { toggleDock(false); fab.focus(); }
+  });
   fab.addEventListener('click', () => toggleDock(!dock.classList.contains('open')));
 
   const zeus = mountZeus(dock, {

@@ -38,7 +38,7 @@ export function openWizard({ onComplete } = {}) {
 
   const body = h('div', { class: 'modal-body' });
   const progress = h('div', { class: 'wizard-progress', 'aria-hidden': 'true' }, STEPS.map(() => h('span')));
-  const stepLabel = h('p', { class: 'muted small mb-0 mt-1' });
+  const stepLabel = h('p', { class: 'muted small mb-0 mt-1', 'aria-live': 'polite' });
   const backBtn = h('button', { type: 'button', class: 'btn btn-ghost' }, icon('arrow-left'), 'Back');
   const nextBtn = h('button', { type: 'button', class: 'btn btn-primary' });
 
@@ -49,18 +49,21 @@ export function openWizard({ onComplete } = {}) {
     else list.splice(i, 1);
   };
 
-  const multiChips = (values, list, labelFor = (v) => v) => h('div', { class: 'chip-group', role: 'group' },
+  const multiChips = (values, list, labelledBy) => h('div', { class: 'chip-group', role: 'group', 'aria-labelledby': labelledBy },
     values.map((v) => h('button', {
       type: 'button', class: 'chip', 'aria-pressed': String(list.includes(v)),
       onclick: (e) => { toggleList(list, v); e.currentTarget.setAttribute('aria-pressed', String(list.includes(v))); },
-    }, labelFor(v))));
+    }, v)));
 
-  const singleChips = (label, options, current, onPick) => h('div', { class: 'segmented', role: 'radiogroup', 'aria-label': label },
+  // One-of-many toggle buttons; `label` is a visible label's id or plain text.
+  const singleChips = (label, options, current, onPick) => h('div', {
+    class: 'segmented', role: 'group', ...(label.startsWith('wz-') ? { 'aria-labelledby': label } : { 'aria-label': label }),
+  },
     options.map(([value, text]) => h('button', {
-      type: 'button', class: 'chip', role: 'radio', 'aria-checked': String(current === value),
+      type: 'button', class: 'chip', 'aria-pressed': String(current === value),
       onclick: (e) => {
         onPick(value);
-        for (const b of e.currentTarget.parentElement.children) b.setAttribute('aria-checked', String(b === e.currentTarget));
+        for (const b of e.currentTarget.parentElement.children) b.setAttribute('aria-pressed', String(b === e.currentTarget));
       },
     }, text)));
 
@@ -73,7 +76,7 @@ export function openWizard({ onComplete } = {}) {
         h('span', { class: 'hint' }, 'Only stored in this browser. Never enter your full name.')),
       h('div', { class: 'field' },
         h('span', { class: 'label', id: 'wz-grade' }, 'What grade are you in? *'),
-        singleChips('Grade', [[9, '9th'], [10, '10th'], [11, '11th'], [12, '12th']], draft.grade, (v) => { draft.grade = v; })),
+        singleChips('wz-grade', [[9, '9th'], [10, '10th'], [11, '11th'], [12, '12th']], draft.grade, (v) => { draft.grade = v; })),
       h('div', { class: 'field' },
         h('label', { class: 'label', for: 'wz-state' }, 'Where do you live? ', h('span', { class: 'faint' }, '(optional, helps with regional programs)')),
         h('select', { id: 'wz-state', class: 'select', onchange: (e) => { draft.state = e.target.value; } },
@@ -90,11 +93,11 @@ export function openWizard({ onComplete } = {}) {
     ],
     () => [
       h('div', { class: 'field' },
-        h('span', { class: 'label' }, 'Career directions you are curious about'),
-        multiChips(CAREER_GOALS, draft.careerGoals)),
+        h('span', { class: 'label', id: 'wz-careers' }, 'Career directions you are curious about'),
+        multiChips(CAREER_GOALS, draft.careerGoals, 'wz-careers')),
       h('div', { class: 'field' },
-        h('span', { class: 'label' }, 'What kinds of opportunities are you looking for?'),
-        multiChips(LOOKING_FOR, draft.lookingFor)),
+        h('span', { class: 'label', id: 'wz-looking' }, 'What kinds of opportunities are you looking for?'),
+        multiChips(LOOKING_FOR, draft.lookingFor, 'wz-looking')),
     ],
     () => [
       h('div', { class: 'form-grid' },
@@ -108,11 +111,11 @@ export function openWizard({ onComplete } = {}) {
           h('input', { id: 'wz-hours', class: 'input', type: 'number', min: '0', max: '5000', step: '1', inputmode: 'numeric', placeholder: 'e.g. 40', value: draft.serviceHours ?? '',
             oninput: (e) => { const v = parseInt(e.target.value, 10); draft.serviceHours = Number.isFinite(v) && v >= 0 && v <= 5000 ? v : undefined; } }))),
       h('div', { class: 'field mt-2' },
-        h('span', { class: 'label' }, 'Online or in person?'),
-        singleChips('Format preference', [['any', 'Either'], ['In-person', 'In person'], ['Virtual', 'Online']], draft.formatPreference, (v) => { draft.formatPreference = v; })),
+        h('span', { class: 'label', id: 'wz-format' }, 'Online or in person?'),
+        singleChips('wz-format', [['any', 'Either'], ['In-person', 'In person'], ['Virtual', 'Online']], draft.formatPreference, (v) => { draft.formatPreference = v; })),
       h('div', { class: 'field' },
-        h('span', { class: 'label' }, 'Is cost a big factor for you?'),
-        singleChips('Financial need', [[true, 'Yes, show free & paid options first'], [false, 'Not really'], [undefined, 'Prefer not to say']], draft.financialNeed, (v) => { draft.financialNeed = v; })),
+        h('span', { class: 'label', id: 'wz-cost' }, 'Is cost a big factor for you?'),
+        singleChips('wz-cost', [[true, 'Yes, show free & paid options first'], [false, 'Not really'], [undefined, 'Prefer not to say']], draft.financialNeed, (v) => { draft.financialNeed = v; })),
     ],
     () => [
       h('div', { class: 'field' },
@@ -120,7 +123,7 @@ export function openWizard({ onComplete } = {}) {
         h('textarea', { id: 'wz-goals', class: 'textarea', maxlength: '400', placeholder: 'e.g. "I love building things and want to try research this summer, but I need something close to home."', oninput: (e) => { draft.goals = e.target.value; } }, draft.goals),
         h('span', { class: 'hint' }, 'Avoid personal details like your school, address, or phone number.')),
       h('div', { class: 'callout mt-2' }, icon('shield-check'),
-        h('span', { text: 'Your profile is saved only in this browser. When you chat with Zeus, it is sent with your question so answers can be personalized, and it is not stored on our server.' })),
+        h('span', { text: 'Your profile is saved only in this browser. Zeus runs on your device too, so your profile and questions are never sent to our server or any AI company.' })),
     ],
   ];
 

@@ -58,8 +58,9 @@ export function opportunityCard(opp, { profile = getProfile(), onAsk } = {}) {
       h('span', {}, icon('graduation-cap'), gradeLabel(opp.grades)),
       h('span', {}, icon('calendar-clock'), hint ? `${hint} (${opp.deadline})` : opp.deadline)),
     h('div', { class: 'opp-card-actions' },
-      h('button', { type: 'button', class: 'btn btn-outline btn-sm', onclick: open }, 'Details'),
-      externalLink(opp.url, [icon('external-link'), 'Official site'], 'btn btn-primary btn-sm')));
+      // Hidden text gives each card's buttons a unique name out of context (WCAG 2.4.4).
+      h('button', { type: 'button', class: 'btn btn-outline btn-sm', onclick: open }, 'Details', h('span', { class: 'visually-hidden', text: ` about ${opp.title}` })),
+      externalLink(opp.url, [icon('external-link'), 'Official site', h('span', { class: 'visually-hidden', text: ` for ${opp.title}` })], 'btn btn-primary btn-sm')));
 }
 
 export function showOpportunity(opp, { onAsk } = {}) {
