@@ -20,8 +20,9 @@ export function trackButton(opp, { onChange } = {}) {
   const btn = h('button', { type: 'button', class: 'btn btn-outline' });
   const paint = () => {
     const item = getTracker()[opp.id];
-    btn.replaceChildren(icon(item ? 'list-checks' : 'list-plus'), item ? `Tracking: ${statusInfo(item.status).label}` : 'Track application');
-    btn.setAttribute('aria-label', item ? `Edit your application for ${opp.title} (status: ${statusInfo(item.status).label})` : `Track your application for ${opp.title}`);
+    // Hidden context goes after the visible text so the name still starts with it (WCAG 2.5.3).
+    btn.replaceChildren(icon(item ? 'list-checks' : 'list-plus'), item ? `Tracking: ${statusInfo(item.status).label}` : 'Track application',
+      h('span', { class: 'visually-hidden', text: item ? `, edit your application for ${opp.title}` : ` for ${opp.title}` }));
     refreshIcons();
   };
   btn.addEventListener('click', () => openTrackEditor({ opp, onSaved: () => { paint(); onChange?.(); } }));

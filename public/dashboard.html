@@ -14,11 +14,15 @@
 </head>
 <body>
   <main id="main" tabindex="-1">
+    <h1 class="visually-hidden" id="results-title">Explore opportunities</h1>
     <div class="explore-layout">
       <aside class="card filters" id="filters" aria-label="Filters">
         <div class="row-between">
           <h2 class="mb-0"><i data-lucide="sliders-horizontal"></i> Filters</h2>
-          <button class="btn btn-ghost btn-sm" type="button" id="reset-filters">Reset</button>
+          <div class="row">
+            <button class="btn btn-ghost btn-sm" type="button" id="reset-filters">Reset</button>
+            <button class="btn btn-ghost btn-icon btn-sm filters-toggle" type="button" id="dismiss-filters" aria-label="Close filters"><i data-lucide="x"></i></button>
+          </div>
         </div>
 
         <div class="filter-block mt-2">
@@ -75,7 +79,7 @@
       </aside>
 
       <section aria-labelledby="results-title">
-        <h1 class="visually-hidden" id="results-title">Explore opportunities</h1>
+        <h2 class="visually-hidden">Results</h2>
         <div id="profile-nudge"></div>
         <div class="results-head">
           <div class="search-wrap">

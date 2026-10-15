@@ -88,6 +88,35 @@ describe('static build', () => {
 });
 
 // ---------------------------------------------------------------------------
+describe('accessibility basics (WCAG 2.1 AA)', () => {
+  const pages = siteFiles.filter((p) => p.endsWith('.html'));
+
+  test('every page declares its language, a title, and a zoomable viewport', () => {
+    for (const file of pages) {
+      const html = sourceOf(file);
+      assert.match(html, /<html lang="en">/, `${file} is missing lang`);
+      assert.match(html, /<title>[^<]+<\/title>/, `${file} is missing a title`);
+      assert.match(html, /<meta name="viewport" content="width=device-width, initial-scale=1">/, `${file} viewport`);
+      assert.doesNotMatch(html, /user-scalable\s*=\s*no|maximum-scale/i, `${file} blocks pinch zoom (WCAG 1.4.4)`);
+    }
+  });
+
+  test('every page has a skip-link target and exactly one h1', () => {
+    for (const file of pages) {
+      const html = sourceOf(file);
+      assert.match(html, /<main id="main" tabindex="-1">/, `${file} needs <main id="main">`);
+      assert.equal((html.match(/<h1[\s>]/g) ?? []).length, 1, `${file} should have exactly one h1`);
+    }
+  });
+
+  test('the carousel never moves on its own (WCAG 2.2.2)', () => {
+    const src = sourceOf(path.join(PUBLIC, 'js', 'lib', 'carousel.js'));
+    assert.doesNotMatch(src, /setInterval|autoplay/i);
+    assert.match(src, /aria-roledescription': 'carousel'/);
+  });
+});
+
+// ---------------------------------------------------------------------------
 describe('local server', () => {
   let server;
   let base;
