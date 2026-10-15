@@ -1,0 +1,8 @@
+[
+  { "name": "Center for Excellence in Education programs", "url": "https://www.cee.org/programs", "cluster": "STEM" },
+  { "name": "NASA internship programs", "url": "https://www.nasa.gov/learning-resources/internship-programs/", "cluster": "STEM" },
+  { "name": "Society for Science programs", "url": "https://www.societyforscience.org/", "cluster": "STEM" },
+  { "name": "Army Educational Outreach Program", "url": "https://www.aeop.org/", "cluster": "STEM" },
+  { "name": "NIH Office of Intramural Training & Education", "url": "https://www.training.nih.gov/", "cluster": "Health" },
+  { "name": "Federal Student Aid: finding scholarships", "url": "https://studentaid.gov/understand-aid/types/scholarships", "cluster": "Scholarships" }
+]

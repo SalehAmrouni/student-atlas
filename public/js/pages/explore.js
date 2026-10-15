@@ -1,6 +1,6 @@
 import { boot } from '../lib/layout.js';
 import { h, icon, $, clear, refreshIcons, debounce, pluralize } from '../lib/dom.js';
-import { loadData, monthsUntilDeadline } from '../lib/data.js';
+import { loadData, monthsUntilDeadline, isExpired } from '../lib/data.js';
 import { opportunityCard, showOpportunity, setClusterMeta, clusterLabel } from '../lib/cards.js';
 import { getProfile, getSaved, getChat, onStoreChange } from '../lib/store.js';
 import { scoreOpportunity } from '../lib/match.js';
@@ -122,7 +122,7 @@ boot('explore', async () => {
       if (state.cost && o.cost !== state.cost) continue;
       if (state.format && o.format !== state.format) continue;
       if (state.affordable && !(o.cost === 'Free' || o.cost === 'Stipend' || o.cost === 'Award' || o.financialAid || o.needBased)) continue;
-      if (state.soon) { const m = monthsUntilDeadline(o); if (m === null || m > 3) continue; }
+      if (state.soon) { const m = monthsUntilDeadline(o); if (m === null || m > 3 || isExpired(o)) continue; }
       if (saved && !saved.has(o.id)) continue;
       let textScore = 0;
       if (words.length) {
