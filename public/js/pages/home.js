@@ -6,14 +6,20 @@ import { openWizard } from '../lib/wizard.js';
 import { getProfile } from '../lib/store.js';
 import { scoreOpportunity } from '../lib/match.js';
 import { createCarousel } from '../lib/carousel.js';
+import { toast } from '../lib/dom.js';
 
 boot('home', async () => {
   const startWizard = () => openWizard({ onComplete: () => { window.location.href = '/dashboard.html?welcome=1'; } });
   $('#start-wizard').addEventListener('click', startWizard);
   $('#start-wizard-2').addEventListener('click', startWizard);
-  if (new URLSearchParams(window.location.search).get('wizard') === '1') {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('wizard') === '1') {
     history.replaceState(null, '', '/');
     startWizard();
+  }
+  if (params.get('loggedout') === '1') {
+    history.replaceState(null, '', '/?home=1');
+    toast('You’re logged out and this computer is cleared.', 'success');
   }
 
   const data = await loadData();

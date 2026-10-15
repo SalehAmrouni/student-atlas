@@ -10,6 +10,7 @@ import express from 'express';
 import { SECURITY_HEADERS } from './headers.js';
 import { handleCollegeLab } from './college-lab.js';
 import { reviewHandlersFromEnv } from './reviews/index.js';
+import { accountHandlersFromEnv } from './accounts/index.js';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const PUBLIC_DIR = path.resolve(here, '..', 'public');
@@ -48,6 +49,11 @@ export function createApp({ env = process.env } = {}) {
   const raw = express.raw({ type: () => true, limit: '8kb' });
   app.all('/api/reviews', raw, webHandler(reviews.reviews));
   app.all('/api/reviews-admin', raw, webHandler(reviews.admin));
+  // Anonymous accounts, cloud sync, and classroom rooms.
+  const accounts = accountHandlersFromEnv(env, { memoryFallback: true });
+  const rawLarge = express.raw({ type: () => true, limit: '512kb' });
+  app.all('/api/account', rawLarge, webHandler(accounts.account));
+  app.all('/api/rooms', raw, webHandler(accounts.rooms));
   // College Lab AI feedback (api/college-lab.js in production).
   app.all('/api/college-lab', express.json({ limit: '200kb' }), handleCollegeLab);
   app.use(express.static(PUBLIC_DIR, { extensions: ['html'], index: 'index.html', dotfiles: 'ignore' }));

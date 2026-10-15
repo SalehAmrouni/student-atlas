@@ -1,6 +1,7 @@
 // College Lab data: stats, transcript, essay drafts, and the mentor chat.
-// Stored only in this browser (localStorage), next to the rest of the
-// student's Student Atlas data. Deleting "all my data" also clears it.
+// Stored in this browser (localStorage), next to the rest of the student's
+// Student Atlas data, and backed up to their account when they have one
+// (account.js). Deleting "all my data" or logging out also clears it.
 
 const KEY = 'atlas.lab.v1';
 const MAX_ESSAYS = 30;
@@ -46,6 +47,17 @@ export function saveLab(mutate, what = 'lab') {
   }
   for (const fn of listeners) fn(what);
   return lab;
+}
+
+/** Replaces everything (used when cloud sync brings newer data from another device). */
+export function replaceLab(data) {
+  cache = data && typeof data === 'object' ? { ...EMPTY(), ...data, stats: { ...EMPTY().stats, ...(data.stats ?? {}) } } : EMPTY();
+  try {
+    window.localStorage.setItem(KEY, JSON.stringify(cache));
+  } catch {
+    /* keep working in memory */
+  }
+  for (const fn of listeners) fn('all');
 }
 
 export function clearLab() {

@@ -1,7 +1,9 @@
 // Shared site chrome: header with navigation, accessibility menu, footer.
 
 import { h, icon, refreshIcons, $, toast } from './dom.js';
-import { getSettings, saveSettings, getProfile, onStoreChange } from './store.js';
+import { getSettings, saveSettings, getProfile, getAccount, onStoreChange } from './store.js';
+import { startSync } from './account.js';
+import { confettiOnApplied } from './celebrate.js';
 
 const NAV = [
   { href: '/', label: 'Home', page: 'home' },
@@ -98,9 +100,10 @@ export function renderLayout(activePage) {
 
   // Header
   const navCta = h('a', { class: 'nav-extra', href: '/?wizard=1' }, 'Find my pathway');
-  const nav = h('nav', { class: 'nav', id: 'site-nav', 'aria-label': 'Main' },
-    NAV.map((item) => h('a', { href: item.href, 'aria-current': item.page === activePage ? 'page' : undefined }, item.label)),
-    navCta);
+  // Signed-in students land on My Pathway, so "Home" adds ?home=1 to reach the homepage on purpose.
+  const homeHref = () => (getAccount() ? '/?home=1' : '/');
+  const navLinks = NAV.map((item) => h('a', { href: item.href, 'aria-current': item.page === activePage ? 'page' : undefined }, item.label));
+  const nav = h('nav', { class: 'nav', id: 'site-nav', 'aria-label': 'Main' }, navLinks, navCta);
 
   let menuEl = null;
   const a11yBtn = h('button', {
@@ -151,23 +154,33 @@ export function renderLayout(activePage) {
   window.matchMedia('(max-width: 1200px)').addEventListener('change', (e) => { if (!e.matches) setNavOpen(false); });
 
   const ctaLabel = h('span', { class: 'btn-label' });
-  const cta = h('a', { class: 'btn btn-primary btn-sm header-cta', href: '/profile.html' }, icon('compass'), ctaLabel);
+  const ctaIcon = h('span', { class: 'cta-icon', 'aria-hidden': 'true' });
+  const cta = h('a', { class: 'btn btn-primary btn-sm header-cta', href: '/profile.html' }, ctaIcon, ctaLabel);
+  // The "Clear Computer" rule: a Log Out button that's always visible for signed-in students.
+  const logoutBtn = h('button', { type: 'button', class: 'btn btn-outline btn-sm header-logout', 'aria-label': 'Log out' }, icon('log-out'), h('span', { class: 'btn-label' }, 'Log out'));
+  logoutBtn.addEventListener('click', async () => (await import('./account-ui.js')).confirmLogOut());
   const setCta = () => {
     const p = getProfile();
-    ctaLabel.textContent = p ? (p.firstName ? `Hi, ${p.firstName}` : 'My Pathway') : 'Find my pathway';
-    cta.setAttribute('aria-label', ctaLabel.textContent); // the label text is hidden on small screens
-    cta.href = p ? '/profile.html' : '/?wizard=1';
-    navCta.hidden = !!p;
+    const account = getAccount();
+    ctaLabel.textContent = account ? account.username : p ? (p.firstName ? `Hi, ${p.firstName}` : 'My Pathway') : 'Find my pathway';
+    ctaIcon.replaceChildren(account?.emoji ? document.createTextNode(account.emoji) : icon('compass'));
+    cta.setAttribute('aria-label', account ? `My Pathway, signed in as ${account.username}` : ctaLabel.textContent); // the label text is hidden on small screens
+    cta.href = p || account ? '/profile.html' : '/?wizard=1';
+    navCta.hidden = !!(p || account);
+    logoutBtn.hidden = !account;
+    for (const a of [navLinks[0], brand]) a.href = homeHref();
+    refreshIcons();
   };
-  setCta();
-  onStoreChange((what) => { if (what === 'profile') setCta(); });
+  onStoreChange((what) => { if (what === 'profile' || what === 'account') setCta(); });
 
+  const brand = h('a', { class: 'brand', href: '/', 'aria-label': 'Student Atlas home' },
+    h('span', { class: 'brand-mark' }, icon('compass')), 'Student Atlas');
   const header = h('header', { class: 'site-header' },
     h('div', { class: 'container' },
-      h('a', { class: 'brand', href: '/', 'aria-label': 'Student Atlas home' },
-        h('span', { class: 'brand-mark' }, icon('compass')), 'Student Atlas'),
+      brand,
       nav,
-      h('div', { class: 'header-actions' }, themeBtn, a11yBtn, cta, menuToggle)));
+      h('div', { class: 'header-actions' }, themeBtn, a11yBtn, cta, logoutBtn, menuToggle)));
+  setCta();
 
   const skip = h('a', { class: 'skip-link', href: '#main' }, 'Skip to main content');
   document.body.prepend(skip, header);
@@ -177,7 +190,7 @@ export function renderLayout(activePage) {
   const footer = h('footer', { class: 'site-footer' },
     h('div', { class: 'container' },
       h('div', {},
-        h('a', { class: 'brand', href: '/' }, h('span', { class: 'brand-mark' }, icon('compass')), 'Student Atlas'),
+        h('a', { class: 'brand', href: homeHref() }, h('span', { class: 'brand-mark' }, icon('compass')), 'Student Atlas'),
         h('p', { class: 'muted small mt-2' }, 'A free, personalized map of opportunities for high school students: research, internships, competitions, scholarships, service, and more.'),
         h('p', { class: 'faint small mb-0' }, 'Program details change every year. Always confirm dates and eligibility on the official website.')),
       h('div', {},
@@ -192,6 +205,8 @@ export function renderLayout(activePage) {
       h('div', {},
         h('h2', { class: 'footer-heading' }, 'Project'),
         h('ul', {},
+          h('li', {}, h('a', { href: '/join.html' }, 'Join a class or sign in')),
+          h('li', {}, h('a', { href: '/teacher.html' }, 'For teachers & counselors')),
           h('li', {}, h('a', { href: '/submission.html' }, 'Suggest a resource')),
           h('li', {}, h('a', { href: '/references.html' }, 'About & sources')),
           h('li', {}, h('a', { href: '/references.html#privacy' }, 'Privacy'))))),
@@ -206,8 +221,11 @@ export function renderLayout(activePage) {
 
 /** Mounts a page module once the DOM is ready. */
 export function boot(page, init) {
+  if (document.documentElement.classList.contains('redirecting')) return; // see home-redirect.js
   const run = async () => {
     renderLayout(page);
+    confettiOnApplied();
+    startSync().catch(() => {});
     try {
       await init();
     } catch (err) {

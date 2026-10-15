@@ -105,7 +105,8 @@ boot('tracker', async () => {
               const patch = { status };
               if (status === 'submitted' && !item.submittedOn) patch.submittedOn = today;
               saveTrackerItem(item.id, { ...item, ...patch });
-              toast(`${item.title}: ${statusInfo(status).label}`, 'success');
+              // Moving into Applied gets its own celebration (celebrate.js).
+              if (status !== 'submitted' || item.status === 'submitted') toast(`${item.title}: ${statusInfo(status).label}`, 'success');
             },
           })),
         h('button', { type: 'button', class: 'btn btn-outline btn-sm', onclick: () => openItem(item) }, icon('pencil'), 'Edit'),
