@@ -12,6 +12,7 @@ Student Atlas helps students find research programs, internships, competitions, 
 - **Explore view** with search, filters (interest, type, grade, cost, format, affordable, deadline soon, eligible, saved), sorting, and shareable URLs.
 - **My Pathway** dashboard: fit by interest area, top matches, saved list, upcoming deadlines, plus data export and deletion.
 - **Community suggestions** that open as a pre-filled GitHub issue for the team to review.
+- **Student reviews**: star ratings and written reviews on every opportunity, with rating summaries on cards, reporting, and a moderation page. See [Turning on reviews](#turning-on-reviews).
 - **Accessibility**: text sizing, light/dark/auto theme, high contrast, readable font, color-blind friendly palette (Okabe-Ito), reduced motion, read-aloud, keyboard navigation, and screen-reader labels.
 
 ## Security & privacy
@@ -19,7 +20,8 @@ Student Atlas helps students find research programs, internships, competitions, 
 - No accounts or passwords. The profile, saved list, settings, and Zeus conversations live in the student's browser and are never sent to the server.
 - No AI services, API keys, ads, analytics, or third-party scripts.
 - A strict Content Security Policy (no inline scripts or styles, no third-party origins) and security headers via Helmet.
-- The site is fully static: no server code, database, or API runs in production.
+- The site is static except for the optional reviews API (`api/`), which stores only what a reviewer chooses to post plus a salted hash of their IP for rate limiting.
+- Reviews refuse emails, phone numbers, links, and social handles, hold flagged language for a moderator, and are hidden automatically after several reports.
 - Zeus's replies are rendered with a safe Markdown renderer that never uses `innerHTML` and only allows `http(s)` links.
 
 See [SECURITY.md](SECURITY.md) for details.
@@ -33,7 +35,7 @@ npm install
 npm run dev               # http://localhost:3000
 ```
 
-No API keys or accounts are needed.
+No API keys or accounts are needed. Reviews run from memory locally; see [Turning on reviews](#turning-on-reviews) for production.
 
 | Command | What it does |
 | --- | --- |
@@ -53,12 +55,35 @@ The site is fully static, and `vercel.json` configures everything (build, output
 
 If you already created the project with Root Directory set to `public`, change it under **Settings → Build and Deployment → Root Directory** to the repository root, then redeploy. (The site still loads from `public`, but you'd miss the security headers and clean URLs.)
 
-Because everything in `public/` is plain static files, it also works on GitHub Pages, Netlify, or any static host.
+Because everything in `public/` is plain static files, it also works on GitHub Pages, Netlify, or any static host (without reviews, which need the Vercel functions in `api/`).
+
+### Turning on reviews
+
+Reviews need a small Redis database. Until one is connected, the site works normally and each opportunity says reviews aren't turned on yet.
+
+1. In your Vercel project, open **Storage** (or **Marketplace**), add **Upstash for Redis**, and connect it to this project. That sets `KV_REST_API_URL` and `KV_REST_API_TOKEN` (or `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN`); either pair works.
+2. Under **Settings → Environment Variables**, add `REVIEWS_ADMIN_TOKEN` (a random secret of at least 16 characters) and `REVIEWS_SALT` (another long random string).
+3. Redeploy.
+4. Moderate at `/moderate` with your `REVIEWS_ADMIN_TOKEN`. Approve or remove held reviews, and remove any published review.
+
+How abuse is handled:
+
+| Protection | What it does |
+| --- | --- |
+| Contact details and links | Reviews with emails, phone numbers, links, or social handles are refused with a clear message (students are minors). |
+| Moderation queue | Reviews with flagged words, all caps, or spammy repetition wait for a moderator. Set `REVIEWS_MODERATION=all` to hold every review. |
+| Reports | Any visitor can report a review; after 3 different people report it, it's hidden until a moderator decides. |
+| Rate limits | Each visitor can post 3 reviews per 10 minutes and 10 per day, one review per opportunity, and 10 reports per hour. |
+| Bots | A hidden honeypot field and a minimum fill time quietly drop automated posts. Cross-site posts are refused. |
+
+Locally, `npm run dev` keeps reviews in memory (they reset on restart), so you can try everything without an account.
 
 ## Project structure
 
 ```
 server/            Local dev server, shared security headers, data loader
+  reviews/         Review validation, storage (Upstash Redis or memory), and request handlers
+api/               Vercel functions: /api/reviews and /api/reviews-admin
 data/opportunities One JSON file per interest area (the database)
 public/            The deployable static site: HTML pages, CSS, ES-module JavaScript, data/ and vendor/ (generated)
   js/lib/          Shared modules (Zeus engine + chat UI, matching, wizard, store, markdown, UI)

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Review Moderation | Student Atlas</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#0e9f6e">
+  <link rel="icon" type="image/png" href="/image/icon.png">
+  <link rel="stylesheet" href="/css/app.css">
+  <script src="/js/theme-init.js"></script>
+  <script src="/vendor/lucide/lucide.min.js" defer></script>
+  <script type="module" src="/js/pages/moderate.js"></script>
+</head>
+<body>
+  <main id="main" tabindex="-1">
+    <div class="container container-narrow section-tight">
+      <span class="eyebrow">For moderators</span>
+      <h1>Review moderation</h1>
+      <p class="muted">Approve or remove reviews that were held for a check (flagged words or several reports), and remove published reviews. You need the moderator token set as <code>REVIEWS_ADMIN_TOKEN</code> in the site's environment.</p>
+
+      <form class="card stack" id="token-form">
+        <div class="field">
+          <label class="label" for="token">Moderator token</label>
+          <input class="input" id="token" name="token" type="password" autocomplete="current-password" required>
+          <span class="hint">Kept only in this browser tab.</span>
+        </div>
+        <div class="row">
+          <button class="btn btn-primary" type="submit"><i data-lucide="shield-check"></i> Load the queue</button>
+          <button class="btn btn-ghost" type="button" id="forget" hidden>Forget token</button>
+        </div>
+        <p id="token-status" role="alert" class="mb-0"></p>
+      </form>
+
+      <section class="mt-4" aria-labelledby="queue-title" id="queue-section" hidden>
+        <div class="row-between">
+          <h2 id="queue-title" class="mb-0">Waiting for a check</h2>
+          <button class="btn btn-outline btn-sm" type="button" id="refresh"><i data-lucide="refresh-cw"></i> Refresh</button>
+        </div>
+        <p id="queue-status" role="status" class="muted"></p>
+        <ul class="review-list" id="queue"></ul>
+      </section>
+
+      <section class="mt-4" aria-labelledby="published-title" id="published-section" hidden>
+        <h2 id="published-title">Published reviews</h2>
+        <div class="field">
+          <label class="label" for="opp-select">Opportunity</label>
+          <select class="select" id="opp-select"><option value="">Choose an opportunity</option></select>
+        </div>
+        <p id="published-status" role="status" class="muted mt-2"></p>
+        <ul class="review-list" id="published"></ul>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

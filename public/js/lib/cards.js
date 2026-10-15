@@ -4,6 +4,7 @@ import { h, icon, openModal, modalHeader, externalLink, toast, refreshIcons } fr
 import { isSaved, toggleSaved, getProfile } from './store.js';
 import { scoreOpportunity, matchClass } from './match.js';
 import { COST_LABELS, gradeLabel, deadlineHint } from './data.js';
+import { ratingBadge, reviewsSection } from './reviews.js';
 
 let clusterMeta = {};
 export function setClusterMeta(clusters) {
@@ -46,7 +47,8 @@ export function opportunityCard(opp, { profile = getProfile(), onAsk } = {}) {
       h('div', { class: 'opp-meta' },
         h('span', { class: 'badge badge-cluster', dataset: { cluster: opp.cluster } }, clusterLabel(opp.cluster)),
         h('span', { class: 'badge' }, opp.type),
-        matchBadge(match)),
+        matchBadge(match),
+        ratingBadge(opp.id)),
       saveButton(opp)),
     h('div', {},
       h('h3', {}, h('button', { type: 'button', onclick: open }, opp.title)),
@@ -95,7 +97,8 @@ export function showOpportunity(opp, { onAsk } = {}) {
             !match.reasons.length && !match.warnings.length ? h('li', {}, 'Add more to your profile for a better fit estimate.') : null))
           : h('div', { class: 'callout' }, icon('sparkles'), h('span', {}, 'Build your profile with the Pathway Wizard to see how well this fits you. ', h('a', { href: '/?wizard=1' }, 'Start the wizard'))),
         opp.tags.length ? h('div', { class: 'chip-group mt-2' }, opp.tags.map((t) => h('span', { class: 'badge', text: `#${t}` }))) : null,
-        h('div', { class: 'callout mt-2' }, icon('info'), h('span', { text: 'Dates, costs, and rules change each year. Confirm everything on the official website before applying.' }))),
+        h('div', { class: 'callout mt-2' }, icon('info'), h('span', { text: 'Dates, costs, and rules change each year. Confirm everything on the official website before applying.' })),
+        reviewsSection(opp)),
       h('div', { class: 'modal-footer' },
         onAsk ? h('button', { type: 'button', class: 'btn btn-ghost', onclick: () => { close(); onAsk(opp); } }, icon('sparkles'), 'Ask Zeus about this') : null,
         saveButton(opp, { compact: false }),

@@ -61,9 +61,12 @@ describe('static build', () => {
     }
   });
 
-  test('the site needs no server API', () => {
+  test('the only server API the site calls is reviews', () => {
     for (const file of siteFiles.filter((p) => /\.(html|js)$/.test(p))) {
-      assert.doesNotMatch(sourceOf(file), /['"`]\/api\//, `${path.relative(PUBLIC, file)} still calls /api/`);
+      for (const m of sourceOf(file).matchAll(/['"`]\/api\/([a-z-]+)/g)) {
+        assert.ok(['reviews', 'reviews-admin'].includes(m[1]), `${path.relative(PUBLIC, file)} calls /api/${m[1]}`);
+        assert.ok(fs.existsSync(path.join('api', `${m[1]}.js`)), `api/${m[1]}.js is missing`);
+      }
     }
   });
 
@@ -106,7 +109,7 @@ describe('local server', () => {
   });
 
   test('serves pages with and without .html, plus data and icons', async () => {
-    for (const p of ['/dashboard', '/dashboard.html', '/profile.html', '/submission.html', '/references.html', '/data/opportunities.json', '/vendor/lucide/lucide.min.js']) {
+    for (const p of ['/dashboard', '/dashboard.html', '/profile.html', '/submission.html', '/references.html', '/moderate.html', '/data/opportunities.json', '/vendor/lucide/lucide.min.js']) {
       assert.equal((await fetch(base + p)).status, 200, p);
     }
     assert.equal((await fetch(`${base}/missing-page`)).status, 404);
