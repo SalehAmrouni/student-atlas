@@ -45,6 +45,7 @@ No API keys or accounts are needed.
 | `npm run build` | Validate the data and regenerate `public/data/opportunities.json` and the icon bundle |
 | `npm test` | Run the test suite (data, static build, server, and Zeus engine) |
 | `npm run validate-data` | Validate every opportunity against the schema |
+| `npm run check-opportunities` | Visit every official site, update deadlines and status, and look for new opportunities |
 
 ## Deploying to Vercel
 
@@ -74,6 +75,19 @@ tests/             node:test suite
 ### Adding an opportunity
 
 Add an entry to the right file in `data/opportunities/`, then run `npm run build` (it validates the data and regenerates `public/data/opportunities.json`) and commit both. The schema lives in `server/opportunities.js`. Community suggestions arrive as GitHub issues; to also accept them by email, set `SUGGESTIONS.email` in `public/js/config.js`.
+
+### Weekly opportunity check
+
+`.github/workflows/check-opportunities.yml` runs `scripts/check-opportunities.js` every Monday (or on demand from the **Actions** tab). It:
+
+- visits each opportunity's official page as `StudentAtlasBot`, following `robots.txt`, waiting between requests to the same site, and never sending more than one request to a site at a time;
+- records in `data/status.json` whether the link works, this cycle's exact deadline when the page states one with a year (with the sentence it came from), and whether the page says applications are closed;
+- collects links that look like new programs, from those pages and from the listing pages in `data/sources.json`, into `data/candidates.json`;
+- opens or updates one pull request with a readable report. Nothing changes on the live site until someone reviews and merges it.
+
+On the site, cards show "Due Nov 20, 2026" when an exact date is known, and "Deadline passed" or "Applications closed" badges when the check finds those; the "Deadline soon" filter skips expired listings.
+
+To promote a candidate, add a full entry to `data/opportunities/` and delete it from `data/candidates.json`; to dismiss one, set its `status` to `"rejected"` so it isn't suggested again. For the workflow to open pull requests, enable **Settings → Actions → General → Allow GitHub Actions to create and approve pull requests**.
 
 ## Credits
 

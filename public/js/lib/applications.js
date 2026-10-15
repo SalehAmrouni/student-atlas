@@ -87,7 +87,8 @@ export function sanitizeTracker(raw) {
 
 /** A new tracker entry for a directory opportunity. */
 export function itemFromOpportunity(opp, status = 'interested') {
-  return { id: opp.id, oppId: opp.id, title: opp.title, organization: opp.organization, url: opp.url, status, tasks: [], events: [], createdAt: new Date().toISOString() };
+  // Start from this cycle's exact deadline when the weekly checker found one on the official site.
+  return { id: opp.id, oppId: opp.id, title: opp.title, organization: opp.organization, url: opp.url, status, deadline: date(opp.nextDeadline), tasks: [], events: [], createdAt: new Date().toISOString() };
 }
 
 // ---- Dates -------------------------------------------------------------------
@@ -121,6 +122,7 @@ export function nextMonthKey(month, now = new Date()) {
 
 // ---- Calendar feed -------------------------------------------------------------
 export const SOURCE_LABELS = { applied: 'Applied', planning: 'Planning to apply', saved: 'Bookmarked' };
+const OFFICIAL_DEADLINE = 'Deadline (from the official site)';
 export const KIND_LABELS = { deadline: 'Deadline', event: 'Event', decision: 'Decision expected', submitted: 'Submitted', estimate: 'Typical deadline' };
 
 /**
@@ -132,6 +134,7 @@ export const KIND_LABELS = { deadline: 'Deadline', event: 'Event', decision: 'De
 export function calendarItems({ tracker = {}, saved = [], byId = new Map(), now = new Date() } = {}) {
   const dated = [];
   const estimates = [];
+  const todayKey = toDateKey(now);
   for (const item of Object.values(tracker)) {
     const group = statusInfo(item.status).group;
     const source = group === 'planning' ? 'planning' : 'applied';
@@ -141,13 +144,19 @@ export function calendarItems({ tracker = {}, saved = [], byId = new Map(), now 
     if (item.decisionOn) dated.push({ ...base, uid: `${item.id}-decision`, kind: 'decision', label: KIND_LABELS.decision, date: item.decisionOn, title: `Decision expected: ${item.title}` });
     for (const e of item.events) dated.push({ ...base, uid: `${item.id}-${e.id}`, kind: 'event', label: e.title, date: e.date, time: e.time, title: `${e.title}: ${item.title}` });
     const opp = item.oppId ? byId.get(item.oppId) : null;
-    if (!item.deadline && group === 'planning' && opp?.deadlineMonth) {
+    if (!item.deadline && group === 'planning' && opp?.nextDeadline && opp.nextDeadline >= todayKey) {
+      dated.push({ ...base, uid: `${item.id}-deadline`, kind: 'deadline', label: OFFICIAL_DEADLINE, date: opp.nextDeadline, title: `Deadline: ${item.title}` });
+    } else if (!item.deadline && group === 'planning' && opp?.deadlineMonth) {
       estimates.push({ ...base, uid: `${item.id}-estimate`, kind: 'estimate', label: KIND_LABELS.estimate, month: nextMonthKey(opp.deadlineMonth, now), title: opp.title, note: opp.deadline });
     }
   }
   for (const id of saved) {
     if (tracker[id]) continue;
     const opp = byId.get(id);
+    if (opp?.nextDeadline && opp.nextDeadline >= todayKey) {
+      dated.push({ itemId: null, oppId: id, source: 'saved', opportunity: opp.title, uid: `${id}-deadline`, kind: 'deadline', label: OFFICIAL_DEADLINE, date: opp.nextDeadline, title: `Deadline: ${opp.title}` });
+      continue;
+    }
     if (!opp?.deadlineMonth) continue;
     estimates.push({ itemId: null, oppId: id, source: 'saved', opportunity: opp.title, uid: `${id}-estimate`, kind: 'estimate', label: KIND_LABELS.estimate, month: nextMonthKey(opp.deadlineMonth, now), title: opp.title, note: opp.deadline });
   }

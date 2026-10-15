@@ -9,6 +9,7 @@ import { z } from 'zod';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const DATA_DIR = path.resolve(here, '..', 'data', 'opportunities');
+const STATUS_FILE = path.resolve(here, '..', 'data', 'status.json');
 
 export const CLUSTERS = {
   STEM: { label: 'STEM', description: 'Science, technology, engineering, math, and computing' },
@@ -54,6 +55,44 @@ export const OpportunitySchema = z.object({
   needBased: z.boolean(),
   featured: z.boolean().optional().default(false),
 }).strict();
+
+const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'expected YYYY-MM-DD');
+
+// What the weekly checker (scripts/check-opportunities.js) last saw on each opportunity's official
+// site. Kept apart from the curated data so automated updates never touch hand-written fields.
+export const LINK_STATUSES = ['ok', 'broken', 'error', 'blocked'];
+export const StatusEntrySchema = z.object({
+  lastChecked: isoDate,
+  linkStatus: z.enum(LINK_STATUSES),
+  httpStatus: z.number().int().nullable(),
+  // This cycle's exact deadline, when the official page states one with a year.
+  nextDeadline: isoDate.nullable(),
+  deadlineEvidence: z.string().max(240).nullable(),
+  // The page says applications are closed or the program has ended.
+  applicationsClosed: z.boolean(),
+  closedEvidence: z.string().max(240).nullable(),
+}).strict();
+export const StatusFileSchema = z.record(z.string(), StatusEntrySchema);
+
+/** Checker results keyed by opportunity id ({} when the file doesn't exist yet). */
+export function loadStatus(file = STATUS_FILE) {
+  if (!fs.existsSync(file)) return {};
+  const result = StatusFileSchema.safeParse(JSON.parse(fs.readFileSync(file, 'utf8')));
+  if (!result.success) {
+    const issues = result.error.issues.map((iss) => `${iss.path.join('.')}: ${iss.message}`).join('; ');
+    throw new Error(`status.json: ${issues}`);
+  }
+  return result.data;
+}
+
+/** Adds each opportunity's checker results (nextDeadline, applicationsClosed, ...) to the record. */
+export function withStatus(opportunities, status) {
+  return opportunities.map((o) => {
+    const s = status[o.id];
+    if (!s) return o;
+    return { ...o, lastChecked: s.lastChecked, linkStatus: s.linkStatus, nextDeadline: s.nextDeadline, applicationsClosed: s.applicationsClosed };
+  });
+}
 
 export function loadOpportunities(dir = DATA_DIR) {
   const files = fs.readdirSync(dir).filter((f) => f.endsWith('.json')).sort();

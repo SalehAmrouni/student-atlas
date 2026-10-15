@@ -1,0 +1,62 @@
+# Weekly check of every opportunity's official site. Records exact deadlines, passed deadlines,
+# "applications closed" notices, and broken links in data/status.json, collects possible new
+# opportunities in data/candidates.json, and opens (or updates) one pull request for review.
+# Nothing reaches the live site until a person merges that pull request.
+name: Check opportunities
+
+on:
+  schedule:
+    - cron: '0 13 * * 1' # Mondays, 13:00 UTC
+  workflow_dispatch:
+    inputs:
+      only:
+        description: 'Only check these opportunity ids (comma-separated, optional)'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: check-opportunities
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Check official sites and look for new opportunities
+        id: check
+        env:
+          ONLY: ${{ inputs.only }}
+        run: node scripts/check-opportunities.js --report "$RUNNER_TEMP/report.md" ${ONLY:+--only "$ONLY"}
+
+      - name: Rebuild site data and run tests
+        run: |
+          npm run build
+          npm test
+
+      - name: Open or update the review pull request
+        if: steps.check.outputs.meaningful == 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: automation/opportunity-check
+          delete-branch: true
+          commit-message: 'Update opportunity deadlines and status from weekly check'
+          title: 'Weekly opportunity check: deadlines, closed listings, and new finds'
+          body-path: ${{ runner.temp }}/report.md
+          add-paths: |
+            data/status.json
+            data/candidates.json
+            public/data/opportunities.json

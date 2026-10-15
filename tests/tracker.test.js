@@ -60,6 +60,17 @@ describe('application tracker model', () => {
     assert.equal(fromSaved.month, nextMonthKey(saved[0].deadlineMonth, now));
     assert.equal(estimates.find((e) => e.oppId === saved[1].id).source, 'planning');
   });
+
+  test('uses the exact deadline the weekly checker found, once it is known', () => {
+    const opp = { ...opportunities.find((o) => o.deadlineMonth), nextDeadline: '2026-11-20' };
+    const map = new Map([[opp.id, opp]]);
+    const { dated, estimates } = calendarItems({ saved: [opp.id], byId: map, now });
+    assert.equal(estimates.length, 0);
+    assert.equal(dated[0].date, '2026-11-20');
+    assert.equal(itemFromOpportunity(opp).deadline, '2026-11-20');
+    const past = new Map([[opp.id, { ...opp, nextDeadline: '2026-01-05' }]]);
+    assert.equal(calendarItems({ saved: [opp.id], byId: past, now }).dated.length, 0, 'a passed deadline falls back to the typical month');
+  });
 });
 
 // ---------------------------------------------------------------------------
