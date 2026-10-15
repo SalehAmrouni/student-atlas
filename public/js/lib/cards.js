@@ -6,6 +6,7 @@ import { scoreOpportunity, matchClass } from './match.js';
 import { COST_LABELS, gradeLabel, deadlineHint, deadlineStatus, formatDate } from './data.js';
 import { shareOpportunity } from './share.js';
 import { trackButton } from './tracker-ui.js';
+import { ratingBadge, reviewsSection } from './reviews.js';
 
 let clusterMeta = {};
 export function setClusterMeta(clusters) {
@@ -63,7 +64,8 @@ export function opportunityCard(opp, { profile = getProfile(), onAsk } = {}) {
         h('span', { class: 'badge badge-cluster', dataset: { cluster: opp.cluster } }, clusterLabel(opp.cluster)),
         h('span', { class: 'badge' }, opp.type),
         expiredBadge(opp),
-        matchBadge(match)),
+        matchBadge(match),
+        ratingBadge(opp.id)),
       h('div', { class: 'opp-card-tools' }, shareButton(opp), saveButton(opp))),
     h('div', {},
       h('h3', {}, h('button', { type: 'button', onclick: open }, opp.title)),
@@ -121,7 +123,8 @@ export function showOpportunity(opp, { onAsk } = {}) {
           : null,
         h('div', { class: 'callout mt-2' }, icon('info'), h('span', {
           text: `Dates, costs, and rules change each year. Confirm everything on the official website before applying.${opp.lastChecked ? ` We last checked the official site on ${formatDate(opp.lastChecked)}.` : ''}`,
-        }))),
+        })),
+        reviewsSection(opp)),
       h('div', { class: 'modal-footer' },
         onAsk ? h('button', { type: 'button', class: 'btn btn-ghost', onclick: () => { close(); onAsk(opp); } }, icon('sparkles'), 'Ask Zeus about this') : null,
         shareButton(opp, { compact: false }),
