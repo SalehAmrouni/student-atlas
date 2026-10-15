@@ -1,12 +1,14 @@
 // Local development server for Student Atlas.
-// The site is static (public/) plus the review functions in api/, so
-// production hosts like Vercel serve it directly; this server mirrors that
-// setup locally with the same security headers, clean URLs, and review API.
+// The site is static (public/) plus the functions in api/ (reviews and
+// College Lab AI feedback), so production hosts like Vercel serve it directly;
+// this server mirrors that setup locally with the same security headers,
+// clean URLs, and API routes.
 
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import express from 'express';
 import { SECURITY_HEADERS } from './headers.js';
+import { handleCollegeLab } from './college-lab.js';
 import { reviewHandlersFromEnv } from './reviews/index.js';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
@@ -46,6 +48,8 @@ export function createApp({ env = process.env } = {}) {
   const raw = express.raw({ type: () => true, limit: '8kb' });
   app.all('/api/reviews', raw, webHandler(reviews.reviews));
   app.all('/api/reviews-admin', raw, webHandler(reviews.admin));
+  // College Lab AI feedback (api/college-lab.js in production).
+  app.all('/api/college-lab', express.json({ limit: '200kb' }), handleCollegeLab);
   app.use(express.static(PUBLIC_DIR, { extensions: ['html'], index: 'index.html', dotfiles: 'ignore' }));
   app.use((_req, res) => res.status(404).sendFile(path.join(PUBLIC_DIR, '404.html')));
   return app;

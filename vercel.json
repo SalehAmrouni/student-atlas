@@ -5,9 +5,12 @@
   "outputDirectory": "public",
   "cleanUrls": true,
   "functions": {
-    "api/*.js": {
+    "api/reviews*.js": {
       "includeFiles": "public/data/opportunities.json",
       "maxDuration": 10
+    },
+    "api/college-lab.js": {
+      "maxDuration": 120
     }
   },
   "headers": [

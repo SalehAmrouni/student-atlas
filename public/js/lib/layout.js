@@ -8,6 +8,7 @@ const NAV = [
   { href: '/dashboard.html', label: 'Explore', page: 'explore' },
   { href: '/profile.html', label: 'My Pathway', page: 'profile' },
   { href: '/tracker.html', label: 'Applications', page: 'tracker' },
+  { href: '/college-lab.html', label: 'College Lab', page: 'lab' },
   { href: '/submission.html', label: 'Suggest a Resource', page: 'submit' },
   { href: '/references.html', label: 'About', page: 'about' },
 ];
@@ -154,6 +155,7 @@ export function renderLayout(activePage) {
   const setCta = () => {
     const p = getProfile();
     ctaLabel.textContent = p ? (p.firstName ? `Hi, ${p.firstName}` : 'My Pathway') : 'Find my pathway';
+    cta.setAttribute('aria-label', ctaLabel.textContent); // the label text is hidden on small screens
     cta.href = p ? '/profile.html' : '/?wizard=1';
     navCta.hidden = !!p;
   };
@@ -185,7 +187,8 @@ export function renderLayout(activePage) {
           h('li', {}, h('a', { href: '/?wizard=1' }, 'Pathway Wizard')),
           h('li', {}, h('a', { href: '/profile.html' }, 'My Pathway')),
           h('li', {}, h('a', { href: '/tracker.html' }, 'Application tracker')),
-          h('li', {}, h('a', { href: '/tracker.html#calendar' }, 'Calendar')))),
+          h('li', {}, h('a', { href: '/tracker.html#calendar' }, 'Calendar')),
+          h('li', {}, h('a', { href: '/college-lab.html' }, 'College Lab')))),
       h('div', {},
         h('h2', { class: 'footer-heading' }, 'Project'),
         h('ul', {},

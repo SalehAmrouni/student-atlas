@@ -204,7 +204,7 @@ svg.lucide { width: 1.1em; height: 1.1em; flex-shrink: 0; vertical-align: -0.15e
 .brand {
   display: inline-flex; align-items: center; gap: 10px;
   font-weight: 800; font-size: 1.15rem; letter-spacing: -0.02em;
-  color: var(--text) !important; text-decoration: none;
+  color: var(--text) !important; text-decoration: none; white-space: nowrap;
 }
 .brand-mark {
   width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center;
@@ -213,7 +213,7 @@ svg.lucide { width: 1.1em; height: 1.1em; flex-shrink: 0; vertical-align: -0.15e
 .brand-mark svg { width: 20px; height: 20px; }
 .nav { display: flex; gap: 4px; margin-left: 12px; }
 .nav a {
-  padding: 8px 12px; border-radius: var(--radius); text-decoration: none;
+  padding: 8px 10px; border-radius: var(--radius); text-decoration: none; white-space: nowrap;
   color: var(--text-muted) !important; font-weight: 550; font-size: 0.95rem;
 }
 .nav a:hover { color: var(--text) !important; background: var(--bg-subtle); }
@@ -221,7 +221,7 @@ svg.lucide { width: 1.1em; height: 1.1em; flex-shrink: 0; vertical-align: -0.15e
 .header-actions { margin-left: auto; display: flex; gap: 8px; align-items: center; }
 .btn.menu-toggle { display: none; }
 
-/* Six nav links plus the header actions need ~1100px (more with large text), so collapse to the menu below that. */
+/* Seven nav links plus the header actions need ~1200px (more with large text), so collapse to the menu below that. */
 @media (max-width: 1200px) {
   .nav {
     display: none; position: absolute; top: var(--header-h); left: 0; right: 0;
