@@ -58,7 +58,7 @@ export function safeExternalUrl(url) {
 export function externalLink(url, children, cls) {
   const href = safeExternalUrl(url);
   if (!href) return h('span', { class: cls }, children);
-  return h('a', { href, target: '_blank', rel: 'noopener noreferrer', class: cls }, children);
+  return h('a', { href, target: '_blank', rel: 'noopener noreferrer', class: cls }, children, h('span', { class: 'visually-hidden' }, ' (opens in a new tab)'));
 }
 
 // ---- Toasts ---------------------------------------------------------------

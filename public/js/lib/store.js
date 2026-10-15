@@ -11,6 +11,7 @@ const KEYS = {
   settings: 'atlas.settings.v2',
   chat: 'atlas.chat.v2',
   chatState: 'atlas.chatstate.v2',
+  reviews: 'atlas.reviews.v1',
   tracker: 'atlas.tracker.v1',
   lab: 'atlas.lab.v1', // College Lab (see lab-store.js)
 };
@@ -123,6 +124,18 @@ export function toggleSaved(id) {
 export function clearSaved() {
   write(KEYS.saved, []);
   emit('saved');
+}
+
+// ---- Reviews this browser wrote or reported (to avoid duplicates) -------------
+export function getReviewMarks() {
+  const m = read(KEYS.reviews, {});
+  const ids = (v) => (Array.isArray(v) ? v.filter((x) => typeof x === 'string').slice(-500) : []);
+  return { reviewed: ids(m?.reviewed), reported: ids(m?.reported) };
+}
+export function markReview(kind, id) {
+  const marks = getReviewMarks();
+  if (!marks[kind].includes(id)) marks[kind].push(id);
+  write(KEYS.reviews, marks);
 }
 
 // ---- Application tracker -------------------------------------------------------

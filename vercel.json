@@ -5,6 +5,10 @@
   "outputDirectory": "public",
   "cleanUrls": true,
   "functions": {
+    "api/reviews*.js": {
+      "includeFiles": "public/data/opportunities.json",
+      "maxDuration": 10
+    },
     "api/college-lab.js": {
       "maxDuration": 120
     }

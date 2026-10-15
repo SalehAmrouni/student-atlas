@@ -35,26 +35,22 @@ function buildA11yMenu(close) {
   const s = getSettings();
   const update = (patch) => applySettings(saveSettings(patch));
 
-  const sizeGroup = h('div', { class: 'segmented', role: 'radiogroup', 'aria-label': 'Text size' },
-    [['md', 'A'], ['lg', 'A+'], ['xl', 'A++']].map(([value, label]) =>
+  // Toggle buttons in a labelled group: one is pressed at a time. (role="radio"
+  // would promise arrow-key navigation these buttons don't implement.)
+  // `hints` add hidden words after the visible text, so the accessible name
+  // still starts with what's on screen (WCAG 2.5.3 Label in Name).
+  const choiceGroup = (label, key, options, hints = {}) => h('div', { class: 'segmented', role: 'group', 'aria-label': label },
+    options.map(([value, text]) =>
       h('button', {
-        type: 'button', class: 'chip', role: 'radio', 'aria-checked': String(s.textSize === value),
-        'aria-label': { md: 'Default text size', lg: 'Large text', xl: 'Extra large text' }[value],
+        type: 'button', class: 'chip', 'aria-pressed': String(s[key] === value),
         onclick: (e) => {
-          update({ textSize: value });
-          for (const b of e.currentTarget.parentElement.children) b.setAttribute('aria-checked', String(b === e.currentTarget));
+          update({ [key]: value });
+          for (const b of e.currentTarget.parentElement.children) b.setAttribute('aria-pressed', String(b === e.currentTarget));
         },
-      }, label)));
-
-  const themeGroup = h('div', { class: 'segmented', role: 'radiogroup', 'aria-label': 'Color theme' },
-    [['system', 'Auto'], ['light', 'Light'], ['dark', 'Dark']].map(([value, label]) =>
-      h('button', {
-        type: 'button', class: 'chip', role: 'radio', 'aria-checked': String(s.theme === value),
-        onclick: (e) => {
-          update({ theme: value });
-          for (const b of e.currentTarget.parentElement.children) b.setAttribute('aria-checked', String(b === e.currentTarget));
-        },
-      }, label)));
+      }, text, hints[value] ? h('span', { class: 'visually-hidden' }, ` ${hints[value]}`) : null)));
+  const sizeGroup = choiceGroup('Text size', 'textSize', [['md', 'A'], ['lg', 'A+'], ['xl', 'A++']],
+    { md: '(default size)', lg: '(large)', xl: '(extra large)' });
+  const themeGroup = choiceGroup('Color theme', 'theme', [['system', 'Auto'], ['light', 'Light'], ['dark', 'Dark']]);
 
   const toggle = (key, label) => h('label', { class: 'switch' },
     h('input', { type: 'checkbox', checked: s[key] || undefined, onchange: (e) => update({ [key]: e.target.checked }) }),
@@ -72,7 +68,8 @@ function buildA11yMenu(close) {
       toggle('cvdPalette', 'Color-blind friendly colors'),
       toggle('reduceMotion', 'Reduce motion')),
     h('hr', { class: 'divider' }),
-    h('button', { class: 'btn btn-outline btn-block', type: 'button', onclick: readAloud }, icon('volume-2'), 'Read this page aloud'));
+    h('button', { class: 'btn btn-outline btn-block', type: 'button', onclick: readAloud }, icon('volume-2'), 'Read this page aloud'),
+    h('p', { class: 'small mt-2 mb-0' }, h('a', { href: '/references.html#accessibility' }, 'Accessibility statement and feedback')));
 }
 
 let speaking = false;
@@ -100,8 +97,10 @@ export function renderLayout(activePage) {
   applySettings();
 
   // Header
+  const navCta = h('a', { class: 'nav-extra', href: '/?wizard=1' }, 'Find my pathway');
   const nav = h('nav', { class: 'nav', id: 'site-nav', 'aria-label': 'Main' },
-    NAV.map((item) => h('a', { href: item.href, 'aria-current': item.page === activePage ? 'page' : undefined }, item.label)));
+    NAV.map((item) => h('a', { href: item.href, 'aria-current': item.page === activePage ? 'page' : undefined }, item.label)),
+    navCta);
 
   let menuEl = null;
   const a11yBtn = h('button', {
@@ -120,30 +119,45 @@ export function renderLayout(activePage) {
     refreshIcons();
     menuEl.querySelector('button, input')?.focus();
   });
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && menuEl) { closeMenu(); a11yBtn.focus(); } });
-  document.addEventListener('click', (e) => { if (menuEl && !menuEl.contains(e.target) && !a11yBtn.contains(e.target)) closeMenu(); });
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    if (menuEl) { closeMenu(); a11yBtn.focus(); }
+    if (nav.classList.contains('open')) { setNavOpen(false); menuToggle.focus(); }
+  });
+  document.addEventListener('click', (e) => {
+    if (menuEl && !menuEl.contains(e.target) && !a11yBtn.contains(e.target)) closeMenu();
+    if (nav.classList.contains('open') && !nav.contains(e.target) && !menuToggle.contains(e.target)) setNavOpen(false);
+  });
 
-  const themeBtn = h('button', { class: 'btn btn-ghost btn-icon', type: 'button', 'aria-label': 'Toggle dark mode' }, icon(effectiveTheme() === 'dark' ? 'sun' : 'moon'));
+  const themeBtn = h('button', { class: 'btn btn-ghost btn-icon theme-toggle', type: 'button', 'aria-label': 'Dark mode', 'aria-pressed': String(effectiveTheme() === 'dark') }, icon(effectiveTheme() === 'dark' ? 'sun' : 'moon'));
   themeBtn.addEventListener('click', () => {
     const next = effectiveTheme() === 'dark' ? 'light' : 'dark';
     applySettings(saveSettings({ theme: next }));
     themeBtn.replaceChildren(icon(next === 'dark' ? 'sun' : 'moon'));
+    themeBtn.setAttribute('aria-pressed', String(next === 'dark'));
     refreshIcons();
   });
 
   const menuToggle = h('button', { class: 'btn btn-ghost btn-icon menu-toggle', type: 'button', 'aria-label': 'Open menu', 'aria-expanded': 'false', 'aria-controls': 'site-nav' }, icon('menu'));
-  menuToggle.addEventListener('click', () => {
-    const open = nav.classList.toggle('open');
+  const setNavOpen = (open) => {
+    nav.classList.toggle('open', open);
     menuToggle.setAttribute('aria-expanded', String(open));
-  });
+    menuToggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    menuToggle.replaceChildren(icon(open ? 'x' : 'menu'));
+    refreshIcons();
+  };
+  menuToggle.addEventListener('click', () => setNavOpen(!nav.classList.contains('open')));
+  // Close the drawer if the window grows past the mobile breakpoint.
+  window.matchMedia('(max-width: 1200px)').addEventListener('change', (e) => { if (!e.matches) setNavOpen(false); });
 
   const ctaLabel = h('span', { class: 'btn-label' });
-  const cta = h('a', { class: 'btn btn-primary btn-sm', href: '/profile.html' }, icon('compass'), ctaLabel);
+  const cta = h('a', { class: 'btn btn-primary btn-sm header-cta', href: '/profile.html' }, icon('compass'), ctaLabel);
   const setCta = () => {
     const p = getProfile();
     ctaLabel.textContent = p ? (p.firstName ? `Hi, ${p.firstName}` : 'My Pathway') : 'Find my pathway';
     cta.setAttribute('aria-label', ctaLabel.textContent); // the label text is hidden on small screens
     cta.href = p ? '/profile.html' : '/?wizard=1';
+    navCta.hidden = !!p;
   };
   setCta();
   onStoreChange((what) => { if (what === 'profile') setCta(); });
@@ -167,7 +181,7 @@ export function renderLayout(activePage) {
         h('p', { class: 'muted small mt-2' }, 'A free, personalized map of opportunities for high school students: research, internships, competitions, scholarships, service, and more.'),
         h('p', { class: 'faint small mb-0' }, 'Program details change every year. Always confirm dates and eligibility on the official website.')),
       h('div', {},
-        h('h4', {}, 'Explore'),
+        h('h2', { class: 'footer-heading' }, 'Explore'),
         h('ul', {},
           h('li', {}, h('a', { href: '/dashboard.html' }, 'Opportunity directory')),
           h('li', {}, h('a', { href: '/?wizard=1' }, 'Pathway Wizard')),
@@ -176,7 +190,7 @@ export function renderLayout(activePage) {
           h('li', {}, h('a', { href: '/tracker.html#calendar' }, 'Calendar')),
           h('li', {}, h('a', { href: '/college-lab.html' }, 'College Lab')))),
       h('div', {},
-        h('h4', {}, 'Project'),
+        h('h2', { class: 'footer-heading' }, 'Project'),
         h('ul', {},
           h('li', {}, h('a', { href: '/submission.html' }, 'Suggest a resource')),
           h('li', {}, h('a', { href: '/references.html' }, 'About & sources')),

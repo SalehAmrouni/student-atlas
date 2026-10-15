@@ -24,7 +24,7 @@
             <button class="btn btn-primary btn-lg" type="button" id="start-wizard"><i data-lucide="compass"></i> Find my pathway</button>
             <a class="btn btn-outline btn-lg" href="/dashboard.html"><i data-lucide="search"></i> Browse opportunities</a>
           </div>
-          <div class="hero-stats" aria-live="polite">
+          <div class="hero-stats">
             <div><strong id="stat-total">190+</strong><span>curated opportunities</span></div>
             <div><strong id="stat-free">100+</strong><span>free, paid, or with aid</span></div>
             <div><strong>7</strong><span>interest areas</span></div>
@@ -59,17 +59,31 @@
 
     <section class="section">
       <div class="container">
-        <div class="row-between mb-3">
+        <div class="row-between mb-3 carousel-head">
           <div class="section-head mb-0">
             <span class="eyebrow">Spotlight</span>
             <h2 id="featured-title">Featured opportunities</h2>
             <p class="muted mb-0" id="featured-subtitle">Standout programs that are free, paid, or offer generous aid.</p>
           </div>
-          <a class="btn btn-ghost" href="/dashboard.html">See all <i data-lucide="arrow-right"></i></a>
+          <div class="row" id="featured-controls"><a class="btn btn-ghost" href="/dashboard.html">See all <i data-lucide="arrow-right"></i></a></div>
         </div>
-        <div class="results-grid" id="featured-grid">
-          <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
+        <div id="featured-carousel">
+          <div class="results-grid"><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div></div>
         </div>
+      </div>
+    </section>
+
+    <section class="section-tight" id="soon-section" hidden>
+      <div class="container">
+        <div class="row-between mb-3 carousel-head">
+          <div class="section-head mb-0">
+            <span class="eyebrow">Coming up</span>
+            <h2 id="soon-title">Deadlines in the next two months</h2>
+            <p class="muted mb-0" id="soon-subtitle">Programs that usually close soon, so you still have time to apply.</p>
+          </div>
+          <div class="row" id="soon-controls"><a class="btn btn-ghost" href="/dashboard.html?soon=1&amp;sort=deadline">See all <i data-lucide="arrow-right"></i></a></div>
+        </div>
+        <div id="soon-carousel"></div>
       </div>
     </section>
 

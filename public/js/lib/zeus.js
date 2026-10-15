@@ -33,7 +33,7 @@ export function mountZeus(root, options) {
   let busy = false;
   let lastSuggestions = [];
 
-  const messages = h('div', { class: 'zeus-messages', role: 'log', 'aria-live': 'polite', 'aria-relevant': 'additions', 'aria-label': 'Conversation with Zeus' });
+  const messages = h('div', { class: 'zeus-messages', role: 'log', 'aria-live': 'polite', 'aria-relevant': 'additions', 'aria-label': 'Conversation with Zeus', tabindex: '0' });
   const input = h('input', {
     type: 'text', placeholder: 'Ask Zeus anything…', 'aria-label': 'Message Zeus', maxlength: '300', autocomplete: 'off',
     role: 'combobox', 'aria-autocomplete': 'list', 'aria-expanded': 'false', 'aria-controls': 'zeus-predictions',
@@ -122,7 +122,7 @@ export function mountZeus(root, options) {
 
     history.push({ role: 'user', content });
     messages.append(bubble('user', content));
-    const reply = h('div', { class: 'bubble assistant' }, h('span', { class: 'typing', 'aria-label': 'Zeus is thinking' }, h('span'), h('span'), h('span')));
+    const reply = h('div', { class: 'bubble assistant' }, h('span', { class: 'typing' }, h('span', { class: 'visually-hidden' }, 'Zeus is thinking'), h('span', { 'aria-hidden': 'true' }), h('span', { 'aria-hidden': 'true' }), h('span', { 'aria-hidden': 'true' })));
     messages.append(reply);
     scrollToEnd();
 
@@ -130,7 +130,11 @@ export function mountZeus(root, options) {
       const result = engine.reply(content, { profile: getProfile(), state });
       state = { ...result.state, suggestions: result.suggestions };
       if (!prefersReducedMotion()) await wait(250 + Math.min(500, content.length * 6));
+      // Hold screen-reader announcements until the reply has finished typing,
+      // so it's read once instead of word by word.
+      messages.setAttribute('aria-busy', 'true');
       await typeOut(reply, result.text);
+      messages.setAttribute('aria-busy', 'false');
       history.push({ role: 'assistant', content: result.text });
       renderChips(result.suggestions);
     } catch (err) {
@@ -142,6 +146,7 @@ export function mountZeus(root, options) {
       saveChat(history);
       saveChatState(state);
       busy = false;
+      messages.setAttribute('aria-busy', 'false');
       sendBtn.disabled = false;
       refreshIcons();
       scrollToEnd();

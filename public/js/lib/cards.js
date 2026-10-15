@@ -6,6 +6,7 @@ import { scoreOpportunity, matchClass } from './match.js';
 import { COST_LABELS, gradeLabel, deadlineHint, deadlineStatus, formatDate } from './data.js';
 import { shareOpportunity } from './share.js';
 import { trackButton } from './tracker-ui.js';
+import { ratingBadge, reviewsSection } from './reviews.js';
 
 let clusterMeta = {};
 export function setClusterMeta(clusters) {
@@ -63,7 +64,8 @@ export function opportunityCard(opp, { profile = getProfile(), onAsk } = {}) {
         h('span', { class: 'badge badge-cluster', dataset: { cluster: opp.cluster } }, clusterLabel(opp.cluster)),
         h('span', { class: 'badge' }, opp.type),
         expiredBadge(opp),
-        matchBadge(match)),
+        matchBadge(match),
+        ratingBadge(opp.id)),
       h('div', { class: 'opp-card-tools' }, shareButton(opp), saveButton(opp))),
     h('div', {},
       h('h3', {}, h('button', { type: 'button', onclick: open }, opp.title)),
@@ -75,8 +77,9 @@ export function opportunityCard(opp, { profile = getProfile(), onAsk } = {}) {
       h('span', {}, icon('graduation-cap'), gradeLabel(opp.grades)),
       h('span', {}, icon('calendar-clock'), hint ? `${hint} (${opp.deadline})` : opp.deadline)),
     h('div', { class: 'opp-card-actions' },
-      h('button', { type: 'button', class: 'btn btn-outline btn-sm', onclick: open }, 'Details'),
-      externalLink(opp.url, [icon('external-link'), 'Official site'], 'btn btn-primary btn-sm')));
+      // Hidden text gives each card's buttons a unique name out of context (WCAG 2.4.4).
+      h('button', { type: 'button', class: 'btn btn-outline btn-sm', onclick: open }, 'Details', h('span', { class: 'visually-hidden', text: ` about ${opp.title}` })),
+      externalLink(opp.url, [icon('external-link'), 'Official site', h('span', { class: 'visually-hidden', text: ` for ${opp.title}` })], 'btn btn-primary btn-sm')));
 }
 
 export function showOpportunity(opp, { onAsk } = {}) {
@@ -120,7 +123,8 @@ export function showOpportunity(opp, { onAsk } = {}) {
           : null,
         h('div', { class: 'callout mt-2' }, icon('info'), h('span', {
           text: `Dates, costs, and rules change each year. Confirm everything on the official website before applying.${opp.lastChecked ? ` We last checked the official site on ${formatDate(opp.lastChecked)}.` : ''}`,
-        }))),
+        })),
+        reviewsSection(opp)),
       h('div', { class: 'modal-footer' },
         onAsk ? h('button', { type: 'button', class: 'btn btn-ghost', onclick: () => { close(); onAsk(opp); } }, icon('sparkles'), 'Ask Zeus about this') : null,
         shareButton(opp, { compact: false }),
