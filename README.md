@@ -16,13 +16,17 @@ Student Atlas helps students find research programs, internships, competitions, 
   - **Overview**: stats, activities, awards, and a reach/target/likely college list with deadlines, an application snapshot, and next steps.
   - Uses **Claude** for feedback when the site has an Anthropic API key and the student opts in; otherwise a built-in on-device engine gives the same features.
 - **Explore view** with search, filters (interest, type, grade, cost, format, affordable, deadline soon, eligible, saved), sorting, and shareable URLs.
+- **Application tracker** (`/tracker.html`): track what you're interested in, working on, applied to, and heard back from, with exact deadlines, decision dates, events (interviews, info sessions), a step checklist, and notes. Add opportunities that aren't in the directory too.
+- **Calendar** of applied, planned, and bookmarked opportunities: a keyboard-navigable month view plus a phone-friendly list, estimated "usually due" months for bookmarks, and `.ics` export for Google Calendar, Apple Calendar, or Outlook.
+- **Send opportunities** to a friend, parent, or counselor: copy a link, email, text, or the phone's share sheet. Lists open on the Explore page with a "Save all" button; status and dates are only included if the student chooses.
+- **Optional family finances** (household size, income range, assistance programs, first-generation status), banded and stored only in the browser, so programs with income limits are flagged and ranked appropriately.
 - **My Pathway** dashboard: fit by interest area, top matches, saved list, upcoming deadlines, plus data export and deletion.
 - **Community suggestions** that open as a pre-filled GitHub issue for the team to review.
 - **Accessibility**: text sizing, light/dark/auto theme, high contrast, readable font, color-blind friendly palette (Okabe-Ito), reduced motion, read-aloud, keyboard navigation, and screen-reader labels.
 
 ## Security & privacy
 
-- No accounts or passwords. The profile, saved list, settings, and Zeus conversations live in the student's browser and are never sent to the server.
+- No accounts or passwords. The profile (including optional family finance ranges), saved list, application tracker, College Lab work, settings, and Zeus conversations live in the student's browser.
 - No ads, analytics, or third-party scripts. Zeus uses no AI service. College Lab can use Claude for feedback, only when the site owner sets an API key and the student opts in; nothing is stored or logged on the server.
 - A strict Content Security Policy (no inline scripts or styles, no third-party origins) and security headers via Helmet.
 - The site is static apart from one optional serverless function (`api/college-lab.js`), with no database.
@@ -47,6 +51,7 @@ No API keys or accounts are needed. To try College Lab's AI feedback locally, ru
 | `npm run build` | Validate the data and regenerate `public/data/opportunities.json` and the icon bundle |
 | `npm test` | Run the test suite (data, static build, server, and Zeus engine) |
 | `npm run validate-data` | Validate every opportunity against the schema |
+| `npm run check-opportunities` | Visit every official site, update deadlines and status, and look for new opportunities |
 
 ## Deploying to Vercel
 
@@ -79,6 +84,19 @@ tests/             node:test suite
 ### Adding an opportunity
 
 Add an entry to the right file in `data/opportunities/`, then run `npm run build` (it validates the data and regenerates `public/data/opportunities.json`) and commit both. The schema lives in `server/opportunities.js`. Community suggestions arrive as GitHub issues; to also accept them by email, set `SUGGESTIONS.email` in `public/js/config.js`.
+
+### Weekly opportunity check
+
+`.github/workflows/check-opportunities.yml` runs `scripts/check-opportunities.js` every Monday (or on demand from the **Actions** tab). It:
+
+- visits each opportunity's official page as `StudentAtlasBot`, following `robots.txt`, waiting between requests to the same site, and never sending more than one request to a site at a time;
+- records in `data/status.json` whether the link works, this cycle's exact deadline when the page states one with a year (with the sentence it came from), and whether the page says applications are closed;
+- collects links that look like new programs, from those pages and from the listing pages in `data/sources.json`, into `data/candidates.json`;
+- opens or updates one pull request with a readable report. Nothing changes on the live site until someone reviews and merges it.
+
+On the site, cards show "Due Nov 20, 2026" when an exact date is known, and "Deadline passed" or "Applications closed" badges when the check finds those; the "Deadline soon" filter skips expired listings.
+
+To promote a candidate, add a full entry to `data/opportunities/` and delete it from `data/candidates.json`; to dismiss one, set its `status` to `"rejected"` so it isn't suggested again. For the workflow to open pull requests, enable **Settings → Actions → General → Allow GitHub Actions to create and approve pull requests**.
 
 ## Credits
 

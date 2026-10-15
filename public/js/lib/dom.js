@@ -135,6 +135,16 @@ export function modalHeader(id, title, subtitle, close) {
     h('button', { class: 'btn btn-ghost btn-icon', type: 'button', 'aria-label': 'Close', onclick: close }, icon('x')));
 }
 
+/** Saves generated text (JSON, .ics) as a file download. */
+export function downloadFile(filename, content, type) {
+  const url = URL.createObjectURL(new Blob([content], { type }));
+  const a = h('a', { href: url, download: filename });
+  document.body.append(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
 export function debounce(fn, ms) {
   let t;
   return (...args) => {

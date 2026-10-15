@@ -2,12 +2,16 @@
 // settings, Zeus conversations) stays in this browser and is never sent to
 // the server.
 
+import { INCOME_BAND_IDS } from './finance.js';
+import { sanitizeTracker } from './applications.js';
+
 const KEYS = {
   profile: 'atlas.profile.v2',
   saved: 'atlas.saved.v2',
   settings: 'atlas.settings.v2',
   chat: 'atlas.chat.v2',
   chatState: 'atlas.chatstate.v2',
+  tracker: 'atlas.tracker.v1',
   lab: 'atlas.lab.v1', // College Lab (see lab-store.js)
 };
 
@@ -46,6 +50,7 @@ function emit(what) {
 window.addEventListener('storage', (e) => {
   if (e.key === KEYS.saved) emit('saved');
   if (e.key === KEYS.profile) emit('profile');
+  if (e.key === KEYS.tracker) emit('tracker');
 });
 
 // ---- Profile ----------------------------------------------------------------
@@ -72,6 +77,7 @@ export function clearProfile() {
 
 const str = (v, max) => (typeof v === 'string' ? v.trim().slice(0, max) : undefined);
 const num = (v, min, max) => (typeof v === 'number' && Number.isFinite(v) && v >= min && v <= max ? v : undefined);
+const bool = (v) => (typeof v === 'boolean' ? v : undefined);
 const strList = (v, max, len) => (Array.isArray(v) ? v.filter((x) => typeof x === 'string').map((x) => x.trim().slice(0, len)).filter(Boolean).slice(0, max) : []);
 
 export function sanitizeProfile(p) {
@@ -83,7 +89,12 @@ export function sanitizeProfile(p) {
     interests: strList(p.interests, 7, 20).filter((c) => CLUSTER_KEYS.includes(c)),
     careerGoals: strList(p.careerGoals, 8, 60),
     lookingFor: strList(p.lookingFor, 11, 30),
-    financialNeed: typeof p.financialNeed === 'boolean' ? p.financialNeed : undefined,
+    financialNeed: bool(p.financialNeed),
+    // Optional, banded family finance details (never an exact income).
+    householdSize: Number.isInteger(p.householdSize) ? num(p.householdSize, 1, 8) : undefined,
+    incomeBand: INCOME_BAND_IDS.includes(p.incomeBand) ? p.incomeBand : undefined,
+    benefits: bool(p.benefits),
+    firstGen: bool(p.firstGen),
     formatPreference: ['any', 'In-person', 'Virtual'].includes(p.formatPreference) ? p.formatPreference : 'any',
     state: str(p.state, 40) || undefined,
     goals: str(p.goals, 400) || undefined,
@@ -112,6 +123,24 @@ export function toggleSaved(id) {
 export function clearSaved() {
   write(KEYS.saved, []);
   emit('saved');
+}
+
+// ---- Application tracker -------------------------------------------------------
+export function getTracker() {
+  return sanitizeTracker(read(KEYS.tracker, {}));
+}
+/** Replaces one tracked application (pass null to stop tracking it). */
+export function saveTrackerItem(id, item) {
+  const tracker = getTracker();
+  if (item) tracker[id] = { ...item, id, updatedAt: new Date().toISOString() };
+  else delete tracker[id];
+  write(KEYS.tracker, sanitizeTracker(tracker));
+  emit('tracker');
+  return getTracker()[id] ?? null;
+}
+export function clearTracker() {
+  remove(KEYS.tracker);
+  emit('tracker');
 }
 
 // ---- Settings -----------------------------------------------------------------
@@ -152,6 +181,7 @@ export function exportAllData() {
     exportedAt: new Date().toISOString(),
     profile: getProfile(),
     savedOpportunities: getSaved(),
+    applications: Object.values(getTracker()),
     settings: getSettings(),
     collegeLab: read(KEYS.lab, null),
   };
@@ -163,5 +193,6 @@ export function deleteAllData() {
   }
   emit('profile');
   emit('saved');
+  emit('tracker');
   emit('lab');
 }
