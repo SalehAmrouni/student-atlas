@@ -7,6 +7,7 @@ const NAV = [
   { href: '/', label: 'Home', page: 'home' },
   { href: '/dashboard.html', label: 'Explore', page: 'explore' },
   { href: '/profile.html', label: 'My Pathway', page: 'profile' },
+  { href: '/tracker.html', label: 'Applications', page: 'tracker' },
   { href: '/submission.html', label: 'Suggest a Resource', page: 'submit' },
   { href: '/references.html', label: 'About', page: 'about' },
 ];
@@ -168,7 +169,9 @@ export function renderLayout(activePage) {
         h('ul', {},
           h('li', {}, h('a', { href: '/dashboard.html' }, 'Opportunity directory')),
           h('li', {}, h('a', { href: '/?wizard=1' }, 'Pathway Wizard')),
-          h('li', {}, h('a', { href: '/profile.html' }, 'My Pathway')))),
+          h('li', {}, h('a', { href: '/profile.html' }, 'My Pathway')),
+          h('li', {}, h('a', { href: '/tracker.html' }, 'Application tracker')),
+          h('li', {}, h('a', { href: '/tracker.html#calendar' }, 'Calendar')))),
       h('div', {},
         h('h4', {}, 'Project'),
         h('ul', {},

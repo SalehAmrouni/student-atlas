@@ -4,6 +4,8 @@ import { h, icon, openModal, modalHeader, externalLink, toast, refreshIcons } fr
 import { isSaved, toggleSaved, getProfile } from './store.js';
 import { scoreOpportunity, matchClass } from './match.js';
 import { COST_LABELS, gradeLabel, deadlineHint } from './data.js';
+import { shareOpportunity } from './share.js';
+import { trackButton } from './tracker-ui.js';
 
 let clusterMeta = {};
 export function setClusterMeta(clusters) {
@@ -30,6 +32,13 @@ function saveButton(opp, { compact = true } = {}) {
   return btn;
 }
 
+function shareButton(opp, { compact = true } = {}) {
+  return h('button', {
+    type: 'button', class: `btn ${compact ? 'btn-ghost btn-icon btn-sm' : 'btn-ghost'}`, 'aria-label': `Send ${opp.title} to someone`,
+    onclick: (e) => { e.stopPropagation(); shareOpportunity(opp); },
+  }, icon('share-2'), compact ? '' : 'Send');
+}
+
 export function matchBadge(match) {
   if (!match) return null;
   if (!match.eligible) return h('span', { class: 'badge badge-warning' }, icon('alert-triangle'), 'Check eligibility');
@@ -47,7 +56,7 @@ export function opportunityCard(opp, { profile = getProfile(), onAsk } = {}) {
         h('span', { class: 'badge badge-cluster', dataset: { cluster: opp.cluster } }, clusterLabel(opp.cluster)),
         h('span', { class: 'badge' }, opp.type),
         matchBadge(match)),
-      saveButton(opp)),
+      h('div', { class: 'opp-card-tools' }, shareButton(opp), saveButton(opp))),
     h('div', {},
       h('h3', {}, h('button', { type: 'button', onclick: open }, opp.title)),
       h('p', { class: 'opp-org', text: opp.organization })),
@@ -98,7 +107,9 @@ export function showOpportunity(opp, { onAsk } = {}) {
         h('div', { class: 'callout mt-2' }, icon('info'), h('span', { text: 'Dates, costs, and rules change each year. Confirm everything on the official website before applying.' }))),
       h('div', { class: 'modal-footer' },
         onAsk ? h('button', { type: 'button', class: 'btn btn-ghost', onclick: () => { close(); onAsk(opp); } }, icon('sparkles'), 'Ask Zeus about this') : null,
+        shareButton(opp, { compact: false }),
         saveButton(opp, { compact: false }),
+        trackButton(opp),
         externalLink(opp.url, [icon('external-link'), 'Visit official site'], 'btn btn-primary')),
     ],
   });
