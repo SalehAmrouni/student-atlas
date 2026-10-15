@@ -919,8 +919,8 @@
   },
   "leda-scholars": {
     "lastChecked": "2026-10-15",
-    "linkStatus": "ok",
-    "httpStatus": 202,
+    "linkStatus": "blocked",
+    "httpStatus": 403,
     "nextDeadline": null,
     "deadlineEvidence": null,
     "applicationsClosed": false,
@@ -982,8 +982,8 @@
   },
   "mites-semester": {
     "lastChecked": "2026-10-15",
-    "linkStatus": "error",
-    "httpStatus": null,
+    "linkStatus": "ok",
+    "httpStatus": 200,
     "nextDeadline": null,
     "deadlineEvidence": null,
     "applicationsClosed": false,
@@ -1036,10 +1036,10 @@
   },
   "nasa-ostem-internships": {
     "lastChecked": "2026-10-15",
-    "linkStatus": "blocked",
-    "httpStatus": 429,
-    "nextDeadline": null,
-    "deadlineEvidence": null,
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": "2027-03-01",
+    "deadlineEvidence": "Summer 2027 Application Deadline: March 1, 2027 (11:59 p.m. ET)",
     "applicationsClosed": false,
     "closedEvidence": null
   },
@@ -1414,8 +1414,8 @@
   },
   "ron-brown-scholar": {
     "lastChecked": "2026-10-15",
-    "linkStatus": "ok",
-    "httpStatus": 202,
+    "linkStatus": "blocked",
+    "httpStatus": 403,
     "nextDeadline": null,
     "deadlineEvidence": null,
     "applicationsClosed": false,
@@ -1459,8 +1459,8 @@
   },
   "science-olympiad": {
     "lastChecked": "2026-10-15",
-    "linkStatus": "ok",
-    "httpStatus": 202,
+    "linkStatus": "blocked",
+    "httpStatus": 403,
     "nextDeadline": null,
     "deadlineEvidence": null,
     "applicationsClosed": false,
