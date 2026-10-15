@@ -61,10 +61,13 @@ describe('static build', () => {
     }
   });
 
-  test('the site needs no server API', () => {
+  test('the only server API the site calls is the optional College Lab endpoint', () => {
     for (const file of siteFiles.filter((p) => /\.(html|js)$/.test(p))) {
-      assert.doesNotMatch(sourceOf(file), /['"`]\/api\//, `${path.relative(PUBLIC, file)} still calls /api/`);
+      for (const m of sourceOf(file).matchAll(/['"`](\/api\/[^'"`]*)/g)) {
+        assert.equal(m[1], '/api/college-lab', `${path.relative(PUBLIC, file)} calls ${m[1]}`);
+      }
     }
+    assert.ok(fs.existsSync('api/college-lab.js'), 'the Vercel function exists');
   });
 
   test('vercel.json serves public/ with the same security headers as the local server', () => {
@@ -106,14 +109,14 @@ describe('local server', () => {
   });
 
   test('serves pages with and without .html, plus data and icons', async () => {
-    for (const p of ['/dashboard', '/dashboard.html', '/profile.html', '/submission.html', '/references.html', '/data/opportunities.json', '/vendor/lucide/lucide.min.js']) {
+    for (const p of ['/dashboard', '/dashboard.html', '/profile.html', '/college-lab', '/css/lab.css', '/submission.html', '/references.html', '/data/opportunities.json', '/vendor/lucide/lucide.min.js']) {
       assert.equal((await fetch(base + p)).status, 200, p);
     }
     assert.equal((await fetch(`${base}/missing-page`)).status, 404);
   });
 
   test('does not expose source or config files', async () => {
-    for (const p of ['/server/index.js', '/package.json', '/vercel.json', '/data/opportunities/stem.json', '/.gitignore']) {
+    for (const p of ['/server/index.js', '/server/college-lab.js', '/package.json', '/vercel.json', '/data/opportunities/stem.json', '/.gitignore']) {
       assert.equal((await fetch(base + p)).status, 404, p);
     }
   });

@@ -8,6 +8,7 @@ const KEYS = {
   settings: 'atlas.settings.v2',
   chat: 'atlas.chat.v2',
   chatState: 'atlas.chatstate.v2',
+  lab: 'atlas.lab.v1', // College Lab (see lab-store.js)
 };
 
 function read(key, fallback, storage = window.localStorage) {
@@ -152,6 +153,7 @@ export function exportAllData() {
     profile: getProfile(),
     savedOpportunities: getSaved(),
     settings: getSettings(),
+    collegeLab: read(KEYS.lab, null),
   };
 }
 export function deleteAllData() {
@@ -161,4 +163,5 @@ export function deleteAllData() {
   }
   emit('profile');
   emit('saved');
+  emit('lab');
 }
