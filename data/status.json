@@ -1,1 +1,1829 @@
-{}
+{
+  "4-h": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "blocked",
+    "httpStatus": 403,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "aamc-aspiring-docs": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "acs-project-seed": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": "2026-04-06",
+    "deadlineEvidence": "The 2026 Student Application for the Project SEED Program will CLOSE on April 6th, 2026.",
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "adroit-summer-mentorship": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "aeop-high-school-programs": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "error",
+    "httpStatus": null,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "ahec-health-careers": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "blocked",
+    "httpStatus": 403,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "air-force-rotc-scholarship": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "blocked",
+    "httpStatus": 403,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "all-american-high-school-film-festival": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "amazon-future-engineer-scholarship": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "american-indian-college-fund": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "american-legion-oratorical": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "american-mathematics-competitions": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "blocked",
+    "httpStatus": 403,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "americorps-nccc": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "blocked",
+    "httpStatus": 403,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "amnesty-youth": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "blocked",
+    "httpStatus": 403,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "apia-scholars": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "bennington-young-writers-awards": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "best-buddies": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "blue-ocean-competition": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "blocked",
+    "httpStatus": 403,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "boys-girls-clubs-youth-of-the-year": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "boys-state": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "bpa": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "breakthrough-junior-challenge": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "brower-youth-awards": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "bu-rise": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "bu-tanglewood-institute": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "burger-king-scholars": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "broken",
+    "httpStatus": 404,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "cameron-impact-scholarship": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "blocked",
+    "httpStatus": 403,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "canada-usa-mathcamp": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "error",
+    "httpStatus": null,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "careeronestop-scholarship-finder": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "blocked",
+    "httpStatus": 403,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "cbyx": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "error",
+    "httpStatus": null,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "cdc-museum-disease-detective-camp": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "civil-air-patrol-cadets": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "clark-scholars": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "close-up-washington": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "cmu-pre-college": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "cmu-sams": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "coca-cola-scholars": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "college-possible": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "concord-review": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "congressional-app-challenge": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "congressional-art-competition": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "congressional-award": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "error",
+    "httpStatus": null,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "conrad-challenge": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "error",
+    "httpStatus": null,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "coolidge-scholarship": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "cspan-studentcam": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": "2027-01-20",
+    "deadlineEvidence": "The submission deadline for all entries in our 2027 competition is Wednesday, January 20, 2027.",
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "csssa-innerspark": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "cyberpatriot": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "blocked",
+    "httpStatus": null,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "davidson-fellows": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "deca": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "dell-scholars": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "diamond-challenge": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "doodle-for-google": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "broken",
+    "httpStatus": 404,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "dosomething": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "earthecho-international": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "economics-for-leaders": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "error",
+    "httpStatus": null,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "educators-rising": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "elks-most-valuable-student": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": "2026-11-12",
+    "deadlineEvidence": "The 2027 application deadline is November 12, 2026 at 11:59 p.m., Pacific Time.",
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "equitable-excellence-scholarship": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "essentially-ellington": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "error",
+    "httpStatus": null,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "explore-health-careers": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "error",
+    "httpStatus": null,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "exploring-health-careers": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "fafsa": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "error",
+    "httpStatus": null,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "fbla": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "blocked",
+    "httpStatus": 403,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "fccla": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "fed-challenge": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "feeding-america-food-banks": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "first-robotics-competition": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "first-tech-challenge": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "fred-hutch-research-explorers": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": "2026-03-13",
+    "deadlineEvidence": "Recommendation form is due by 11:59 pm PST March 13, 2026",
+    "applicationsClosed": true,
+    "closedEvidence": "ompleted a high school biology course to participate. The application for the 2026 Pathways Research Explorers program is now closed, and cohort notifications have been sent to the applicant e"
+  },
+  "fred-hutch-summer-internship": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": "2026-03-13",
+    "deadlineEvidence": "…rences to complete a recommendation form. Recommendation forms are due by the application deadline, March 13, 2026. Once you submit your application, an e",
+    "applicationsClosed": true,
+    "closedEvidence": "d the Guide to Life Science Careers . How to Apply We are no longer accepting applications for 2026. Information on the 2027 program will be posted in"
+  },
+  "freecodecamp": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "from-the-top": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "error",
+    "httpStatus": null,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "gates-scholarship": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "genes-in-space": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "girl-up": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "girls-state": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "error",
+    "httpStatus": null,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "girls-who-code-summer": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "gloria-barron-prize": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "blocked",
+    "httpStatus": 403,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "habitat-for-humanity-youth": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "harvard-cs50": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "error",
+    "httpStatus": null,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "hispanic-scholarship-fund": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "hoby-leadership-seminar": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "error",
+    "httpStatus": null,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "horatio-alger-national-scholarship": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "error",
+    "httpStatus": null,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "hosa": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "interact-club": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "blocked",
+    "httpStatus": 429,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "interlochen-summer": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "iowa-young-writers-studio": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "error",
+    "httpStatus": null,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "ja-company-program": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "blocked",
+    "httpStatus": null,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "jack-kent-cooke-college-scholarship": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": "2026-11-11",
+    "deadlineEvidence": "The Cooke College Scholarship Program application is currently open and will close on November 11, 2026.",
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "jackie-robinson-foundation-scholarship": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "jackson-lab-summer-student": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "jfk-profile-in-courage-essay": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "blocked",
+    "httpStatus": 403,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "jhu-cty": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "blocked",
+    "httpStatus": 403,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "jhu-engineering-innovation": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "blocked",
+    "httpStatus": 403,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "john-locke-essay-competition": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "junior-science-humanities-symposium": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "error",
+    "httpStatus": null,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "junior-state-of-america": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "error",
+    "httpStatus": null,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "kenyon-review-young-writers": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": "2026-12-10",
+    "deadlineEvidence": "Applications open October 26 and are due December 10, 2026.",
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "key-club": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "khan-academy": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "kode-with-klossy": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "launchx": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "leda-scholars": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 202,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "leo-clubs": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "blocked",
+    "httpStatus": 403,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "m3-challenge": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "blocked",
+    "httpStatus": 403,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "mit-beaver-works-summer-institute": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "mit-opencourseware": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "mit-primes-usa": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "mit-think-scholars": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "mites-semester": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "error",
+    "httpStatus": null,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "mites-summer": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "model-united-nations": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "broken",
+    "httpStatus": 404,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "morehead-cain": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "msk-hopp-summer-student": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "blocked",
+    "httpStatus": null,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "nafme-all-national-honor-ensembles": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "blocked",
+    "httpStatus": 403,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "nasa-ostem-internships": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "blocked",
+    "httpStatus": 429,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "nasa-space-apps-challenge": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "error",
+    "httpStatus": null,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "national-economics-challenge": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "national-ffa": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "national-high-school-ethics-bowl": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "error",
+    "httpStatus": null,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "national-history-day": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "national-honor-society": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "error",
+    "httpStatus": null,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "national-merit-scholarship": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "error",
+    "httpStatus": null,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "national-mock-trial": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "national-personal-finance-challenge": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "national-speech-debate-association": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "national-student-poets-program": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "broken",
+    "httpStatus": 404,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "national-youth-science-camp": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "error",
+    "httpStatus": null,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "naval-academy-summer-seminar": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": true,
+    "closedEvidence": "nts BGO Area Coordinators Summer Seminar The Summer Seminar applications for 2026 are closed The United States Naval Academy Summer Seminar is the first"
+  },
+  "nfte-world-series-of-innovation": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "nih-hs-sip": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "npr-student-podcast-challenge": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "broken",
+    "httpStatus": 404,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "nsli-y": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": "2026-11-12",
+    "deadlineEvidence": "…lication for summer and academic year programs abroad is now available! The application deadline is November 12, 2026 at 4:00 PM ET.",
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "nyo-usa": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "blocked",
+    "httpStatus": 403,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "nyo2": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "blocked",
+    "httpStatus": 403,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "nyt-learning-network-contests": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "blocked",
+    "httpStatus": 403,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "nyu-arise": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": "2026-02-27",
+    "deadlineEvidence": "Application Deadline - 2/27/26 by 5PM",
+    "applicationsClosed": true,
+    "closedEvidence": "n Science and Engineering Program Details ARISE Summer 2026 Application is CLOSED AT A GLANCE What will students do? Conduct research Obtain"
+  },
+  "nyu-tisch-summer-high-school": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": "2026-12-01",
+    "deadlineEvidence": "The summer 2027 application is open. The application deadline is December 1, 2026.",
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "ocean-awareness-contest": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "blocked",
+    "httpStatus": 403,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "official-sat-practice-khan": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "paradigm-challenge": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "error",
+    "httpStatus": null,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "picoctf": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "poetry-out-loud": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "error",
+    "httpStatus": null,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "posse-foundation": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "pratt-precollege": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "project-green-challenge": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "broken",
+    "httpStatus": 404,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "promys": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": true,
+    "closedEvidence": "unities. Read More Applications Student Application is CLOSED! Counselor Application is CLOSED! Teacher Application is CL"
+  },
+  "questbridge-college-prep-scholars": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "questbridge-national-college-match": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "red-cross-first-aid-cpr": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "blocked",
+    "httpStatus": 403,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "red-cross-youth": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "blocked",
+    "httpStatus": 403,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "regeneron-isef": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "regeneron-science-talent-search": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": "2026-11-05",
+    "deadlineEvidence": "Application Deadline is November 5, 2026 at 8pm ET. Open Your Application Today!",
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "research-science-institute": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "risd-pre-college": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "robertson-scholars": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "rockefeller-ssrp": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": "2027-01-04",
+    "deadlineEvidence": "…erials, including the letter of recommendation, must be submitted by 5:00pm Eastern Time on Monday, January 4, 2027. Late applications will not be consider",
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "ron-brown-scholar": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 202,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "ross-mathematics-program": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "rotary-youth-exchange": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "blocked",
+    "httpStatus": 429,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "running-start-ywpl": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "error",
+    "httpStatus": null,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "scholastic-art-writing-awards": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "science-olympiad": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 202,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "seap-navy": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "error",
+    "httpStatus": null,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "senate-page-program": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "error",
+    "httpStatus": null,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "seo-scholars": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "simons-summer-research-program": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "skillsusa": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "society-of-women-engineers-scholarships": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": "2027-02-01",
+    "deadlineEvidence": "Deadline: February 1, 2027",
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "special-olympics-unified-champion-schools": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "stamps-scholars": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "stanford-medical-youth-science-program": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "error",
+    "httpStatus": null,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "stanford-simr": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "stanford-sumac": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": true,
+    "closedEvidence": "nments to complete outside of the live class meeting times. Application Now Closed Our application for the 2026 Stanford University Mathematic"
+  },
+  "stock-market-game": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "student-poll-worker": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "summer-science-program": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "error",
+    "httpStatus": null,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "taco-bell-live-mas-scholarship": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "error",
+    "httpStatus": null,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "technovation-girls": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "blocked",
+    "httpStatus": 403,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "teen-mental-health-first-aid": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "error",
+    "httpStatus": null,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "telluride-association-summer-seminar": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": "2025-12-03",
+    "deadlineEvidence": "Applications open October 15, 2025 and close December 3, 2025",
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "ucsf-summer-student-research": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "uncf-scholarships": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "unicef-usa-clubs": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "blocked",
+    "httpStatus": 403,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "upward-bound": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "blocked",
+    "httpStatus": 403,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "us-national-chemistry-olympiad": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "us-physics-team": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "us-presidential-scholars": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "blocked",
+    "httpStatus": 403,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "us-senate-youth-program": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": "2026-12-01",
+    "deadlineEvidence": "….C. March 6 – 13, 2027. The national deadline for all states to submit their delegate selections is December 1, 2026. Two student leaders from each state, t",
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "usa-biology-olympiad": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "error",
+    "httpStatus": null,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "usa-brain-bee": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "error",
+    "httpStatus": null,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "usaco": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "blocked",
+    "httpStatus": 403,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "vex-robotics-competition": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "error",
+    "httpStatus": null,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "vfw-voice-of-democracy": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "volunteermatch": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "we-the-people": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "broken",
+    "httpStatus": 404,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "west-point-summer-leaders-experience": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "blocked",
+    "httpStatus": 403,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "wharton-investment-competition": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "write-the-world": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "yes-abroad": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": true,
+    "closedEvidence": "zegovina, India, Indonesia, and North Macedonia. Learn More Applications for the YES Abroad 2027 spring semester program are now closed. For information about 2027-2028 opportunities, visit disco"
+  },
+  "ymca-youth-and-government": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "blocked",
+    "httpStatus": 403,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "young-entrepreneurs-academy": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  },
+  "youngarts": {
+    "lastChecked": "2026-10-15",
+    "linkStatus": "ok",
+    "httpStatus": 200,
+    "nextDeadline": null,
+    "deadlineEvidence": null,
+    "applicationsClosed": false,
+    "closedEvidence": null
+  }
+}
