@@ -318,5 +318,325 @@
     "cluster": null,
     "firstSeen": "2026-10-15",
     "status": "new"
+  },
+  {
+    "title": "Undergraduate Scholarship Program",
+    "url": "https://www.training.nih.gov/research-training/pb/ugsp/",
+    "foundOn": "https://www.training.nih.gov",
+    "cluster": null,
+    "firstSeen": "2026-10-15",
+    "status": "new"
+  },
+  {
+    "title": "Apply to Residency or Fellowship",
+    "url": "https://students-residents.aamc.org/applying-residencies-eras/about-eras-system",
+    "foundOn": "https://students-residents.aamc.org",
+    "cluster": null,
+    "firstSeen": "2026-10-15",
+    "status": "new"
+  },
+  {
+    "title": "Train in a Residency or Fellowship",
+    "url": "https://students-residents.aamc.org/train-residency-or-fellowship",
+    "foundOn": "https://students-residents.aamc.org",
+    "cluster": null,
+    "firstSeen": "2026-10-15",
+    "status": "new"
+  },
+  {
+    "title": "Apply to Fellowships with ERAS",
+    "url": "https://students-residents.aamc.org/applying-fellowships-eras/apply-fellowships-eras-system",
+    "foundOn": "https://students-residents.aamc.org",
+    "cluster": null,
+    "firstSeen": "2026-10-15",
+    "status": "new"
+  },
+  {
+    "title": "Apply to Biomedical Research Programs",
+    "url": "https://students-residents.aamc.org/careers-medical-research/apply-biomedical-research-programs",
+    "foundOn": "https://students-residents.aamc.org",
+    "cluster": null,
+    "firstSeen": "2026-10-15",
+    "status": "new"
+  },
+  {
+    "title": "Chemers Neustein Summer Undergraduate Research Fellowship Program (SURF)",
+    "url": "https://www.rockefeller.edu/education-and-training/surf",
+    "foundOn": "https://www.rockefeller.edu/outreach/ssrp/",
+    "cluster": null,
+    "firstSeen": "2026-10-15",
+    "status": "new"
+  },
+  {
+    "title": "Undergraduate Transfer Scholarship",
+    "url": "https://www.jkcf.org/our-scholarships/undergraduate-transfer-scholarship/",
+    "foundOn": "https://www.jkcf.org/our-scholarships/college-scholarship-program/",
+    "cluster": null,
+    "firstSeen": "2026-10-15",
+    "status": "new"
+  },
+  {
+    "title": "Scholarships & Awards",
+    "url": "https://www.questbridge.org/apply-to-college/programs/college-prep-scholars-program/scholarships-and-awards",
+    "foundOn": "https://www.questbridge.org/high-school-students/national-college-match",
+    "cluster": null,
+    "firstSeen": "2026-10-15",
+    "status": "new"
+  },
+  {
+    "title": "The Match Scholarship",
+    "url": "https://www.questbridge.org/apply-to-college/programs/national-college-match/the-match-scholarship",
+    "foundOn": "https://www.questbridge.org/high-school-students/national-college-match",
+    "cluster": null,
+    "firstSeen": "2026-10-15",
+    "status": "new"
+  },
+  {
+    "title": "Graduate School Scholarship: Law",
+    "url": "https://www.questbridge.org/thrive/graduate-school/graduate-school-scholarship-law",
+    "foundOn": "https://www.questbridge.org/high-school-students/national-college-match",
+    "cluster": null,
+    "firstSeen": "2026-10-15",
+    "status": "new"
+  },
+  {
+    "title": "Graduate School Scholarship: Medicine",
+    "url": "https://www.questbridge.org/thrive/graduate-school/graduate-school-scholarship-medicine",
+    "foundOn": "https://www.questbridge.org/high-school-students/national-college-match",
+    "cluster": null,
+    "firstSeen": "2026-10-15",
+    "status": "new"
+  },
+  {
+    "title": "Scholarships College financial aid",
+    "url": "https://www.elks.org/scholars/default.cfm?m=programs",
+    "foundOn": "https://www.elks.org/scholars/scholarships/mvs.cfm",
+    "cluster": null,
+    "firstSeen": "2026-10-15",
+    "status": "new"
+  },
+  {
+    "title": "Youth Programs DAP and HoopShoot",
+    "url": "https://www.elks.org/enf/YouthPrograms.cfm",
+    "foundOn": "https://www.elks.org/scholars/scholarships/mvs.cfm",
+    "cluster": null,
+    "firstSeen": "2026-10-15",
+    "status": "new"
+  },
+  {
+    "title": "Scholarship Guidelines",
+    "url": "https://www.elks.org/scholars/scholarships/guidelines.cfm",
+    "foundOn": "https://www.elks.org/scholars/scholarships/mvs.cfm",
+    "cluster": null,
+    "firstSeen": "2026-10-15",
+    "status": "new"
+  },
+  {
+    "title": "Scholarship Finder",
+    "url": "https://www.hsf.net/scholarship-finder",
+    "foundOn": "https://www.hsf.net",
+    "cluster": null,
+    "firstSeen": "2026-10-15",
+    "status": "new"
+  },
+  {
+    "title": "Scholarship Categories",
+    "url": "https://www.davidsongifted.org/gifted-programs/fellows-scholarship/scholarship-categories/",
+    "foundOn": "https://www.davidsongifted.org/gifted-programs/fellows-scholarship/",
+    "cluster": null,
+    "firstSeen": "2026-10-15",
+    "status": "new"
+  },
+  {
+    "title": "Meet the 2026 Fellows Scholarship Recipients",
+    "url": "https://www.davidsongifted.org/gifted-programs/fellows-scholarship/fellows/current-and-past-fellows/2026-fellows/",
+    "foundOn": "https://www.davidsongifted.org/gifted-programs/fellows-scholarship/",
+    "cluster": null,
+    "firstSeen": "2026-10-15",
+    "status": "new"
+  },
+  {
+    "title": "K-12 Education Fellowship",
+    "url": "https://uncf.org/walton",
+    "foundOn": "https://uncf.org/scholarships",
+    "cluster": null,
+    "firstSeen": "2026-10-15",
+    "status": "new"
+  },
+  {
+    "title": "Frederick Douglass Bicentennial Scholarship Program",
+    "url": "https://uncf.org/frederickdouglass",
+    "foundOn": "https://uncf.org/scholarships",
+    "cluster": null,
+    "firstSeen": "2026-10-15",
+    "status": "new"
+  },
+  {
+    "title": "Get tips on how to apply for scholarships and grants",
+    "url": "https://uncf.org/pages/Applying-for-Scholarships-and-Grants",
+    "foundOn": "https://uncf.org/scholarships",
+    "cluster": null,
+    "firstSeen": "2026-10-15",
+    "status": "new"
+  },
+  {
+    "title": "Scholarships Building a Future at the Intersection of Business and Law October 13, 2026",
+    "url": "https://uncf.org/the-latest/building-a-future-at-the-intersection-of-business-and-law",
+    "foundOn": "https://uncf.org/scholarships",
+    "cluster": null,
+    "firstSeen": "2026-10-15",
+    "status": "new"
+  },
+  {
+    "title": "Scholarships Finding Sisterhood at Spelman College October 12, 2026",
+    "url": "https://uncf.org/the-latest/finding-sisterhood-at-spelman-college",
+    "foundOn": "https://uncf.org/scholarships",
+    "cluster": null,
+    "firstSeen": "2026-10-15",
+    "status": "new"
+  },
+  {
+    "title": "2026-27 Coolidge Scholarship Application",
+    "url": "https://coolidgescholars.org/apply/",
+    "foundOn": "https://coolidgescholars.org",
+    "cluster": null,
+    "firstSeen": "2026-10-15",
+    "status": "new"
+  },
+  {
+    "title": "Fellowship Program Reports",
+    "url": "https://www.possefoundation.org/fellowship-program-report",
+    "foundOn": "https://www.possefoundation.org",
+    "cluster": null,
+    "firstSeen": "2026-10-15",
+    "status": "new"
+  },
+  {
+    "title": "West Monroe Hosts Internship Celebration, Day of Service",
+    "url": "https://www.possefoundation.org/news-and-events/west-monroe-deepens-partnership-with-posse-los-angeles",
+    "foundOn": "https://www.possefoundation.org",
+    "cluster": null,
+    "firstSeen": "2026-10-15",
+    "status": "new"
+  },
+  {
+    "title": "Scholarship Fund Board",
+    "url": "https://www.moreheadcain.org/about/morehead-cain-scholarship-fund/",
+    "foundOn": "https://www.moreheadcain.org",
+    "cluster": null,
+    "firstSeen": "2026-10-15",
+    "status": "new"
+  },
+  {
+    "title": "Professional Experience Internship (PEI)",
+    "url": "https://www.seo-usa.org/scholars/locations/san-francisco/professional-experience-internship-pei/",
+    "foundOn": "https://www.seo-usa.org/scholars/",
+    "cluster": null,
+    "firstSeen": "2026-10-15",
+    "status": "new"
+  },
+  {
+    "title": "Scholarships & Recognition",
+    "url": "https://satsuite.collegeboard.org/in-school-assessments/scholarships-recognition",
+    "foundOn": "https://satsuite.collegeboard.org/practice",
+    "cluster": null,
+    "firstSeen": "2026-10-15",
+    "status": "new"
+  },
+  {
+    "title": "Collegiate Challenge",
+    "url": "https://www.habitat.org/volunteer/travel-and-build/collegiate-challenge",
+    "foundOn": "https://www.habitat.org/volunteer/near-you/youth-programs",
+    "cluster": null,
+    "firstSeen": "2026-10-15",
+    "status": "new"
+  },
+  {
+    "title": "2026 RFL Scholarship recipients",
+    "url": "https://www.keyclub.org/2026-rfl-scholarship-recipients/",
+    "foundOn": "https://www.keyclub.org",
+    "cluster": null,
+    "firstSeen": "2026-10-15",
+    "status": "new"
+  },
+  {
+    "title": "Grants and scholarships",
+    "url": "https://www.keyclub.org/members-advisors/grants-and-scholarships/",
+    "foundOn": "https://www.keyclub.org",
+    "cluster": null,
+    "firstSeen": "2026-10-15",
+    "status": "new"
+  },
+  {
+    "title": "eligible for a $1,500 scholarship",
+    "url": "https://dosomething.org/program/offline-mode",
+    "foundOn": "https://dosomething.org",
+    "cluster": null,
+    "firstSeen": "2026-10-15",
+    "status": "new"
+  },
+  {
+    "title": "Section-Selected Scholarships",
+    "url": "https://swe.org/scholarships/swe-scholarships-by-section/",
+    "foundOn": "https://swe.org/scholarships/",
+    "cluster": null,
+    "firstSeen": "2026-10-15",
+    "status": "new"
+  },
+  {
+    "title": "Society-Selected Scholarships",
+    "url": "https://swe.org/society-selected-scholarships",
+    "foundOn": "https://swe.org/scholarships/",
+    "cluster": null,
+    "firstSeen": "2026-10-15",
+    "status": "new"
+  },
+  {
+    "title": "Apply for a SWE Scholarship",
+    "url": "https://swe.org/apply-for-a-swe-scholarship/",
+    "foundOn": "https://swe.org/scholarships/",
+    "cluster": null,
+    "firstSeen": "2026-10-15",
+    "status": "new"
+  },
+  {
+    "title": "Scholarship Volunteer Opportunities",
+    "url": "https://swe.org/volunteer-for-the-swe-scholarship-program/",
+    "foundOn": "https://swe.org/scholarships/",
+    "cluster": null,
+    "firstSeen": "2026-10-15",
+    "status": "new"
+  },
+  {
+    "title": "Scholarships History Timeline",
+    "url": "https://swe.org/scholarships-timeline/",
+    "foundOn": "https://swe.org/scholarships/",
+    "cluster": null,
+    "firstSeen": "2026-10-15",
+    "status": "new"
+  },
+  {
+    "title": "Precollege Outreach Event Toolkit (POET)",
+    "url": "https://swe.org/outreach/adult-advocate/toolkit/",
+    "foundOn": "https://swe.org/scholarships/",
+    "cluster": null,
+    "firstSeen": "2026-10-15",
+    "status": "new"
+  },
+  {
+    "title": "Collegiate Competitions",
+    "url": "https://swe.org/awards/collegiate-competitions/",
+    "foundOn": "https://swe.org/scholarships/",
+    "cluster": null,
+    "firstSeen": "2026-10-15",
+    "status": "new"
+  },
+  {
+    "title": "Share Information About Scholarships >",
+    "url": "https://swe.org/wp-content/uploads/2024/05/25-SWE-S-015-Scholarship-Flyer-072225-CP3-1.pdf",
+    "foundOn": "https://swe.org/scholarships/",
+    "cluster": null,
+    "firstSeen": "2026-10-15",
+    "status": "new"
   }
 ]
