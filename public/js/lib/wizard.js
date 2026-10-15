@@ -4,6 +4,7 @@
 import { h, icon, openModal, modalHeader, refreshIcons, toast } from './dom.js';
 import { getProfile, saveProfile, CLUSTER_KEYS } from './store.js';
 import { CAREER_GOALS, US_STATES } from './data.js';
+import { INCOME_BANDS, HOUSEHOLD_SIZES, TIER_LABELS, financeTier } from './finance.js';
 
 const CLUSTER_INFO = {
   STEM: ['STEM', 'Science, tech, engineering, math & coding'],
@@ -17,9 +18,10 @@ const CLUSTER_INFO = {
 
 const LOOKING_FOR = ['Summer Program', 'Internship', 'Research', 'Competition', 'Scholarship', 'Club / Organization', 'Volunteering', 'Exchange / Travel', 'College Access'];
 
-const STEPS = ['About you', 'Interests', 'Goals', 'Details', 'Finish'];
+const STEPS = ['About you', 'Interests', 'Goals', 'Details', 'Family finances', 'Finish'];
+export const FINANCE_STEP = STEPS.indexOf('Family finances');
 
-export function openWizard({ onComplete } = {}) {
+export function openWizard({ onComplete, startStep = 0 } = {}) {
   const existing = getProfile();
   const draft = {
     firstName: existing?.firstName ?? '',
@@ -32,9 +34,14 @@ export function openWizard({ onComplete } = {}) {
     serviceHours: existing?.serviceHours,
     formatPreference: existing?.formatPreference ?? 'any',
     financialNeed: existing?.financialNeed,
+    householdSize: existing?.householdSize,
+    incomeBand: existing?.incomeBand,
+    benefits: existing?.benefits,
+    firstGen: existing?.firstGen,
     goals: existing?.goals ?? '',
   };
-  let step = 0;
+  // Jumping straight to a later step only makes sense once the required answers exist.
+  let step = existing?.grade && existing.interests?.length ? Math.min(Math.max(0, startStep), STEPS.length - 1) : 0;
 
   const body = h('div', { class: 'modal-body' });
   const progress = h('div', { class: 'wizard-progress', 'aria-hidden': 'true' }, STEPS.map(() => h('span')));
@@ -114,13 +121,47 @@ export function openWizard({ onComplete } = {}) {
         h('span', { class: 'label' }, 'Is cost a big factor for you?'),
         singleChips('Financial need', [[true, 'Yes, show free & paid options first'], [false, 'Not really'], [undefined, 'Prefer not to say']], draft.financialNeed, (v) => { draft.financialNeed = v; })),
     ],
+    () => {
+      const tierNote = h('p', { class: 'small muted mb-0 mt-2', 'aria-live': 'polite' });
+      const paintTier = () => {
+        const tier = financeTier(draft);
+        tierNote.textContent = tier ? `Based on this: ${TIER_LABELS[tier].toLowerCase()}. We'll point out programs with income limits.` : '';
+      };
+      paintTier();
+      const pick = (key) => (v) => { draft[key] = v; paintTier(); };
+      return [
+        h('div', { class: 'callout' }, icon('shield-check'),
+          h('span', {}, h('strong', {}, 'Every question here is optional. '),
+            'Some scholarships and programs are only for students from lower-income families or first-generation college students. Your answers are saved only in this browser, are never sent anywhere, and you can delete them anytime.')),
+        h('div', { class: 'form-grid mt-2' },
+          h('div', { class: 'field' },
+            h('label', { class: 'label', for: 'wz-household' }, 'People in your household'),
+            h('select', { id: 'wz-household', class: 'select', 'aria-describedby': 'wz-household-hint', onchange: (e) => pick('householdSize')(e.target.value ? Number(e.target.value) : undefined) },
+              h('option', { value: '' }, 'Prefer not to say'),
+              HOUSEHOLD_SIZES.map((n) => h('option', { value: String(n), selected: draft.householdSize === n || undefined }, n === 8 ? '8 or more' : String(n)))),
+            h('span', { class: 'hint', id: 'wz-household-hint' }, 'You, your parents or guardians, and anyone they support.')),
+          h('div', { class: 'field' },
+            h('label', { class: 'label', for: 'wz-income' }, 'Yearly household income'),
+            h('select', { id: 'wz-income', class: 'select', 'aria-describedby': 'wz-income-hint', onchange: (e) => pick('incomeBand')(e.target.value || undefined) },
+              h('option', { value: '' }, 'Prefer not to say'),
+              INCOME_BANDS.map((b) => h('option', { value: b.id, selected: draft.incomeBand === b.id || undefined }, b.label))),
+            h('span', { class: 'hint', id: 'wz-income-hint' }, 'Before taxes. A rough range is fine; ask a parent or guardian if you’re not sure.'))),
+        h('div', { class: 'field mt-2' },
+          h('span', { class: 'label', id: 'wz-benefits' }, 'Does your family get free or reduced-price school lunch, SNAP, Medicaid, or similar help?'),
+          singleChips('Family receives free or reduced-price lunch, SNAP, Medicaid, or similar help', [[true, 'Yes'], [false, 'No'], [undefined, 'Prefer not to say']], draft.benefits, pick('benefits'))),
+        h('div', { class: 'field' },
+          h('span', { class: 'label', id: 'wz-firstgen' }, 'Will you be the first in your family to get a four-year college degree?'),
+          singleChips('First-generation college student', [[true, 'Yes'], [false, 'No'], [undefined, 'Not sure']], draft.firstGen, pick('firstGen'))),
+        tierNote,
+      ];
+    },
     () => [
       h('div', { class: 'field' },
         h('label', { class: 'label', for: 'wz-goals' }, 'Anything else Zeus should know? ', h('span', { class: 'faint' }, '(optional)')),
         h('textarea', { id: 'wz-goals', class: 'textarea', maxlength: '400', placeholder: 'e.g. "I love building things and want to try research this summer, but I need something close to home."', oninput: (e) => { draft.goals = e.target.value; } }, draft.goals),
         h('span', { class: 'hint' }, 'Avoid personal details like your school, address, or phone number.')),
       h('div', { class: 'callout mt-2' }, icon('shield-check'),
-        h('span', { text: 'Your profile is saved only in this browser. When you chat with Zeus, it is sent with your question so answers can be personalized, and it is not stored on our server.' })),
+        h('span', { text: 'Your profile is saved only in this browser. Zeus runs in your browser too, so nothing you enter here is sent to a server.' })),
     ],
   ];
 
