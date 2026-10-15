@@ -125,6 +125,16 @@ describe('closed notices and discovery', () => {
     assert.ok(!looksLikeOpportunity('Learn more'));
     assert.ok(!looksLikeOpportunity('Donate to our scholarship fund'));
     assert.ok(!looksLikeOpportunity('2026 competition results'));
+    // Seen on the first live run: news posts, job listings, and teacher pages.
+    assert.ok(!looksLikeOpportunity('Stuyvesant High School Wins the 2026 Wharton Global High School Investment Competition'));
+    assert.ok(!looksLikeOpportunity('High school students from across the US flexed…'));
+    assert.ok(!looksLikeOpportunity('Summer Camp Jobs'));
+    assert.ok(!looksLikeOpportunity('2027 YoungArts National Arts Competition Educator Resource Guide'));
+    assert.ok(!looksLikeOpportunity('National Investment Challenge', 'https://example.org/news/national-investment-challenge'));
+    assert.ok(looksLikeOpportunity('National Investment Challenge', 'https://example.org/programs/national-investment-challenge'));
+    for (const generic of ['Competitions', 'Summer Programs', 'View Scholarships', 'Learn About Scholarships', 'High School Programs']) {
+      assert.ok(!looksLikeOpportunity(generic), generic);
+    }
   });
 });
 
