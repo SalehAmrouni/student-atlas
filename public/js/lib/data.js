@@ -52,14 +52,49 @@ export function gradeLabel(grades) {
   return grades.length === 1 ? `${ord(grades[0])} graders` : `Grades ${grades.join(', ')}`;
 }
 
-/** Months until the next typical deadline (0 = this month), or null if rolling. */
+const localIso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+
+export function formatDate(iso) {
+  const [y, m, d] = iso.split('-').map(Number);
+  return new Date(y, m - 1, d).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+/**
+ * What the weekly checker found on the official site for this cycle, or null when it found nothing:
+ * { state: 'open', days, label } for an upcoming exact deadline, 'expired' once it has passed,
+ * or 'closed' when the site says applications are closed.
+ */
+export function deadlineStatus(opp, now = new Date()) {
+  if (opp.applicationsClosed) return { state: 'closed', label: 'Applications closed' };
+  if (!opp.nextDeadline) return null;
+  const today = localIso(now);
+  if (opp.nextDeadline < today) return { state: 'expired', label: `Deadline passed (${formatDate(opp.nextDeadline)})` };
+  const days = Math.round((Date.parse(opp.nextDeadline) - Date.parse(today)) / 86_400_000);
+  const label = days === 0 ? 'Due today' : days === 1 ? 'Due tomorrow' : `Due ${formatDate(opp.nextDeadline)}`;
+  return { state: 'open', days, label };
+}
+
+/** True when this cycle's deadline has passed or the official site says applications are closed. */
+export const isExpired = (opp, now = new Date()) => ['expired', 'closed'].includes(deadlineStatus(opp, now)?.state);
+
+/**
+ * Months until the next deadline (0 = this month), or null if rolling. Uses this cycle's exact
+ * date when the checker found an upcoming one, otherwise the typical deadline month.
+ */
 export function monthsUntilDeadline(opp, now = new Date()) {
+  const status = deadlineStatus(opp, now);
+  if (status?.state === 'open') {
+    const [y, m] = opp.nextDeadline.split('-').map(Number);
+    return (y - now.getFullYear()) * 12 + (m - (now.getMonth() + 1));
+  }
   if (!opp.deadlineMonth) return null;
   const current = now.getMonth() + 1;
   return (opp.deadlineMonth - current + 12) % 12;
 }
 
 export function deadlineHint(opp, now = new Date()) {
+  const status = deadlineStatus(opp, now);
+  if (status) return status.state === 'open' && status.days <= 120 ? status.label : null;
   const m = monthsUntilDeadline(opp, now);
   if (m === null) return null;
   if (m === 0) return 'Usually due this month';
