@@ -3,7 +3,9 @@ import assert from 'node:assert/strict';
 
 const { validateReview } = await import('../server/reviews/validate.js');
 const { createReviewHandlers, REPORTS_TO_HIDE, PAGE_SIZE } = await import('../server/reviews/handler.js');
-const { MemoryReviewStore, RedisReviewStore, reviewStoreFromEnv } = await import('../server/reviews/store.js');
+const { SupabaseReviewStore, reviewStoreFromEnv } = await import('../server/reviews/store.js');
+const { freshDatabase } = await import('./helpers/db.js');
+const { supabaseRpc } = await import('../server/db/supabase.js');
 const { createApp } = await import('../server/index.js');
 
 const OPP = 'test-program';
@@ -14,8 +16,8 @@ const good = (extra = {}) => ({
   name: 'Sam', role: 'Student', experience: 'Participated', agree: true, elapsedMs: 10_000, ...extra,
 });
 
-function setup(env = {}) {
-  const store = new MemoryReviewStore();
+async function setup(env = {}) {
+  const store = new SupabaseReviewStore((await freshDatabase()).rpc);
   const { reviews, admin } = createReviewHandlers({ store, env: { REVIEWS_ADMIN_TOKEN: ADMIN, ...env }, knownIds: new Set([OPP, 'other']) });
   const call = async (handler, method, { ip = '1.1.1.1', body, query = '', headers = {} } = {}) => {
     const res = await handler(new Request(`https://atlas.test/api/reviews${query}`, {
@@ -67,7 +69,7 @@ describe('review validation', () => {
 
 describe('reviews API', () => {
   test('posts a review and shows it with a summary', async () => {
-    const api = setup();
+    const api = await setup();
     const created = await api.post(good());
     assert.equal(created.status, 201);
     assert.equal(created.data.status, 'published');
@@ -82,14 +84,14 @@ describe('reviews API', () => {
   });
 
   test('validates input and rejects unknown opportunities', async () => {
-    const api = setup();
+    const api = await setup();
     assert.equal((await api.post(good({ rating: 0 }))).status, 422);
     assert.equal((await api.post(good({ opportunityId: 'not-real' }))).status, 404);
     assert.equal((await api.get('?id=not-real')).status, 404);
   });
 
   test('silently drops bots (honeypot or instant submit)', async () => {
-    const api = setup();
+    const api = await setup();
     assert.equal((await api.post(good({ website: 'http://spam' }))).status, 202);
     assert.equal((await api.post(good({ elapsedMs: 200 }))).status, 202);
     assert.equal((await api.post(good({ elapsedMs: undefined }))).status, 202);
@@ -97,7 +99,7 @@ describe('reviews API', () => {
   });
 
   test('one review per person per opportunity, and rate limits', async () => {
-    const api = setup();
+    const api = await setup();
     assert.equal((await api.post(good())).status, 201);
     assert.equal((await api.post(good())).status, 409);
     assert.equal((await api.post(good({ opportunityId: 'other' }))).status, 201);
@@ -108,7 +110,7 @@ describe('reviews API', () => {
   });
 
   test('blocks cross-site posts and non-JSON bodies', async () => {
-    const api = setup();
+    const api = await setup();
     assert.equal((await api.post(good(), { headers: { origin: 'https://evil.test' } })).status, 403);
     assert.equal((await api.post(good(), { headers: { 'sec-fetch-site': 'cross-site' } })).status, 403);
     assert.equal((await api.post(good(), { headers: { origin: 'https://atlas.test' } })).status, 201);
@@ -116,7 +118,7 @@ describe('reviews API', () => {
   });
 
   test('flagged reviews wait for a moderator, who can approve them', async () => {
-    const api = setup();
+    const api = await setup();
     const created = await api.post(good({ body: 'Honestly this was a shit experience for most of us.' }));
     assert.equal(created.data.status, 'pending');
     assert.equal((await api.get(`?id=${OPP}`)).data.reviews.length, 0);
@@ -132,12 +134,12 @@ describe('reviews API', () => {
   });
 
   test('REVIEWS_MODERATION=all holds every review', async () => {
-    const api = setup({ REVIEWS_MODERATION: 'all' });
+    const api = await setup({ REVIEWS_MODERATION: 'all' });
     assert.equal((await api.post(good())).data.status, 'pending');
   });
 
   test('enough reports hide a review until a moderator checks it', async () => {
-    const api = setup();
+    const api = await setup();
     const { review } = (await api.post(good())).data;
     for (let i = 0; i < REPORTS_TO_HIDE - 1; i++) await api.post({ action: 'report', reviewId: review.id, reason: 'Spam or advertising' }, { ip: `9.9.9.${i}` });
     // The same person reporting twice doesn't count twice.
@@ -154,7 +156,7 @@ describe('reviews API', () => {
   });
 
   test('pages through reviews newest first', async () => {
-    const api = setup();
+    const api = await setup();
     let t = 0;
     api.store.now = () => t;
     const handlers = createReviewHandlers({ store: api.store, env: {}, knownIds: new Set([OPP]), now: () => ++t });
@@ -181,26 +183,47 @@ describe('reviews API', () => {
   });
 });
 
-describe('Redis review store', () => {
-  test('is configured from Vercel KV or Upstash variables', () => {
+describe('Supabase review store', () => {
+  test('is configured from the Supabase URL and secret key', () => {
     assert.equal(reviewStoreFromEnv({}), null);
-    assert.ok(reviewStoreFromEnv({ KV_REST_API_URL: 'https://kv.test', KV_REST_API_TOKEN: 't' }) instanceof RedisReviewStore);
-    assert.ok(reviewStoreFromEnv({ UPSTASH_REDIS_REST_URL: 'https://kv.test', UPSTASH_REDIS_REST_TOKEN: 't' }) instanceof RedisReviewStore);
+    assert.equal(reviewStoreFromEnv({ KV_REST_API_URL: 'https://kv.test', KV_REST_API_TOKEN: 't' }), null);
+    assert.ok(reviewStoreFromEnv({ SUPABASE_URL: 'https://x.supabase.co', SUPABASE_SECRET_KEY: 'sb_secret_x' }) instanceof SupabaseReviewStore);
+    assert.ok(reviewStoreFromEnv({ SUPABASE_URL: 'https://x.supabase.co', SUPABASE_SERVICE_ROLE_KEY: 'eyJ.x.y' }) instanceof SupabaseReviewStore);
   });
 
-  test('speaks the Upstash REST protocol', async () => {
+  test('calls the database functions over the Supabase REST API', async () => {
     const calls = [];
     const fakeFetch = async (url, init) => {
-      calls.push({ url, auth: init.headers.Authorization, body: JSON.parse(init.body) });
-      const result = url.endsWith('/pipeline') ? [{ result: 1 }, { result: 1 }] : { result: 1 };
-      return new Response(JSON.stringify(result));
+      calls.push({ url, headers: init.headers, body: JSON.parse(init.body) });
+      return new Response('3');
     };
-    const store = new RedisReviewStore('https://kv.test/', 'secret', fakeFetch);
-    await store.publish({ id: 'abc12345', opportunityId: OPP, rating: 4, createdAt: 1 });
-    assert.equal(calls[0].url, 'https://kv.test/pipeline');
-    assert.equal(calls[0].auth, 'Bearer secret');
-    assert.deepEqual(calls[0].body[0], ['ZADD', `atlas:rv:pub:${OPP}`, 1, 'abc12345']);
-    assert.deepEqual(calls[1].body, ['HINCRBY', 'atlas:rv:stars', `${OPP}:4`, 1]);
+    const store = new SupabaseReviewStore(supabaseRpc('https://x.supabase.co/', 'sb_secret_abc', fakeFetch));
+    assert.equal(await store.hit('c:1', 60), 3);
+    assert.equal(calls[0].url, 'https://x.supabase.co/rest/v1/rpc/atlas_hit');
+    assert.equal(calls[0].headers.apikey, 'sb_secret_abc');
+    assert.equal(calls[0].headers.Authorization, undefined);
+    assert.deepEqual(calls[0].body, { p_bucket: 'rv:c:1', p_seconds: 60 });
+
+    const legacy = supabaseRpc('https://x.supabase.co', 'eyJhbGciOi.x.y', fakeFetch);
+    await legacy('atlas_review_star_counts');
+    assert.equal(calls[1].headers.Authorization, 'Bearer eyJhbGciOi.x.y');
+    await assert.rejects(legacy('pg_sleep'), /Unknown database function/);
+  });
+
+  test('keeps star counts in step with publishing, holding, and removing', async () => {
+    const store = new SupabaseReviewStore((await freshDatabase()).rpc);
+    const review = { id: 'abc12345', opportunityId: OPP, rating: 4, createdAt: 1, status: 'published' };
+    await store.saveReview(review);
+    await store.publish(review);
+    await store.publish(review);
+    assert.deepEqual(await store.starCounts(), { [`${OPP}:4`]: 1 });
+    await store.hold(review);
+    assert.deepEqual(await store.starCounts(), {});
+    assert.deepEqual(await store.listPendingIds(10), ['abc12345']);
+    await store.publish(review);
+    await store.remove(review);
+    assert.deepEqual(await store.starCounts(), {});
+    assert.equal(await store.getReview('abc12345'), null);
   });
 });
 

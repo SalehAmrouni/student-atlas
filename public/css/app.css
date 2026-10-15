@@ -474,6 +474,13 @@ legend { padding: 0; font-weight: 700; font-size: 1.05rem; margin-bottom: 12px; 
 .empty-state svg { width: 40px; height: 40px; margin-bottom: 12px; color: var(--text-faint); }
 .btn.filters-toggle { display: none; }
 .btn.chat-fab, .btn.dock-close { display: none; }
+/* The docked Zeus panel. It must come before the media queries below, which
+   turn it into a floating panel that the "Ask Zeus" button and X open and close. */
+.zeus-dock {
+  position: sticky; top: calc(var(--header-h) + 16px); height: calc(100vh - var(--header-h) - 32px);
+  display: flex; flex-direction: column; overflow: hidden; padding: 0;
+  background: var(--bg-elevated); border: 1px solid var(--border); border-radius: var(--radius-lg);
+}
 .filters .chip { font-size: 0.84rem; padding: 5px 11px; }
 
 @media (max-width: 1280px) {
@@ -499,11 +506,6 @@ legend { padding: 0; font-weight: 700; font-size: 1.05rem; margin-bottom: 12px; 
 .drawer-backdrop { position: fixed; inset: 0; z-index: 65; background: rgb(8 12 22 / 0.45); animation: fade 0.15s var(--ease); }
 
 /* ---- Zeus chat --------------------------------------------------------- */
-.zeus-dock {
-  position: sticky; top: calc(var(--header-h) + 16px); height: calc(100vh - var(--header-h) - 32px);
-  display: flex; flex-direction: column; overflow: hidden; padding: 0;
-  background: var(--bg-elevated); border: 1px solid var(--border); border-radius: var(--radius-lg);
-}
 .zeus-head { display: flex; align-items: center; gap: 10px; padding: 14px 16px; border-bottom: 1px solid var(--border); }
 .zeus-avatar { width: 36px; height: 36px; border-radius: 12px; display: grid; place-items: center; background: linear-gradient(135deg, var(--brand), var(--accent)); color: #fff; flex-shrink: 0; }
 .zeus-avatar svg { width: 20px; height: 20px; }

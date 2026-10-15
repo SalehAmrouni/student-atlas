@@ -12,17 +12,16 @@
 //   GET  /api/rooms?code=X&student=<username>   one student's portfolio (teacher auth)
 //   POST /api/rooms {action}          create | settings | remove | reset-code | delete
 //
-// What is stored (keys share the `atlas:ac:` prefix and expire after about
-// 13 months without activity):
-//   u:<id>        the account: random username, a hash of the sign-in code, room code
-//   un:<name>     username -> id
-//   d:<id>        the student's synced data (profile, saved list, tracker, My Story,
-//                 Zeus chat, College Lab)
-//   s:<hash>      session token hash -> id (the cookie holds the token)
-//   r:<CODE>      a room: name, open/closed, public key, the private key encrypted
+// What is stored (Supabase Postgres, see supabase/migrations; accounts and
+// rooms expire after about 13 months without activity):
+//   accounts      random username, a hash of the sign-in code, and the student's
+//                 synced data (profile, saved list, tracker, My Story, Zeus chat,
+//                 College Lab)
+//   sessions      session token hash -> account (the cookie holds the token)
+//   rooms         a room: name, open/closed, public key, the private key encrypted
 //                 with the teacher key, and a hash of the teacher's auth token
-//   rm:<CODE>     room members: id -> real name *encrypted in the student's browser*
-//                 with the room's public key, plus grade
+//   room_members  account -> room, with the real name *encrypted in the student's
+//                 browser* with the room's public key, plus grade
 // The server never sees a real name or the teacher key in readable form.
 
 import crypto from 'node:crypto';
@@ -31,7 +30,6 @@ import { counselorInsights } from '../../public/js/lib/insights.js';
 import { financeTier } from '../../public/js/lib/finance.js';
 
 const P = 'atlas:ac:';
-const KEEP_SECONDS = 400 * 24 * 60 * 60; // data expires after ~13 months of inactivity
 const SESSION_SECONDS = 180 * 24 * 60 * 60;
 const COOKIE = 'atlas_session';
 const MAX_SYNC_BYTES = 400 * 1024;
@@ -145,64 +143,46 @@ export function sharedView(data, lastActive) {
 
 /**
  * @param {object} opts
- * @param {object|null} opts.kv        a key-value store (server/kv.js), or null when storage isn't configured
+ * @param {Function|Promise<Function>|null} opts.db  `rpc(fn, args)` for the database (server/db), or null when storage isn't configured
  * @param {object} [opts.env]
  * @param {Map<string, object>} [opts.byId] opportunities by id (for counselor summaries)
  * @param {() => number} [opts.now]
  */
-export function createAccountHandlers({ kv, env = {}, byId = new Map(), now = () => Date.now() }) {
+export function createAccountHandlers({ db, env = {}, byId = new Map(), now = () => Date.now() }) {
+  // Keep this chain as it was with Redis: sign-in codes are hashed with it.
   const salt = env.ACCOUNTS_SALT || env.REVIEWS_SALT || env.KV_REST_API_TOKEN || env.UPSTASH_REDIS_REST_TOKEN || 'student-atlas';
   const visitor = (request) => sha256(`${salt}:ip:${clientIp(request)}`).slice(0, 32);
   const codeHash = (id, code) => sha256(`${salt}:code:${id}:${code}`);
+  const rpc = async (fn, args) => (await db)(fn, args);
 
   async function hit(bucket, rule) {
-    const key = `${P}rl:${bucket}`;
-    const [count, ttl] = await kv.pipeline([['INCR', key], ['TTL', key]]);
-    if (ttl < 0) await kv.cmd('EXPIRE', key, rule.seconds);
-    return count > rule.max;
+    return (await rpc('atlas_hit', { p_bucket: `ac:${bucket}`, p_seconds: rule.seconds })) > rule.max;
   }
+  const peek = (...buckets) => rpc('atlas_peek', { p_buckets: buckets.map((b) => `ac:${b}`) });
   const tooMany = (rule) => json(429, { error: 'Too many tries. Please wait a bit and try again.' }, { 'Retry-After': String(rule.seconds) });
-
-  const getJson = async (key) => {
-    const raw = await kv.cmd('GET', key);
-    try { return raw ? JSON.parse(raw) : null; } catch { return null; }
-  };
-  const setJson = (key, value) => kv.cmd('SET', `${key}`, JSON.stringify(value), 'EX', KEEP_SECONDS);
 
   async function currentUser(request) {
     const token = readCookie(request, COOKIE);
     if (!token || token.length > 100) return null;
-    const id = await kv.cmd('GET', `${P}s:${sha256(token)}`);
-    if (!id) return null;
-    const user = await getJson(`${P}u:${id}`);
+    const user = await rpc('atlas_session_account', { p_token_hash: sha256(token) });
     return user ? { user, token } : null;
   }
 
-  async function roomInfo(code) {
-    return code ? getJson(`${P}r:${code}`) : null;
-  }
+  const roomInfo = (code) => (code ? rpc('atlas_get_room', { p_code: code }) : null);
+  const getAccount = (id) => rpc('atlas_get_account', { p_id: id });
+  const getStored = (id) => rpc('atlas_get_data', { p_id: id });
 
-  async function publicUser(user) {
-    let room = null;
-    if (user.room) {
-      const r = await roomInfo(user.room);
-      room = r ? { code: r.code, name: r.name } : null;
-    }
-    return { username: user.username, emoji: user.emoji, createdAt: user.createdAt, room };
-  }
+  const publicUser = (user) => ({
+    username: user.username,
+    emoji: user.emoji,
+    createdAt: user.createdAt,
+    room: user.room && user.roomName ? { code: user.room, name: user.roomName } : null,
+  });
 
   async function startSession(request, id) {
     const token = crypto.randomBytes(32).toString('base64url');
-    await kv.cmd('SET', `${P}s:${sha256(token)}`, id, 'EX', SESSION_SECONDS);
+    await rpc('atlas_create_session', { p_token_hash: sha256(token), p_account_id: id, p_seconds: SESSION_SECONDS });
     return sessionCookie(request, token);
-  }
-
-  async function touch(user) {
-    await kv.pipeline([
-      ['EXPIRE', `${P}u:${user.id}`, KEEP_SECONDS],
-      ['EXPIRE', `${P}un:${normalizeUsername(user.username)}`, KEEP_SECONDS],
-      ['EXPIRE', `${P}d:${user.id}`, KEEP_SECONDS],
-    ]);
   }
 
   function cleanSyncData(data) {
@@ -216,20 +196,22 @@ export function createAccountHandlers({ kv, env = {}, byId = new Map(), now = ()
   async function create(request, body) {
     if (await hit(`c:${visitor(request)}`, RATE.create)) return tooMany(RATE.create);
     const id = crypto.randomBytes(12).toString('hex');
+    const signInCode = randomSignInCode();
+    const hash = codeHash(id, normalizeSignInCode(signInCode));
+    const data = cleanSyncData(body.data) ?? {};
+    const at = now();
     let name = null;
     for (let i = 0; i < 12 && !name; i += 1) {
       const candidate = randomUsername(i < 6 ? 2 : i < 10 ? 3 : 4);
-      if ((await kv.cmd('SET', `${P}un:${normalizeUsername(candidate.username)}`, id, 'NX', 'EX', KEEP_SECONDS)) === 'OK') name = candidate;
+      const created = await rpc('atlas_create_account', {
+        p_id: id, p_username: candidate.username, p_username_key: normalizeUsername(candidate.username), p_emoji: candidate.emoji,
+        p_code_hash: hash, p_created_at: at, p_data: data,
+      });
+      if (created) name = candidate;
     }
     if (!name) return json(503, { error: 'Couldn’t make a username right now. Please try again.' });
-    const signInCode = randomSignInCode();
-    const at = now();
-    const user = { id, username: name.username, emoji: name.emoji, codeHash: codeHash(id, normalizeSignInCode(signInCode)), createdAt: at, lastActive: at, room: null };
-    const data = cleanSyncData(body.data) ?? {};
-    await setJson(`${P}u:${id}`, user);
-    await setJson(`${P}d:${id}`, { version: 1, updatedAt: at, data });
     const cookie = await startSession(request, id);
-    return json(201, { user: await publicUser(user), signInCode, version: 1 }, { 'Set-Cookie': cookie });
+    return json(201, { user: publicUser({ username: name.username, emoji: name.emoji, createdAt: at }), signInCode, version: 1 }, { 'Set-Cookie': cookie });
   }
 
   async function login(request, body) {
@@ -242,45 +224,34 @@ export function createAccountHandlers({ kv, env = {}, byId = new Map(), now = ()
       return json(401, { error: 'That username and sign-in code don’t match. Check both and try again.' });
     };
     // Check the limits without counting this attempt yet.
-    const [ipCount, userCount] = await kv.cmd('MGET', `${P}rl:${ipBucket}`, `${P}rl:uf:${uname ?? '-'}`);
-    if (Number(ipCount) >= RATE.loginFail.max) return tooMany(RATE.loginFail);
-    if (Number(userCount) >= RATE.userFail.max) return tooMany(RATE.userFail);
+    const [ipCount, userCount] = await peek(ipBucket, `uf:${uname ?? '-'}`);
+    if (ipCount >= RATE.loginFail.max) return tooMany(RATE.loginFail);
+    if (userCount >= RATE.userFail.max) return tooMany(RATE.userFail);
     if (!uname || !code) return fail();
-    const id = await kv.cmd('GET', `${P}un:${uname}`);
-    const user = id ? await getJson(`${P}u:${id}`) : null;
+    const user = await rpc('atlas_get_account', { p_username_key: uname });
     if (!user || !safeEqualHex(user.codeHash, codeHash(user.id, code))) return fail();
-    await touch(user);
+    await rpc('atlas_touch_account', { p_id: user.id });
     const cookie = await startSession(request, user.id);
-    const stored = await getJson(`${P}d:${user.id}`);
-    return json(200, { user: await publicUser(user), version: stored?.version ?? 0, data: stored?.data ?? {} }, { 'Set-Cookie': cookie });
+    const stored = await getStored(user.id);
+    return json(200, { user: publicUser(user), version: stored?.version ?? 0, data: stored?.data ?? {} }, { 'Set-Cookie': cookie });
   }
 
   async function sync(request, body, me) {
     if (await hit(`sy:${me.user.id}`, RATE.sync)) return tooMany(RATE.sync);
     const data = cleanSyncData(body.data);
     if (!data) return json(400, { error: 'Invalid data.' });
-    const stored = (await getJson(`${P}d:${me.user.id}`)) ?? { version: 0, data: {} };
-    if (Number(body.baseVersion) !== stored.version) {
-      return json(409, { error: 'Your data changed on another device.', version: stored.version, data: stored.data });
-    }
+    const remove = (Array.isArray(body.remove) ? body.remove : []).filter((key) => SYNC_KEYS.includes(key));
+    const baseVersion = Number.isSafeInteger(body.baseVersion) ? body.baseVersion : -1;
     const at = now();
-    const next = { version: stored.version + 1, updatedAt: at, data: { ...stored.data, ...data } };
-    for (const key of body.remove ?? []) if (SYNC_KEYS.includes(key)) delete next.data[key];
-    await setJson(`${P}d:${me.user.id}`, next);
-    await setJson(`${P}u:${me.user.id}`, { ...me.user, lastActive: at });
-    await touch(me.user);
-    return json(200, { version: next.version, updatedAt: at });
+    const result = await rpc('atlas_sync_data', { p_id: me.user.id, p_base_version: baseVersion, p_data: data, p_remove: remove, p_at: at });
+    if (!result.ok) return json(409, { error: 'Your data changed on another device.', version: result.version, data: result.data });
+    return json(200, { version: result.version, updatedAt: at });
   }
 
   async function newCode(me) {
     const signInCode = randomSignInCode();
-    await setJson(`${P}u:${me.user.id}`, { ...me.user, codeHash: codeHash(me.user.id, normalizeSignInCode(signInCode)) });
+    await rpc('atlas_set_code', { p_id: me.user.id, p_code_hash: codeHash(me.user.id, normalizeSignInCode(signInCode)) });
     return json(200, { signInCode });
-  }
-
-  async function leaveRoom(user) {
-    if (!user.room) return;
-    await kv.cmd('HDEL', `${P}rm:${user.room}`, user.id);
   }
 
   async function join(request, body, me) {
@@ -291,34 +262,24 @@ export function createAccountHandlers({ kv, env = {}, byId = new Map(), now = ()
     if (!room.open) return json(403, { error: 'That room isn’t taking new students right now. Ask your teacher to open it.' });
     if (!isB64(body.encryptedName, 40, 1024)) return json(422, { error: 'Please type your name.' });
     const grade = [9, 10, 11, 12].includes(body.grade) ? body.grade : null;
-    const members = Number(await kv.cmd('HLEN', `${P}rm:${code}`));
-    const already = await kv.cmd('HGET', `${P}rm:${code}`, me.user.id);
-    if (!already && members >= MAX_ROOM_MEMBERS) return json(403, { error: 'That room is full.' });
-    if (me.user.room && me.user.room !== code) await leaveRoom(me.user);
-    await kv.cmd('HSET', `${P}rm:${code}`, me.user.id, JSON.stringify({ encName: body.encryptedName, grade, joinedAt: now() }));
-    await kv.cmd('EXPIRE', `${P}rm:${code}`, KEEP_SECONDS);
-    const user = { ...me.user, room: code };
-    await setJson(`${P}u:${user.id}`, user);
-    return json(200, { user: await publicUser(user) });
-  }
-
-  async function deleteAccount(request, me) {
-    await leaveRoom(me.user);
-    await kv.cmd('DEL', `${P}u:${me.user.id}`, `${P}d:${me.user.id}`, `${P}un:${normalizeUsername(me.user.username)}`, `${P}s:${sha256(me.token)}`);
-    return json(200, { ok: true }, { 'Set-Cookie': clearCookie(request) });
+    const status = await rpc('atlas_join_room', {
+      p_code: code, p_account_id: me.user.id, p_enc_name: body.encryptedName, p_grade: grade, p_joined_at: now(), p_max: MAX_ROOM_MEMBERS,
+    });
+    if (status === 'full') return json(403, { error: 'That room is full.' });
+    return json(200, { user: publicUser(await getAccount(me.user.id)) });
   }
 
   async function account(request) {
-    if (!kv) {
+    if (!db) {
       return request.method === 'GET' ? json(200, { enabled: false, signedIn: false }) : json(503, { enabled: false, error: 'Accounts aren’t turned on for this site yet.' });
     }
     try {
       if (request.method === 'GET') {
         const me = await currentUser(request);
         if (!me) return json(200, { enabled: true, signedIn: false });
-        const out = { enabled: true, signedIn: true, user: await publicUser(me.user) };
+        const out = { enabled: true, signedIn: true, user: publicUser(me.user) };
         if (new URL(request.url).searchParams.get('data') === '1') {
-          const stored = await getJson(`${P}d:${me.user.id}`);
+          const stored = await getStored(me.user.id);
           Object.assign(out, { version: stored?.version ?? 0, updatedAt: stored?.updatedAt ?? null, data: stored?.data ?? {} });
         }
         return json(200, out);
@@ -331,7 +292,7 @@ export function createAccountHandlers({ kv, env = {}, byId = new Map(), now = ()
       if (body.action === 'login') return await login(request, body);
       const me = await currentUser(request);
       if (body.action === 'logout') {
-        if (me) await kv.cmd('DEL', `${P}s:${sha256(me.token)}`);
+        if (me) await rpc('atlas_delete_session', { p_token_hash: sha256(me.token) });
         return json(200, { ok: true }, { 'Set-Cookie': clearCookie(request) });
       }
       if (!me) return json(401, { error: 'You’re signed out. Sign in again to keep saving.' }, { 'Set-Cookie': clearCookie(request) });
@@ -339,12 +300,14 @@ export function createAccountHandlers({ kv, env = {}, byId = new Map(), now = ()
       if (body.action === 'new-code') return await newCode(me);
       if (body.action === 'join') return await join(request, body, me);
       if (body.action === 'leave') {
-        await leaveRoom(me.user);
-        const user = { ...me.user, room: null };
-        await setJson(`${P}u:${user.id}`, user);
-        return json(200, { user: await publicUser(user) });
+        await rpc('atlas_leave_room', { p_account_id: me.user.id });
+        return json(200, { user: publicUser({ ...me.user, room: null }) });
       }
-      if (body.action === 'delete') return await deleteAccount(request, me);
+      if (body.action === 'delete') {
+        // Sessions and room membership go with the account.
+        await rpc('atlas_delete_account', { p_id: me.user.id });
+        return json(200, { ok: true }, { 'Set-Cookie': clearCookie(request) });
+      }
       return json(400, { error: 'Unknown action.' });
     } catch (err) {
       console.error('account:', err?.message ?? err);
@@ -355,7 +318,7 @@ export function createAccountHandlers({ kv, env = {}, byId = new Map(), now = ()
   // ---- Teachers ----------------------------------------------------------------
   async function teacherRoom(request, code) {
     const fails = `tf:${visitor(request)}`;
-    const count = Number(await kv.cmd('GET', `${P}rl:${fails}`));
+    const [count] = await peek(fails);
     if (count >= RATE.teacherFail.max) return { error: tooMany(RATE.teacherFail) };
     const token = (request.headers.get('authorization') ?? '').replace(/^Bearer\s+/i, '');
     const room = await roomInfo(code);
@@ -363,32 +326,17 @@ export function createAccountHandlers({ kv, env = {}, byId = new Map(), now = ()
       await hit(fails, RATE.teacherFail);
       return { error: json(401, { error: 'That room code and teacher key don’t match.' }, { 'WWW-Authenticate': 'Bearer' }) };
     }
-    await kv.pipeline([['EXPIRE', `${P}r:${code}`, KEEP_SECONDS], ['EXPIRE', `${P}rm:${code}`, KEEP_SECONDS]]);
+    await rpc('atlas_touch_room', { p_code: code });
     return { room };
   }
 
-  async function members(code) {
-    const flat = (await kv.cmd('HGETALL', `${P}rm:${code}`)) ?? [];
-    const out = [];
-    for (let i = 0; i < flat.length; i += 2) {
-      try { out.push({ id: flat[i], ...JSON.parse(flat[i + 1]) }); } catch { /* skip */ }
-    }
-    return out;
-  }
-
-  async function loadStudents(list) {
-    if (!list.length) return [];
-    const keys = list.flatMap((m) => [`${P}u:${m.id}`, `${P}d:${m.id}`]);
-    const raws = await kv.cmd('MGET', ...keys);
-    const parse = (raw) => { try { return raw ? JSON.parse(raw) : null; } catch { return null; } };
-    return list.map((m, i) => ({ member: m, user: parse(raws[2 * i]), stored: parse(raws[2 * i + 1]) }))
-      .filter((s) => s.user && s.user.room);
-  }
+  /** Students in a room as [{ user, member, stored }], with only the data a teacher may see. */
+  const roomStudents = (code, username) => rpc('atlas_room_students', { p_code: code, p_username_key: username ?? null });
 
   const publicRoom = (room) => ({ code: room.code, name: room.name, open: room.open, createdAt: room.createdAt });
 
   async function roster(code, room) {
-    const students = (await loadStudents(await members(code))).filter((s) => s.user.room === code).map(({ member, user, stored }) => {
+    const students = (await roomStudents(code)).map(({ member, user, stored }) => {
       const shared = sharedView(stored?.data, user.lastActive);
       if (!shared.profile.grade && member.grade) shared.profile.grade = member.grade;
       const insights = counselorInsights(shared, { byId, now: new Date(now()) });
@@ -407,12 +355,9 @@ export function createAccountHandlers({ kv, env = {}, byId = new Map(), now = ()
 
   async function memberByUsername(code, username) {
     const uname = normalizeUsername(username);
-    const id = uname ? await kv.cmd('GET', `${P}un:${uname}`) : null;
-    if (!id) return null;
-    const raw = await kv.cmd('HGET', `${P}rm:${code}`, id);
-    if (!raw) return null;
-    const [{ user, stored, member } = {}] = await loadStudents([{ id, ...JSON.parse(raw) }]);
-    return user?.room === code ? { user, stored, member } : null;
+    if (!uname) return null;
+    const [found] = await roomStudents(code, uname);
+    return found ?? null;
   }
 
   async function createRoom(request, body) {
@@ -423,19 +368,20 @@ export function createAccountHandlers({ kv, env = {}, byId = new Map(), now = ()
     const requested = body.code ? normalizeRoomCode(body.code) : null;
     if (body.code && !requested) return json(422, { error: 'Room codes use 6 to 16 letters and numbers.', field: 'code' });
     const name = cleanText(body.name, 80) || 'My class';
-    const room = { name, createdAt: now(), open: true, authHash: sha256(body.authToken), publicKey: body.publicKey, wrappedKey: body.wrappedKey, wrapIv: body.wrapIv };
+    const createdAt = now();
     for (let i = 0; i < 8; i += 1) {
       const code = requested ?? randomRoomCode();
-      if ((await kv.cmd('SET', `${P}r:${code}`, JSON.stringify({ ...room, code }), 'NX', 'EX', KEEP_SECONDS)) === 'OK') {
-        return json(201, { room: publicRoom({ ...room, code }) });
-      }
+      const created = await rpc('atlas_create_room', {
+        p_code: code, p_name: name, p_auth_hash: sha256(body.authToken), p_public_key: body.publicKey, p_wrapped_key: body.wrappedKey, p_wrap_iv: body.wrapIv, p_created_at: createdAt,
+      });
+      if (created) return json(201, { room: publicRoom({ code, name, open: true, createdAt }) });
       if (requested) return json(409, { error: 'That room code is taken. Try another one.', field: 'code' });
     }
     return json(503, { error: 'Couldn’t make a room right now. Please try again.' });
   }
 
   async function rooms(request) {
-    if (!kv) return json(503, { enabled: false, error: 'Classroom rooms aren’t turned on for this site yet.' });
+    if (!db) return json(503, { enabled: false, error: 'Classroom rooms aren’t turned on for this site yet.' });
     try {
       const url = new URL(request.url);
       if (request.method === 'GET') {
@@ -469,27 +415,25 @@ export function createAccountHandlers({ kv, env = {}, byId = new Map(), now = ()
       if (auth.error) return auth.error;
       const { room } = auth;
       if (body.action === 'settings') {
-        const next = { ...room, open: typeof body.open === 'boolean' ? body.open : room.open, name: cleanText(body.name, 80) || room.name };
-        await setJson(`${P}r:${code}`, next);
+        const next = await rpc('atlas_update_room', {
+          p_code: code, p_name: cleanText(body.name, 80) || room.name, p_open: typeof body.open === 'boolean' ? body.open : room.open,
+        });
         return json(200, { room: publicRoom(next) });
       }
       if (body.action === 'remove' || body.action === 'reset-code') {
         const found = await memberByUsername(code, body.username);
         if (!found) return json(404, { error: 'That student isn’t in this room.' });
         if (body.action === 'remove') {
-          await kv.cmd('HDEL', `${P}rm:${code}`, found.user.id);
-          await setJson(`${P}u:${found.user.id}`, { ...found.user, room: null });
+          await rpc('atlas_leave_room', { p_account_id: found.user.id, p_code: code });
           return json(200, { ok: true });
         }
         const signInCode = randomSignInCode();
-        await setJson(`${P}u:${found.user.id}`, { ...found.user, codeHash: codeHash(found.user.id, normalizeSignInCode(signInCode)) });
+        await rpc('atlas_set_code', { p_id: found.user.id, p_code_hash: codeHash(found.user.id, normalizeSignInCode(signInCode)) });
         return json(200, { username: found.user.username, signInCode });
       }
       if (body.action === 'delete') {
-        for (const { user } of await loadStudents(await members(code))) {
-          if (user.room === code) await setJson(`${P}u:${user.id}`, { ...user, room: null });
-        }
-        await kv.cmd('DEL', `${P}r:${code}`, `${P}rm:${code}`);
+        // Students keep their accounts; they just leave the room.
+        await rpc('atlas_delete_room', { p_code: code });
         return json(200, { ok: true });
       }
       return json(400, { error: 'Unknown action.' });

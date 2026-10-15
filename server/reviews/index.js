@@ -3,7 +3,7 @@
 
 import fs from 'node:fs';
 import { createReviewHandlers } from './handler.js';
-import { reviewStoreFromEnv, MemoryReviewStore } from './store.js';
+import { reviewStoreFromEnv, SupabaseReviewStore } from './store.js';
 
 let knownIds;
 function loadKnownIds() {
@@ -19,10 +19,11 @@ function loadKnownIds() {
 }
 
 /**
- * `memoryFallback` keeps reviews in memory when no store is configured, so
+ * `localFallback` (a Promise of an rpc function, see server/db/local.js) keeps
+ * reviews in an in-process database when Supabase isn't configured, so
  * `npm run dev` works without an account. Reviews are lost on restart.
  */
-export function reviewHandlersFromEnv(env = process.env, { memoryFallback = false } = {}) {
-  const store = reviewStoreFromEnv(env) ?? (memoryFallback ? new MemoryReviewStore() : null);
+export function reviewHandlersFromEnv(env = process.env, { localFallback = null } = {}) {
+  const store = reviewStoreFromEnv(env) ?? (localFallback ? new SupabaseReviewStore(localFallback) : null);
   return createReviewHandlers({ store, env, knownIds: loadKnownIds() });
 }

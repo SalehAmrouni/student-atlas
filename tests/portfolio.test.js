@@ -125,7 +125,8 @@ describe('room encryption', () => {
     const room = await C.createRoomKeys(key);
     assert.equal(room.authToken, await C.roomAuthToken(key));
     const enc = await C.encryptName(room.publicKey, '  Zoë Martínez ');
-    assert.ok(!enc.includes('Zo'));
+    // Random base64 can contain "Zo" by chance, so check the decoded bytes instead.
+    assert.ok(!Buffer.from(enc, 'base64').toString('latin1').includes('Mart'));
     const opened = await C.openRoom(key, room);
     assert.equal(await opened.decryptName(enc), 'Zoë Martínez');
     await assert.rejects(C.openRoom(C.generateTeacherKey(), room), /doesn’t unlock/);

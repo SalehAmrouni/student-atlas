@@ -2,13 +2,13 @@ import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 
 const { createAccountHandlers, sharedView } = await import('../server/accounts/handler.js');
-const { MemoryKV } = await import('../server/kv.js');
+const { freshDatabase } = await import('./helpers/db.js');
 const { normalizeUsername } = await import('../server/accounts/names.js');
 const crypto = await import('../public/js/lib/room-crypto.js');
 
-function setup() {
-  const kv = new MemoryKV();
-  const { account, rooms } = createAccountHandlers({ kv, env: {} });
+async function setup() {
+  const { rpc, db } = await freshDatabase();
+  const { account, rooms } = createAccountHandlers({ db: rpc, env: {} });
   const call = (handler, path) => async (method, { body, query = '', cookie, auth, ip = '1.1.1.1' } = {}) => {
     const headers = { 'x-real-ip': ip, host: 'atlas.test' };
     if (body) headers['content-type'] = 'application/json';
@@ -18,7 +18,7 @@ function setup() {
     const setCookie = res.headers.get('set-cookie');
     return { status: res.status, data: await res.json(), cookie: setCookie ? setCookie.split(';')[0] : null, setCookie };
   };
-  return { kv, acct: call(account, '/api/account'), room: call(rooms, '/api/rooms') };
+  return { rpc, db, acct: call(account, '/api/account'), room: call(rooms, '/api/rooms') };
 }
 
 async function newStudent(s, data) {
@@ -36,7 +36,7 @@ async function newRoom(s, code) {
 
 describe('anonymous accounts', () => {
   test('creates a random username with a secure, HttpOnly session cookie', async () => {
-    const s = setup();
+    const s = await setup();
     const r = await s.acct('POST', { body: { action: 'create' } });
     assert.equal(r.status, 201);
     assert.match(r.data.user.username, /^[A-Z][a-z]+[A-Z][a-z]+\d{2,4}$/);
@@ -51,7 +51,7 @@ describe('anonymous accounts', () => {
   });
 
   test('migrates local data on creation and syncs with version checks', async () => {
-    const s = setup();
+    const s = await setup();
     const st = await newStudent(s, { saved: ['a'], profile: { grade: 10 }, junk: 'dropped' });
     const first = await s.acct('GET', { cookie: st.cookie, query: '?data=1' });
     assert.deepEqual(first.data.data, { saved: ['a'], profile: { grade: 10 } });
@@ -67,7 +67,7 @@ describe('anonymous accounts', () => {
   });
 
   test('signs in on another device with username and sign-in code, and limits guessing', async () => {
-    const s = setup();
+    const s = await setup();
     const st = await newStudent(s, { saved: ['x'] });
     const r = await s.acct('POST', { body: { action: 'login', username: `🪐 ${st.user.username.toLowerCase()}`, code: st.signInCode.toLowerCase() } });
     assert.equal(r.status, 200);
@@ -81,7 +81,7 @@ describe('anonymous accounts', () => {
   });
 
   test('a new sign-in code replaces the old one', async () => {
-    const s = setup();
+    const s = await setup();
     const st = await newStudent(s);
     const r = await s.acct('POST', { cookie: st.cookie, body: { action: 'new-code' } });
     assert.notEqual(r.data.signInCode, st.signInCode);
@@ -90,7 +90,7 @@ describe('anonymous accounts', () => {
   });
 
   test('log out ends the session and clears the cookie', async () => {
-    const s = setup();
+    const s = await setup();
     const st = await newStudent(s);
     const r = await s.acct('POST', { cookie: st.cookie, body: { action: 'logout' } });
     assert.match(r.setCookie, /Max-Age=0/);
@@ -98,16 +98,17 @@ describe('anonymous accounts', () => {
   });
 
   test('deleting an account removes the data and frees the username', async () => {
-    const s = setup();
+    const s = await setup();
     const st = await newStudent(s, { saved: ['x'] });
     assert.equal((await s.acct('POST', { cookie: st.cookie, body: { action: 'delete' } })).status, 200);
-    assert.equal(await s.kv.cmd('GET', `atlas:ac:un:${normalizeUsername(st.user.username)}`), null);
+    assert.equal(await s.rpc('atlas_get_account', { p_username_key: normalizeUsername(st.user.username) }), null);
+    assert.equal((await s.db.query('select count(*)::int as n from atlas.accounts')).rows[0].n, 0);
     assert.equal((await s.acct('POST', { body: { action: 'login', username: st.user.username, code: st.signInCode } })).status, 401);
   });
 
   test('rejects cross-site posts and non-JSON bodies', async () => {
-    const s = setup();
-    const { account } = createAccountHandlers({ kv: s.kv });
+    const s = await setup();
+    const { account } = createAccountHandlers({ db: s.rpc });
     const cross = await account(new Request('https://atlas.test/api/account', { method: 'POST', headers: { origin: 'https://evil.test', host: 'atlas.test', 'content-type': 'application/json' }, body: '{"action":"create"}' }));
     assert.equal(cross.status, 403);
     const form = await account(new Request('https://atlas.test/api/account', { method: 'POST', headers: { host: 'atlas.test', 'content-type': 'text/plain' }, body: 'action=create' }));
@@ -115,7 +116,7 @@ describe('anonymous accounts', () => {
   });
 
   test('reports accounts as off when no storage is configured', async () => {
-    const { account } = createAccountHandlers({ kv: null });
+    const { account } = createAccountHandlers({ db: null });
     const r = await account(new Request('https://atlas.test/api/account'));
     assert.deepEqual(await r.json(), { enabled: false, signedIn: false });
   });
@@ -123,7 +124,7 @@ describe('anonymous accounts', () => {
 
 describe('classroom rooms', () => {
   test('a student joins with an encrypted real name the server cannot read', async () => {
-    const s = setup();
+    const s = await setup();
     const room = await newRoom(s, 'career2026');
     assert.equal(room.status, 201);
     assert.equal(room.data.room.code, 'CAREER2026');
@@ -137,7 +138,9 @@ describe('classroom rooms', () => {
     assert.deepEqual(joined.data.user.room, { code: 'CAREER2026', name: 'Period 3 Careers' });
 
     // Nothing stored contains the real name.
-    const everything = JSON.stringify([...s.kv.data.entries()].map(([k, v]) => [k, v.value instanceof Map ? [...v.value] : v.value]));
+    const tables = ['accounts', 'sessions', 'rooms', 'room_members', 'rate_limits'];
+    const everything = JSON.stringify(await Promise.all(tables.map(async (t) => (await s.db.query(`select * from atlas.${t}`)).rows)));
+    assert.match(everything, /CAREER2026/);
     assert.doesNotMatch(everything, /Stella/);
 
     // The teacher's browser can decrypt it.
@@ -153,7 +156,7 @@ describe('classroom rooms', () => {
   });
 
   test('the roster and portfolios need the teacher key', async () => {
-    const s = setup();
+    const s = await setup();
     const room = await newRoom(s, 'ROOMONE1');
     assert.equal((await s.room('GET', { query: '?code=ROOMONE1&view=roster' })).status, 401);
     assert.equal((await s.room('GET', { query: '?code=ROOMONE1&view=roster', auth: 'a'.repeat(64) })).status, 401);
@@ -163,7 +166,7 @@ describe('classroom rooms', () => {
   });
 
   test('joining a school later keeps existing data (the bridge)', async () => {
-    const s = setup();
+    const s = await setup();
     const st = await newStudent(s, { saved: ['opp-1'], tracker: { 'opp-1': { id: 'opp-1', title: 'Program', status: 'submitted', notes: 'private' } } });
     const room = await newRoom(s, 'BRIDGE01');
     const encryptedName = await crypto.encryptName(room.keys.publicKey, 'Timmy');
@@ -178,7 +181,7 @@ describe('classroom rooms', () => {
   });
 
   test('teachers can close a room, reset a sign-in code, remove a student, and delete the room', async () => {
-    const s = setup();
+    const s = await setup();
     const room = await newRoom(s, 'CLOSEME1');
     const st = await newStudent(s);
     const enc = await crypto.encryptName(room.keys.publicKey, 'Sam');
@@ -201,7 +204,7 @@ describe('classroom rooms', () => {
   });
 
   test('room codes must be unique', async () => {
-    const s = setup();
+    const s = await setup();
     assert.equal((await newRoom(s, 'SAMECODE')).status, 201);
     assert.equal((await newRoom(s, 'samecode')).status, 409);
     assert.equal((await newRoom(s, 'ab')).status, 422);
