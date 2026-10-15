@@ -154,7 +154,7 @@ export function mountCalendar(root, { byId, onOpen, onTrack }) {
       render();
     };
     const modeBtn = (mode, label, iconName) => h('button', {
-      type: 'button', class: 'chip', role: 'radio', 'aria-checked': String(state.mode === mode),
+      type: 'button', class: 'chip', 'aria-pressed': String(state.mode === mode),
       onclick: () => { state.mode = mode; render(); },
     }, icon(iconName), label);
     const showChip = (source) => h('button', {
@@ -172,7 +172,7 @@ export function mountCalendar(root, { byId, onOpen, onTrack }) {
           type: 'button', class: 'btn btn-ghost btn-sm',
           onclick: () => { state.month = new Date(today.getFullYear(), today.getMonth(), 1); state.selected = toDateKey(today); render(); },
         }, 'Today') : null),
-      h('div', { class: 'segmented', role: 'radiogroup', 'aria-label': 'Calendar view' }, modeBtn('month', 'Month', 'calendar-days'), modeBtn('list', 'List', 'list')),
+      h('div', { class: 'segmented', role: 'group', 'aria-label': 'Calendar view' }, modeBtn('month', 'Month', 'calendar-days'), modeBtn('list', 'List', 'list')),
       h('div', { class: 'chip-group', role: 'group', 'aria-label': 'Show on the calendar' }, ['applied', 'planning', 'saved'].map(showChip)));
   }
 

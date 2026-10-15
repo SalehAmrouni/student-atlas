@@ -17,13 +17,14 @@ Student Atlas helps students find research programs, internships, competitions, 
 - **My Pathway** dashboard: fit by interest area, top matches, saved list, upcoming deadlines, plus data export and deletion.
 - **Community suggestions** that open as a pre-filled GitHub issue for the team to review.
 - **Student reviews**: star ratings and written reviews on every opportunity, with rating summaries on cards, reporting, and a moderation page. See [Turning on reviews](#turning-on-reviews).
-- **Accessibility**: text sizing, light/dark/auto theme, high contrast, readable font, color-blind friendly palette (Okabe-Ito), reduced motion, read-aloud, keyboard navigation, and screen-reader labels.
+- **Accessibility (WCAG 2.1 AA)**: text sizing, light/dark/auto theme, high contrast, readable font, color-blind friendly palette (Okabe-Ito), reduced motion, read-aloud, keyboard navigation, visible focus, Windows High Contrast support, screen-reader labels, and layouts that reflow down to 320px. See the accessibility statement on the About page.
+- **Homepage carousels** for featured (or personally matched) opportunities and upcoming deadlines: swipe on phones, Previous/Next buttons or Tab on desktop, and no auto-advance.
 
 ## Security & privacy
 
 - No accounts or passwords. The profile (including optional family finance ranges), saved list, application tracker, settings, and Zeus conversations live in the student's browser and are never sent to the server.
 - No AI services, API keys, ads, analytics, or third-party scripts.
-- A strict Content Security Policy (no inline scripts or styles, no third-party origins) and security headers via Helmet.
+- A strict Content Security Policy (no inline scripts or styles, no third-party origins) and security headers defined once in `server/headers.js` and shared by the local server and `vercel.json`.
 - The site is static except for the optional reviews API (`api/`), which stores only what a reviewer chooses to post plus a salted hash of their IP for rate limiting.
 - Reviews refuse emails, phone numbers, links, and social handles, hold flagged language for a moderator, and are hidden automatically after several reports.
 - Zeus's replies are rendered with a safe Markdown renderer that never uses `innerHTML` and only allows `http(s)` links.
@@ -51,7 +52,7 @@ No API keys or accounts are needed. Reviews run from memory locally; see [Turnin
 
 ## Deploying to Vercel
 
-The site is fully static, and `vercel.json` configures everything (build, output folder, clean URLs, and security headers).
+The site is static apart from the reviews functions in `api/`, and `vercel.json` configures everything (build, output folder, clean URLs, and security headers).
 
 1. In Vercel, **Add New → Project** and import this GitHub repository.
 2. Leave **Root Directory** as the repository root (`./`), not `public`.

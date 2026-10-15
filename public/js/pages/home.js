@@ -1,10 +1,11 @@
 import { boot } from '../lib/layout.js';
 import { h, $, clear, refreshIcons } from '../lib/dom.js';
-import { loadData } from '../lib/data.js';
+import { loadData, monthsUntilDeadline } from '../lib/data.js';
 import { opportunityCard, setClusterMeta } from '../lib/cards.js';
 import { openWizard } from '../lib/wizard.js';
 import { getProfile } from '../lib/store.js';
 import { scoreOpportunity } from '../lib/match.js';
+import { createCarousel } from '../lib/carousel.js';
 
 boot('home', async () => {
   const startWizard = () => openWizard({ onComplete: () => { window.location.href = '/dashboard.html?welcome=1'; } });
@@ -34,21 +35,41 @@ boot('home', async () => {
 
   // Personalize the spotlight when the student has a profile.
   const profile = getProfile();
-  let featured;
-  if (profile) {
-    featured = opps
+  const ranked = profile
+    ? opps
       .map((o) => ({ o, m: scoreOpportunity(o, profile) }))
       .filter(({ m }) => m.eligible)
       .sort((a, b) => b.m.score - a.m.score)
-      .slice(0, 6)
-      .map(({ o }) => o);
+      .map(({ o }) => o)
+    : opps;
+  let featured;
+  if (profile) {
+    featured = ranked.slice(0, 12);
     $('#featured-title').textContent = profile.firstName ? `Top matches for ${profile.firstName}` : 'Your top matches';
     $('#featured-subtitle').textContent = 'Based on your Pathway profile. Open any card to see why it fits.';
   } else {
-    featured = opps.filter((o) => o.featured).slice(0, 6);
+    featured = opps.filter((o) => o.featured).slice(0, 12);
   }
-  const grid = $('#featured-grid');
-  clear(grid);
-  grid.append(...featured.map((o) => opportunityCard(o, { profile })));
+  mountCarousel('featured', featured);
+
+  // Deadlines that usually fall this month or next.
+  const soon = ranked
+    .filter((o) => { const m = monthsUntilDeadline(o); return m !== null && m <= 2; })
+    .sort((a, b) => monthsUntilDeadline(a) - monthsUntilDeadline(b))
+    .slice(0, 12);
+  if (soon.length) {
+    if (profile) $('#soon-subtitle').textContent = 'Programs you are eligible for that usually close soon.';
+    mountCarousel('soon', soon);
+    $('#soon-section').hidden = false;
+  }
   refreshIcons();
+
+  function mountCarousel(name, list) {
+    const { root, controls } = createCarousel({
+      labelledBy: `${name}-title`,
+      slides: list.map((o) => opportunityCard(o, { profile })),
+    });
+    clear($(`#${name}-carousel`)).append(root);
+    $(`#${name}-controls`).prepend(controls);
+  }
 });

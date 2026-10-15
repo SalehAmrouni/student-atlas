@@ -45,7 +45,7 @@ export function openWizard({ onComplete, startStep = 0 } = {}) {
 
   const body = h('div', { class: 'modal-body' });
   const progress = h('div', { class: 'wizard-progress', 'aria-hidden': 'true' }, STEPS.map(() => h('span')));
-  const stepLabel = h('p', { class: 'muted small mb-0 mt-1' });
+  const stepLabel = h('p', { class: 'muted small mb-0 mt-1', 'aria-live': 'polite' });
   const backBtn = h('button', { type: 'button', class: 'btn btn-ghost' }, icon('arrow-left'), 'Back');
   const nextBtn = h('button', { type: 'button', class: 'btn btn-primary' });
 
@@ -56,18 +56,21 @@ export function openWizard({ onComplete, startStep = 0 } = {}) {
     else list.splice(i, 1);
   };
 
-  const multiChips = (values, list, labelFor = (v) => v) => h('div', { class: 'chip-group', role: 'group' },
+  const multiChips = (values, list, labelledBy) => h('div', { class: 'chip-group', role: 'group', 'aria-labelledby': labelledBy },
     values.map((v) => h('button', {
       type: 'button', class: 'chip', 'aria-pressed': String(list.includes(v)),
       onclick: (e) => { toggleList(list, v); e.currentTarget.setAttribute('aria-pressed', String(list.includes(v))); },
-    }, labelFor(v))));
+    }, v)));
 
-  const singleChips = (label, options, current, onPick) => h('div', { class: 'segmented', role: 'radiogroup', 'aria-label': label },
+  // One-of-many toggle buttons; `label` is a visible label's id or plain text.
+  const singleChips = (label, options, current, onPick) => h('div', {
+    class: 'segmented', role: 'group', ...(label.startsWith('wz-') ? { 'aria-labelledby': label } : { 'aria-label': label }),
+  },
     options.map(([value, text]) => h('button', {
-      type: 'button', class: 'chip', role: 'radio', 'aria-checked': String(current === value),
+      type: 'button', class: 'chip', 'aria-pressed': String(current === value),
       onclick: (e) => {
         onPick(value);
-        for (const b of e.currentTarget.parentElement.children) b.setAttribute('aria-checked', String(b === e.currentTarget));
+        for (const b of e.currentTarget.parentElement.children) b.setAttribute('aria-pressed', String(b === e.currentTarget));
       },
     }, text)));
 
@@ -80,7 +83,7 @@ export function openWizard({ onComplete, startStep = 0 } = {}) {
         h('span', { class: 'hint' }, 'Only stored in this browser. Never enter your full name.')),
       h('div', { class: 'field' },
         h('span', { class: 'label', id: 'wz-grade' }, 'What grade are you in? *'),
-        singleChips('Grade', [[9, '9th'], [10, '10th'], [11, '11th'], [12, '12th']], draft.grade, (v) => { draft.grade = v; })),
+        singleChips('wz-grade', [[9, '9th'], [10, '10th'], [11, '11th'], [12, '12th']], draft.grade, (v) => { draft.grade = v; })),
       h('div', { class: 'field' },
         h('label', { class: 'label', for: 'wz-state' }, 'Where do you live? ', h('span', { class: 'faint' }, '(optional, helps with regional programs)')),
         h('select', { id: 'wz-state', class: 'select', onchange: (e) => { draft.state = e.target.value; } },
@@ -97,11 +100,11 @@ export function openWizard({ onComplete, startStep = 0 } = {}) {
     ],
     () => [
       h('div', { class: 'field' },
-        h('span', { class: 'label' }, 'Career directions you are curious about'),
-        multiChips(CAREER_GOALS, draft.careerGoals)),
+        h('span', { class: 'label', id: 'wz-careers' }, 'Career directions you are curious about'),
+        multiChips(CAREER_GOALS, draft.careerGoals, 'wz-careers')),
       h('div', { class: 'field' },
-        h('span', { class: 'label' }, 'What kinds of opportunities are you looking for?'),
-        multiChips(LOOKING_FOR, draft.lookingFor)),
+        h('span', { class: 'label', id: 'wz-looking' }, 'What kinds of opportunities are you looking for?'),
+        multiChips(LOOKING_FOR, draft.lookingFor, 'wz-looking')),
     ],
     () => [
       h('div', { class: 'form-grid' },
@@ -115,11 +118,11 @@ export function openWizard({ onComplete, startStep = 0 } = {}) {
           h('input', { id: 'wz-hours', class: 'input', type: 'number', min: '0', max: '5000', step: '1', inputmode: 'numeric', placeholder: 'e.g. 40', value: draft.serviceHours ?? '',
             oninput: (e) => { const v = parseInt(e.target.value, 10); draft.serviceHours = Number.isFinite(v) && v >= 0 && v <= 5000 ? v : undefined; } }))),
       h('div', { class: 'field mt-2' },
-        h('span', { class: 'label' }, 'Online or in person?'),
-        singleChips('Format preference', [['any', 'Either'], ['In-person', 'In person'], ['Virtual', 'Online']], draft.formatPreference, (v) => { draft.formatPreference = v; })),
+        h('span', { class: 'label', id: 'wz-format' }, 'Online or in person?'),
+        singleChips('wz-format', [['any', 'Either'], ['In-person', 'In person'], ['Virtual', 'Online']], draft.formatPreference, (v) => { draft.formatPreference = v; })),
       h('div', { class: 'field' },
-        h('span', { class: 'label' }, 'Is cost a big factor for you?'),
-        singleChips('Financial need', [[true, 'Yes, show free & paid options first'], [false, 'Not really'], [undefined, 'Prefer not to say']], draft.financialNeed, (v) => { draft.financialNeed = v; })),
+        h('span', { class: 'label', id: 'wz-cost' }, 'Is cost a big factor for you?'),
+        singleChips('wz-cost', [[true, 'Yes, show free & paid options first'], [false, 'Not really'], [undefined, 'Prefer not to say']], draft.financialNeed, (v) => { draft.financialNeed = v; })),
     ],
     () => {
       const tierNote = h('p', { class: 'small muted mb-0 mt-2', 'aria-live': 'polite' });
@@ -148,10 +151,10 @@ export function openWizard({ onComplete, startStep = 0 } = {}) {
             h('span', { class: 'hint', id: 'wz-income-hint' }, 'Before taxes. A rough range is fine; ask a parent or guardian if you’re not sure.'))),
         h('div', { class: 'field mt-2' },
           h('span', { class: 'label', id: 'wz-benefits' }, 'Does your family get free or reduced-price school lunch, SNAP, Medicaid, or similar help?'),
-          singleChips('Family receives free or reduced-price lunch, SNAP, Medicaid, or similar help', [[true, 'Yes'], [false, 'No'], [undefined, 'Prefer not to say']], draft.benefits, pick('benefits'))),
+          singleChips('wz-benefits', [[true, 'Yes'], [false, 'No'], [undefined, 'Prefer not to say']], draft.benefits, pick('benefits'))),
         h('div', { class: 'field' },
           h('span', { class: 'label', id: 'wz-firstgen' }, 'Will you be the first in your family to get a four-year college degree?'),
-          singleChips('First-generation college student', [[true, 'Yes'], [false, 'No'], [undefined, 'Not sure']], draft.firstGen, pick('firstGen'))),
+          singleChips('wz-firstgen', [[true, 'Yes'], [false, 'No'], [undefined, 'Not sure']], draft.firstGen, pick('firstGen'))),
         tierNote,
       ];
     },
