@@ -10,13 +10,17 @@ Student Atlas helps students find research programs, internships, competitions, 
 - **Zeus, a predictive guide (no AI service).** Zeus runs entirely in the browser. It picks out what a student wants from plain English (interest area, grade, cost, online or in person, deadlines, state), ranks real opportunities with BM25 keyword search plus the student's match scores, and tolerates typos. It remembers the conversation ("only free ones", "show more", "tell me about the second one", "am I eligible for it?"), compares programs, builds grade-specific plans, answers common counseling questions, suggests what to type next, and responds safely to crisis language.
 - **Pathway Wizard + explainable matching.** Students see a fit score for each opportunity with the reasons behind it ("Open to 10th graders", "Pays participants") and eligibility warnings.
 - **Explore view** with search, filters (interest, type, grade, cost, format, affordable, deadline soon, eligible, saved), sorting, and shareable URLs.
+- **Application tracker** (`/tracker.html`): track what you're interested in, working on, applied to, and heard back from, with exact deadlines, decision dates, events (interviews, info sessions), a step checklist, and notes. Add opportunities that aren't in the directory too.
+- **Calendar** of applied, planned, and bookmarked opportunities: a keyboard-navigable month view plus a phone-friendly list, estimated "usually due" months for bookmarks, and `.ics` export for Google Calendar, Apple Calendar, or Outlook.
+- **Send opportunities** to a friend, parent, or counselor: copy a link, email, text, or the phone's share sheet. Lists open on the Explore page with a "Save all" button; status and dates are only included if the student chooses.
+- **Optional family finances** (household size, income range, assistance programs, first-generation status), banded and stored only in the browser, so programs with income limits are flagged and ranked appropriately.
 - **My Pathway** dashboard: fit by interest area, top matches, saved list, upcoming deadlines, plus data export and deletion.
 - **Community suggestions** that open as a pre-filled GitHub issue for the team to review.
 - **Accessibility**: text sizing, light/dark/auto theme, high contrast, readable font, color-blind friendly palette (Okabe-Ito), reduced motion, read-aloud, keyboard navigation, and screen-reader labels.
 
 ## Security & privacy
 
-- No accounts or passwords. The profile, saved list, settings, and Zeus conversations live in the student's browser and are never sent to the server.
+- No accounts or passwords. The profile (including optional family finance ranges), saved list, application tracker, settings, and Zeus conversations live in the student's browser and are never sent to the server.
 - No AI services, API keys, ads, analytics, or third-party scripts.
 - A strict Content Security Policy (no inline scripts or styles, no third-party origins) and security headers via Helmet.
 - The site is fully static: no server code, database, or API runs in production.

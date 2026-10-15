@@ -16,6 +16,7 @@
 
 import { scoreOpportunity } from './match.js';
 import { monthsUntilDeadline, gradeLabel, isExpired } from './data.js';
+import { effectiveFinancialNeed } from './finance.js';
 
 // ---------------------------------------------------------------------------
 // Text utilities
@@ -850,7 +851,7 @@ export function createEngine({ opportunities, clusters = {}, rng = Math.random, 
       firstName: profile?.firstName,
       grade: state.grade ?? profile?.grade,
       interests: state.interests?.length ? state.interests : profile?.interests,
-      financialNeed: state.financialNeed ?? profile?.financialNeed,
+      financialNeed: state.financialNeed ?? effectiveFinancialNeed(profile),
     };
   }
 

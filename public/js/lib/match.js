@@ -2,6 +2,8 @@
 // Returns a 0-100 score plus the human-readable reasons behind it, so the UI
 // can show students *why* something is (or isn't) a fit.
 
+import { financeTier, effectiveFinancialNeed, isIncomeTargeted, isFirstGenTargeted } from './finance.js';
+
 const CAREER_KEYWORDS = {
   'Engineering': ['engineering', 'robotics', 'aerospace', 'drones', 'trades'],
   'Computer Science': ['coding', 'computer science', 'cybersecurity', 'ai', 'apps', 'algorithms', 'web development', 'data science'],
@@ -70,7 +72,8 @@ export function scoreOpportunity(opp, profile) {
   else score += 2;
 
   // Cost vs. financial need (up to 15)
-  if (profile.financialNeed) {
+  const tier = financeTier(profile);
+  if (effectiveFinancialNeed(profile)) {
     const freeOrPaid = opp.cost === 'Free' || opp.cost === 'Stipend' || opp.cost === 'Award';
     if (freeOrPaid || opp.needBased) {
       score += 15;
@@ -82,6 +85,18 @@ export function scoreOpportunity(opp, profile) {
     else warnings.push('Tuition-based with no aid listed');
   } else {
     score += opp.cost === 'Stipend' || opp.cost === 'Award' ? 15 : 11;
+  }
+
+  // Income limits and first-generation focus (optional family details)
+  if (isIncomeTargeted(opp)) {
+    if (tier === 'low') reasons.push('Built for students from lower-income families, which matches what you shared');
+    else if (tier === 'maybe') reasons.push('Built for lower-income families; you may qualify, so check the income limit');
+    else if (tier === 'middle') { score -= 6; warnings.push('Usually has an income limit; check whether your family qualifies'); }
+    else if (tier === 'higher') { score -= 12; warnings.push('Usually limited to lower-income families'); }
+  }
+  if (isFirstGenTargeted(opp)) {
+    if (profile.firstGen === true) { score += 5; reasons.push('Supports first-generation college students'); }
+    else if (profile.firstGen === false) warnings.push('Focused on first-generation college students');
   }
 
   // Format preference (up to 10)
