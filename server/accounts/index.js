@@ -3,7 +3,7 @@
 
 import fs from 'node:fs';
 import { createAccountHandlers } from './handler.js';
-import { kvFromEnv, MemoryKV } from '../kv.js';
+import { supabaseFromEnv } from '../db/supabase.js';
 
 let opportunities;
 function loadOpportunities() {
@@ -18,10 +18,11 @@ function loadOpportunities() {
 }
 
 /**
- * `memoryFallback` keeps accounts in memory when no store is configured, so
+ * `localFallback` (a Promise of an rpc function, see server/db/local.js) keeps
+ * accounts in an in-process database when Supabase isn't configured, so
  * `npm run dev` works without an account. Everything is lost on restart.
  */
-export function accountHandlersFromEnv(env = process.env, { memoryFallback = false } = {}) {
-  const kv = kvFromEnv(env) ?? (memoryFallback ? new MemoryKV() : null);
-  return createAccountHandlers({ kv, env, byId: loadOpportunities() });
+export function accountHandlersFromEnv(env = process.env, { localFallback = null } = {}) {
+  const db = supabaseFromEnv(env) ?? localFallback;
+  return createAccountHandlers({ db, env, byId: loadOpportunities() });
 }

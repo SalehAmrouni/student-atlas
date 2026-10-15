@@ -45,12 +45,15 @@ export function createApp({ env = process.env } = {}) {
     next();
   });
 
-  const reviews = reviewHandlersFromEnv(env, { memoryFallback: true });
+  // Without Supabase settings, accounts and reviews use an in-process Postgres
+  // with the same migrations (loaded on first use; nothing is saved).
+  const lazyLocal = { then: (resolve, reject) => import('./db/local.js').then((m) => m.sharedLocalRpc()).then(resolve, reject) };
+  const reviews = reviewHandlersFromEnv(env, { localFallback: lazyLocal });
   const raw = express.raw({ type: () => true, limit: '8kb' });
   app.all('/api/reviews', raw, webHandler(reviews.reviews));
   app.all('/api/reviews-admin', raw, webHandler(reviews.admin));
   // Anonymous accounts, cloud sync, and classroom rooms.
-  const accounts = accountHandlersFromEnv(env, { memoryFallback: true });
+  const accounts = accountHandlersFromEnv(env, { localFallback: lazyLocal });
   const rawLarge = express.raw({ type: () => true, limit: '512kb' });
   app.all('/api/account', rawLarge, webHandler(accounts.account));
   app.all('/api/rooms', raw, webHandler(accounts.rooms));

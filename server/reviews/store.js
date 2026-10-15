@@ -1,221 +1,83 @@
-// Review storage. Production uses Redis over Upstash's REST API (what Vercel's
-// Upstash / KV integration provides), called with fetch so no SDK is needed.
-// Local development and tests use an in-memory store with the same methods.
+// Review storage on Supabase Postgres (tables and functions in
+// supabase/migrations). The store takes an `rpc(fn, args)` function: the
+// Supabase REST client in production (server/db/supabase.js), or the
+// in-process database for `npm run dev` and tests (server/db/local.js).
 //
-// Data model (all keys share the `atlas:rv:` prefix):
-//   r:<reviewId>        JSON of the review, including moderation fields
-//   pub:<oppId>         sorted set of published review ids, scored by time
-//   pending             sorted set of review ids waiting for a moderator
-//   stars               hash: "<oppId>:<1-5>" -> number of published reviews
-//   rl:<bucket>         counters for rate limiting (expire on their own)
-//   once:<key>          markers for "only once" rules (expire on their own)
-//   rep:<reviewId>      set of reporter hashes for a review
+// A review's content and its state are saved separately: saveReview writes
+// the review, and publish / hold move it in and out of the public list and the
+// moderation queue. Star counts are computed from published reviews.
 
-const P = 'atlas:rv:';
+import { supabaseFromEnv } from '../db/supabase.js';
 
 export function reviewStoreFromEnv(env = process.env) {
-  const url = env.KV_REST_API_URL || env.UPSTASH_REDIS_REST_URL;
-  const token = env.KV_REST_API_TOKEN || env.UPSTASH_REDIS_REST_TOKEN;
-  return url && token ? new RedisReviewStore(url, token) : null;
+  const rpc = supabaseFromEnv(env);
+  return rpc ? new SupabaseReviewStore(rpc) : null;
 }
 
-// ---------------------------------------------------------------------------
-export class RedisReviewStore {
-  constructor(url, token, fetchImpl = globalThis.fetch) {
-    this.url = url.replace(/\/+$/, '');
-    this.token = token;
-    this.fetch = fetchImpl;
+export class SupabaseReviewStore {
+  /** @param {Function|Promise<Function>} rpc */
+  constructor(rpc) {
+    this.db = rpc;
   }
 
-  async #call(path, body) {
-    const res = await this.fetch(`${this.url}${path}`, {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${this.token}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
-    });
-    if (!res.ok) throw new Error(`Review store responded ${res.status}`);
-    return res.json();
-  }
-
-  async cmd(...args) {
-    const out = await this.#call('', args);
-    if (out.error) throw new Error(`Review store error: ${out.error}`);
-    return out.result;
-  }
-
-  async pipeline(commands) {
-    const out = await this.#call('/pipeline', commands);
-    return out.map((r) => {
-      if (r.error) throw new Error(`Review store error: ${r.error}`);
-      return r.result;
-    });
+  async #rpc(fn, args) {
+    return (await this.db)(fn, args);
   }
 
   async getReview(id) {
-    const raw = await this.cmd('GET', `${P}r:${id}`);
-    return raw ? JSON.parse(raw) : null;
+    const [review] = await this.getReviews([id]);
+    return review ?? null;
   }
 
   async getReviews(ids) {
     if (!ids.length) return [];
-    const raws = await this.cmd('MGET', ...ids.map((id) => `${P}r:${id}`));
-    return raws.filter(Boolean).map((raw) => JSON.parse(raw));
+    return this.#rpc('atlas_reviews_get', { p_ids: ids });
   }
 
   async saveReview(review) {
-    await this.cmd('SET', `${P}r:${review.id}`, JSON.stringify(review));
+    await this.#rpc('atlas_review_save', { p_review: review });
   }
 
   async listPublishedIds(oppId, offset, limit) {
-    return this.cmd('ZREVRANGE', `${P}pub:${oppId}`, offset, offset + limit - 1);
+    return this.#rpc('atlas_reviews_published_ids', { p_opportunity_id: oppId, p_offset: offset, p_limit: limit });
   }
 
   async listPendingIds(limit) {
-    return this.cmd('ZRANGE', `${P}pending`, 0, limit - 1);
+    return this.#rpc('atlas_reviews_pending_ids', { p_limit: limit });
   }
 
-  /** Adds to the published set; counts the stars only if it wasn't already there. */
   async publish(review) {
-    const [added] = await this.pipeline([
-      ['ZADD', `${P}pub:${review.opportunityId}`, review.createdAt, review.id],
-      ['ZREM', `${P}pending`, review.id],
-    ]);
-    if (added === 1) await this.cmd('HINCRBY', `${P}stars`, `${review.opportunityId}:${review.rating}`, 1);
+    await this.#rpc('atlas_review_set_state', { p_id: review.id, p_state: 'published' });
   }
 
-  /** Moves a review out of the published set (if it was there) and into the queue. */
   async hold(review) {
-    const [removed] = await this.pipeline([
-      ['ZREM', `${P}pub:${review.opportunityId}`, review.id],
-      ['ZADD', `${P}pending`, review.createdAt, review.id],
-    ]);
-    if (removed === 1) await this.cmd('HINCRBY', `${P}stars`, `${review.opportunityId}:${review.rating}`, -1);
+    await this.#rpc('atlas_review_set_state', { p_id: review.id, p_state: 'pending' });
   }
 
   async remove(review) {
-    const [removed] = await this.pipeline([
-      ['ZREM', `${P}pub:${review.opportunityId}`, review.id],
-      ['ZREM', `${P}pending`, review.id],
-      ['DEL', `${P}r:${review.id}`, `${P}rep:${review.id}`],
-    ]);
-    if (removed === 1) await this.cmd('HINCRBY', `${P}stars`, `${review.opportunityId}:${review.rating}`, -1);
+    await this.#rpc('atlas_review_delete', { p_id: review.id });
   }
 
   async starCounts() {
-    const flat = (await this.cmd('HGETALL', `${P}stars`)) ?? [];
-    const out = {};
-    for (let i = 0; i < flat.length; i += 2) out[flat[i]] = Number(flat[i + 1]);
-    return out;
+    return this.#rpc('atlas_review_star_counts', {});
   }
 
   /** Increments a rate-limit counter and returns its new value. */
   async hit(bucket, ttlSeconds) {
-    const [count, ttl] = await this.pipeline([
-      ['INCR', `${P}rl:${bucket}`],
-      ['TTL', `${P}rl:${bucket}`],
-    ]);
-    if (ttl < 0) await this.cmd('EXPIRE', `${P}rl:${bucket}`, ttlSeconds);
-    return count;
+    return this.#rpc('atlas_hit', { p_bucket: `rv:${bucket}`, p_seconds: ttlSeconds });
   }
 
   /** True the first time it's called for a key within the TTL. */
   async once(key, ttlSeconds) {
-    return (await this.cmd('SET', `${P}once:${key}`, '1', 'NX', 'EX', ttlSeconds)) === 'OK';
+    return this.#rpc('atlas_review_once', { p_key: key, p_seconds: ttlSeconds });
   }
 
   async release(key) {
-    await this.cmd('DEL', `${P}once:${key}`);
+    await this.#rpc('atlas_review_release', { p_key: key });
   }
 
   /** Records a reporter; returns the number of distinct reporters, or 0 if this one already reported. */
   async addReporter(reviewId, who) {
-    const [added, count] = await this.pipeline([
-      ['SADD', `${P}rep:${reviewId}`, who],
-      ['SCARD', `${P}rep:${reviewId}`],
-    ]);
-    return added === 1 ? count : 0;
-  }
-}
-
-// ---------------------------------------------------------------------------
-export class MemoryReviewStore {
-  constructor(now = () => Date.now()) {
-    this.now = now;
-    this.reviews = new Map();
-    this.published = new Map();
-    this.pending = new Set();
-    this.stars = {};
-    this.expiring = new Map();
-    this.reporters = new Map();
-  }
-
-  #live(key) {
-    const entry = this.expiring.get(key);
-    if (entry && entry.until <= this.now()) this.expiring.delete(key);
-    return this.expiring.get(key);
-  }
-
-  #bump(review, delta) {
-    const key = `${review.opportunityId}:${review.rating}`;
-    this.stars[key] = (this.stars[key] ?? 0) + delta;
-  }
-
-  async getReview(id) { return structuredClone(this.reviews.get(id) ?? null); }
-  async getReviews(ids) { return ids.map((id) => this.reviews.get(id)).filter(Boolean).map((r) => structuredClone(r)); }
-  async saveReview(review) { this.reviews.set(review.id, structuredClone(review)); }
-
-  #sorted(ids) {
-    return [...ids].map((id) => this.reviews.get(id)).filter(Boolean).sort((a, b) => a.createdAt - b.createdAt).map((r) => r.id);
-  }
-
-  async listPublishedIds(oppId, offset, limit) {
-    return this.#sorted(this.published.get(oppId) ?? []).reverse().slice(offset, offset + limit);
-  }
-
-  async listPendingIds(limit) { return this.#sorted(this.pending).slice(0, limit); }
-
-  async publish(review) {
-    const set = this.published.get(review.opportunityId) ?? new Set();
-    this.published.set(review.opportunityId, set);
-    this.pending.delete(review.id);
-    if (!set.has(review.id)) { set.add(review.id); this.#bump(review, 1); }
-  }
-
-  async hold(review) {
-    this.pending.add(review.id);
-    if (this.published.get(review.opportunityId)?.delete(review.id)) this.#bump(review, -1);
-  }
-
-  async remove(review) {
-    this.pending.delete(review.id);
-    if (this.published.get(review.opportunityId)?.delete(review.id)) this.#bump(review, -1);
-    this.reviews.delete(review.id);
-    this.reporters.delete(review.id);
-  }
-
-  async starCounts() { return { ...this.stars }; }
-
-  async hit(bucket, ttlSeconds) {
-    const key = `rl:${bucket}`;
-    const entry = this.#live(key) ?? { count: 0, until: this.now() + ttlSeconds * 1000 };
-    entry.count += 1;
-    this.expiring.set(key, entry);
-    return entry.count;
-  }
-
-  async once(key, ttlSeconds) {
-    if (this.#live(`once:${key}`)) return false;
-    this.expiring.set(`once:${key}`, { until: this.now() + ttlSeconds * 1000 });
-    return true;
-  }
-
-  async release(key) { this.expiring.delete(`once:${key}`); }
-
-  async addReporter(reviewId, who) {
-    const set = this.reporters.get(reviewId) ?? new Set();
-    this.reporters.set(reviewId, set);
-    if (set.has(who)) return 0;
-    set.add(who);
-    return set.size;
+    return this.#rpc('atlas_review_add_reporter', { p_review_id: reviewId, p_reporter: who });
   }
 }
