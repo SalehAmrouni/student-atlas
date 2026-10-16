@@ -225,3 +225,14 @@ html.high-contrast .lab-tab[aria-selected="true"] { text-decoration: underline; 
   .lab-overview-side { position: static; }
   .lab-side input, .lab-side select { border: 0; padding: 0; }
 }
+
+/* ---- Every device ------------------------------------------------------------ */
+/* The tab bar bleeds to the screen edge; match the page's 16px gutter on phones so it doesn't scroll sideways. */
+@media (max-width: 520px) {
+  .lab-tabs-wrap { margin-inline: -16px; padding-inline: 16px; }
+}
+/* Phones on their side: tabs scroll with the page, and the mentor chat fits the screen. */
+@media (max-height: 500px) {
+  .lab-tabs-wrap { position: static; }
+  .lab-chat { height: calc(100dvh - var(--header-h) - 24px); min-height: 260px; }
+}
