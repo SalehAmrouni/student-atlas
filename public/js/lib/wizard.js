@@ -52,8 +52,9 @@ export function openWizard({ onComplete, startStep = 0 } = {}) {
   let newAccount = null;
   ensureAccount().then((r) => {
     if (!r?.user) return;
-    if (r.signInCode) newAccount = r;
-    accountNote.replaceChildren(h('span', { 'aria-hidden': 'true', text: r.user.emoji ?? '🧭' }), ' You’re ', h('strong', { text: r.user.username }), r.signInCode ? '. Your progress saves automatically.' : '. Your changes save to your account.');
+    // Students who can't sign back in yet set that up when they finish.
+    if (!r.user.hasPicture && !r.user.hasPass) newAccount = r;
+    accountNote.replaceChildren(h('span', { 'aria-hidden': 'true', text: r.user.emoji ?? '🧭' }), ' You’re ', h('strong', { text: r.user.username }), r.created ? '. Your progress saves automatically.' : '. Your changes save to your account.');
   });
   const progress = h('div', { class: 'wizard-progress', 'aria-hidden': 'true' }, STEPS.map(() => h('span')));
   const stepLabel = h('p', { class: 'muted small mb-0 mt-1', 'aria-live': 'polite' });
@@ -210,7 +211,13 @@ export function openWizard({ onComplete, startStep = 0 } = {}) {
         if (newAccount) {
           const shown = newAccount;
           newAccount = null;
-          import('./account-ui.js').then(({ showSignInCode }) => showSignInCode(shown)).then(() => onComplete?.(profile));
+          import('./account-ui.js')
+            .then(({ setupSignIn }) => setupSignIn({
+              user: shown.user,
+              title: 'Last step: pick your picture password',
+              intro: `You’re ${shown.user.username}. To sign back in on any computer, you’ll pick three pictures in the order you choose now. No password to type, and no email needed.`,
+            }))
+            .then(() => onComplete?.(profile));
         } else {
           onComplete?.(profile);
         }

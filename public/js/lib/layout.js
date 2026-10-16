@@ -2,11 +2,11 @@
 
 import { h, icon, refreshIcons, $, toast } from './dom.js';
 import { getSettings, saveSettings, getProfile, getAccount, onStoreChange } from './store.js';
-import { startSync } from './account.js';
+import { startSync, accountStatus } from './account.js';
 import { confettiOnApplied } from './celebrate.js';
 
+// No Home link: the Student Atlas logo goes to the homepage.
 const NAV = [
-  { href: '/', label: 'Home', page: 'home' },
   { href: '/dashboard.html', label: 'Explore', page: 'explore' },
   { href: '/profile.html', label: 'My Pathway', page: 'profile' },
   { href: '/tracker.html', label: 'Applications', page: 'tracker' },
@@ -100,7 +100,7 @@ export function renderLayout(activePage) {
 
   // Header
   const navCta = h('a', { class: 'nav-extra', href: '/?wizard=1' }, 'Find my pathway');
-  // Signed-in students land on My Pathway, so "Home" adds ?home=1 to reach the homepage on purpose.
+  // Signed-in students land on My Pathway, so the logo adds ?home=1 to reach the homepage on purpose.
   const homeHref = () => (getAccount() ? '/?home=1' : '/');
   const navLinks = NAV.map((item) => h('a', { href: item.href, 'aria-current': item.page === activePage ? 'page' : undefined }, item.label));
   const nav = h('nav', { class: 'nav', id: 'site-nav', 'aria-label': 'Main' }, navLinks, navCta);
@@ -158,6 +158,7 @@ export function renderLayout(activePage) {
   const cta = h('a', { class: 'btn btn-primary btn-sm header-cta', href: '/profile.html' }, ctaIcon, ctaLabel);
   // The "Clear Computer" rule: a Log Out button that's always visible for signed-in students.
   const logoutBtn = h('button', { type: 'button', class: 'btn btn-outline btn-sm header-logout', 'aria-label': 'Log out' }, icon('log-out'), h('span', { class: 'btn-label' }, 'Log out'));
+  const signInLink = h('a', { class: 'btn btn-outline btn-sm header-logout', href: '/signin.html', 'aria-label': 'Sign in' }, icon('log-in'), h('span', { class: 'btn-label' }, 'Sign in'));
   logoutBtn.addEventListener('click', async () => (await import('./account-ui.js')).confirmLogOut());
   const setCta = () => {
     const p = getProfile();
@@ -168,7 +169,8 @@ export function renderLayout(activePage) {
     cta.href = p || account ? '/profile.html' : '/?wizard=1';
     navCta.hidden = !!(p || account);
     logoutBtn.hidden = !account;
-    for (const a of [navLinks[0], brand]) a.href = homeHref();
+    signInLink.hidden = !!account || activePage === 'signin';
+    brand.href = homeHref();
     refreshIcons();
   };
   onStoreChange((what) => { if (what === 'profile' || what === 'account') setCta(); });
@@ -179,7 +181,7 @@ export function renderLayout(activePage) {
     h('div', { class: 'container' },
       brand,
       nav,
-      h('div', { class: 'header-actions' }, themeBtn, a11yBtn, cta, logoutBtn, menuToggle)));
+      h('div', { class: 'header-actions' }, themeBtn, a11yBtn, cta, logoutBtn, signInLink, menuToggle)));
   setCta();
 
   const skip = h('a', { class: 'skip-link', href: '#main' }, 'Skip to main content');
@@ -205,7 +207,8 @@ export function renderLayout(activePage) {
       h('div', {},
         h('h2', { class: 'footer-heading' }, 'Project'),
         h('ul', {},
-          h('li', {}, h('a', { href: '/join.html' }, 'Join a class or sign in')),
+          h('li', {}, h('a', { href: '/signin.html' }, 'Sign in')),
+          h('li', {}, h('a', { href: '/join.html' }, 'Join a class')),
           h('li', {}, h('a', { href: '/teacher.html' }, 'For teachers & counselors')),
           h('li', {}, h('a', { href: '/submission.html' }, 'Suggest a resource')),
           h('li', {}, h('a', { href: '/references.html' }, 'About & sources')),
@@ -219,10 +222,35 @@ export function renderLayout(activePage) {
   refreshIcons();
 }
 
+// Pages that need an Atlas account. Everyone can use the homepage, About, and
+// the opportunity directory; signed-out visitors to these go to sign in (or
+// start the wizard) and come back here afterwards.
+const NEEDS_ACCOUNT = new Set(['profile', 'tracker', 'lab', 'submit']);
+
+/** False (and on the way to the sign-in page) when this page needs an account the visitor doesn't have. */
+async function passGate(page) {
+  const root = document.documentElement;
+  if (!NEEDS_ACCOUNT.has(page) || getAccount()) {
+    root.classList.remove('gate-checking');
+    return true;
+  }
+  root.classList.add('gate-checking');
+  const status = await accountStatus();
+  // Without accounts (not set up, or offline) everything stays in this browser, so let them in.
+  if (status.enabled && !status.signedIn) {
+    const next = location.pathname + location.search + location.hash;
+    location.replace(`/signin.html?next=${encodeURIComponent(next)}`);
+    return false;
+  }
+  root.classList.remove('gate-checking');
+  return true;
+}
+
 /** Mounts a page module once the DOM is ready. */
 export function boot(page, init) {
   if (document.documentElement.classList.contains('redirecting')) return; // see home-redirect.js
   const run = async () => {
+    if (!(await passGate(page))) return;
     renderLayout(page);
     confettiOnApplied();
     startSync().catch(() => {});

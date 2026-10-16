@@ -912,6 +912,59 @@ html.reduce-motion *, html.reduce-motion *::before, html.reduce-motion *::after 
 .account-secret { display: grid; gap: 4px; padding: 12px 14px; border-radius: var(--radius); background: var(--bg-elevated); border: 1px dashed var(--border-strong); }
 .account-secret .mono { font-size: 1.2rem; overflow-wrap: anywhere; }
 
+/* Pages that need an account stay hidden while we check (see js/auth-gate.js). */
+.gate-checking main, .gate-checking .site-footer { visibility: hidden; }
+.ml-1 { margin-left: 6px; }
+.badge svg { width: 12px; height: 12px; }
+.callout-warn { background: var(--warning-soft); }
+.callout-warn svg { color: var(--warning); }
+
+/* Picture password pad */
+.picture-pad { display: grid; gap: 10px; }
+.picture-head { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; justify-content: space-between; }
+.picture-head .label { margin: 0; }
+.picture-slots { display: flex; gap: 8px; }
+.picture-slot { position: relative; display: grid; place-items: center; width: 52px; height: 52px; border-radius: var(--radius); border: 2px dashed var(--border-strong); background: var(--bg-elevated); font-size: 1.7rem; }
+.picture-slot.filled { border-style: solid; border-color: var(--brand); background: var(--brand-soft); }
+.picture-slot.next { border-color: var(--brand); }
+.picture-slot-num { position: absolute; top: 2px; left: 5px; font-size: 0.7rem; font-weight: 700; color: var(--text-muted); }
+.picture-dot { width: 14px; height: 14px; border-radius: 50%; background: var(--brand-strong); }
+.picture-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
+.picture-option {
+  display: grid; justify-items: center; gap: 2px; min-height: 72px; padding: 8px 4px;
+  border: 1px solid var(--border-strong); border-radius: var(--radius); background: var(--bg-elevated); color: var(--text);
+  cursor: pointer; font: inherit; transition: transform 0.1s var(--ease), border-color 0.1s var(--ease);
+}
+.picture-option:hover { border-color: var(--brand); }
+.picture-option:active { transform: scale(0.96); }
+.picture-option:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.picture-grid.full .picture-option { opacity: 0.6; cursor: default; }
+.picture-emoji { font-size: 1.9rem; line-height: 1.1; }
+.picture-name { font-size: 0.78rem; font-weight: 600; line-height: 1.2; text-align: center; overflow-wrap: anywhere; }
+.picture-status { margin: 0; min-height: 1.4em; color: var(--text-muted); }
+.picture-actions { gap: 4px; }
+@media (max-width: 480px) {
+  .picture-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+  .picture-option { min-height: 64px; }
+  .picture-slot { width: 46px; height: 46px; font-size: 1.5rem; }
+}
+.reduce-motion .picture-option { transition: none; }
+.reduce-motion .picture-option:active { transform: none; }
+.high-contrast .picture-option[aria-disabled="true"] { opacity: 1; }
+
+/* Login Pass and sign-in links */
+.pass-preview { display: grid; gap: 12px; justify-items: center; }
+.pass-image { width: 100%; max-width: 320px; height: auto; border-radius: var(--radius); border: 1px solid var(--border); background: #fff; }
+.scan-frame { display: grid; justify-items: center; }
+.scan-video { width: 100%; max-width: 420px; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--radius-lg); background: #000; }
+.scan-video[hidden] { display: none; }
+.signin-methods { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.signin-method { display: flex; gap: 12px; align-items: flex-start; padding: 12px 14px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-elevated); }
+.signin-method-icon { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: var(--brand-soft); color: var(--brand-strong); flex-shrink: 0; }
+.link-card-body { display: flex; flex-wrap: wrap; gap: 14px; align-items: flex-start; }
+.link-qr { border-radius: var(--radius-sm); background: #fff; }
+.link-text { overflow-wrap: anywhere; word-break: break-all; font-size: 0.85rem !important; }
+
 .zeus-nudges { border-left: 4px solid var(--accent); }
 .zeus-nudges-head { gap: 10px; margin-bottom: 10px; }
 .zeus-nudge-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }

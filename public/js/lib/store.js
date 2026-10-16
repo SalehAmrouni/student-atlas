@@ -195,7 +195,12 @@ export function getAccount() {
   return a && typeof a.username === 'string' ? a : null;
 }
 export function setAccount(account) {
-  if (account) write(KEYS.account, { username: account.username, emoji: account.emoji, createdAt: account.createdAt, room: account.room ?? null });
+  if (account) {
+    write(KEYS.account, {
+      username: account.username, emoji: account.emoji, createdAt: account.createdAt, room: account.room ?? null,
+      hasPicture: Boolean(account.hasPicture), hasPass: Boolean(account.hasPass),
+    });
+  }
   else remove(KEYS.account);
   emit('account');
 }

@@ -198,25 +198,25 @@ function becomeSignedIn(user, version, dirty = []) {
 
 /**
  * Creates an anonymous account (Path A), carrying over what's in this browser.
- * Returns { user, signInCode } or null when accounts aren't available.
+ * Returns { user, created } or null when accounts aren't available.
  */
 export async function createAccount({ keepLocal = true } = {}) {
   const status = await accountStatus();
   if (!status.enabled) return null;
   if (status.signedIn) {
     if (!getAccount()) becomeSignedIn(status.user, syncState().version);
-    return { user: status.user, signInCode: null };
+    return { user: status.user, created: false };
   }
   const data = keepLocal ? localSnapshot() : {};
   const r = await call('POST', { action: 'create', data });
   if (!keepLocal) deleteAllData();
   becomeSignedIn(r.data.user, r.data.version);
-  return { user: r.data.user, signInCode: r.data.signInCode };
+  return { user: r.data.user, created: true };
 }
 
 /** Makes sure the student has an account; never throws. */
 export async function ensureAccount() {
-  if (getAccount()) return { user: getAccount(), signInCode: null };
+  if (getAccount()) return { user: getAccount(), created: false };
   try {
     return await createAccount();
   } catch {
@@ -225,12 +225,17 @@ export async function ensureAccount() {
 }
 
 /**
- * Signs in on this device. `keepLocal`: add this browser's data to the
- * account (true) or replace it with the account's data (false).
+ * Signs in on this device with one of: { username, picture: [i, j, k] },
+ * { username, code }, { pass } (Login Pass), or { token } (a teacher's link).
+ * `keepLocal`: add this browser's data to the account (true) or replace it
+ * with the account's data (false). Resolves to { user, fromLink }.
  */
-export async function signIn(username, code, { keepLocal = false } = {}) {
+export async function signIn(credentials, { keepLocal = false } = {}) {
   const local = keepLocal ? localSnapshot() : null;
-  const r = await call('POST', { action: 'login', username, code });
+  const body = credentials.pass ? { action: 'login-pass', pass: credentials.pass }
+    : credentials.token ? { action: 'login-link', token: credentials.token }
+      : { action: 'login', username: credentials.username, ...(credentials.picture ? { picture: credentials.picture } : { code: credentials.code }) };
+  const r = await call('POST', body);
   if (!keepLocal) deleteAllData();
   applySections(r.data.data);
   if (local) {
@@ -246,7 +251,21 @@ export async function signIn(username, code, { keepLocal = false } = {}) {
   } else {
     becomeSignedIn(r.data.user, r.data.version);
   }
+  return { user: r.data.user, fromLink: Boolean(r.data.fromLink) };
+}
+
+/** Sets (or changes) the picture password. */
+export async function setPicturePassword(picture) {
+  const r = await call('POST', { action: 'set-picture', picture });
+  setAccount(r.data.user);
   return r.data.user;
+}
+
+/** Makes a new Login Pass secret; any older pass stops working. */
+export async function newLoginPass() {
+  const r = await call('POST', { action: 'new-pass' });
+  setAccount(r.data.user);
+  return r.data.pass;
 }
 
 /** The Clear Computer rule: end the session and wipe everything from this browser. */
@@ -303,3 +322,9 @@ export async function leaveRoom() {
 }
 
 export const displayName = (user) => (user ? `${user.emoji ? `${user.emoji} ` : ''}${user.username}` : '');
+
+/** A same-site path to go back to after signing in (never another site). */
+export function safeNext(value, fallback = '/profile.html') {
+  const s = String(value ?? '');
+  return /^\/(?![/\\])/.test(s) && !/[\u0000-\u001f]/.test(s) ? s : fallback;
+}
