@@ -1,7 +1,7 @@
 // Builds the static site in public/:
 //   - validates data/opportunities/*.json and data/status.json (the weekly checker's results)
 //     and writes public/data/opportunities.json
-//   - copies the Lucide icon bundle to public/vendor/lucide/
+//   - copies the Lucide icon bundle and the QR code libraries to public/vendor/
 // The outputs are committed, so hosts like Vercel can serve public/ as-is;
 // running this again just regenerates them.
 
@@ -27,4 +27,14 @@ const vendorDir = path.join(root, 'public', 'vendor', 'lucide');
 fs.mkdirSync(vendorDir, { recursive: true });
 fs.copyFileSync(path.join(lucideDir, 'lucide.min.js'), path.join(vendorDir, 'lucide.min.js'));
 
-console.log(`Built public/data/opportunities.json (${opportunities.length} opportunities) and public/vendor/lucide/lucide.min.js`);
+// Login Pass QR codes: a generator (an ES module) and a reader (loaded only when scanning).
+const vendor = (pkg, file, dir, as = path.basename(file)) => {
+  const out = path.join(root, 'public', 'vendor', dir);
+  fs.mkdirSync(out, { recursive: true });
+  fs.copyFileSync(path.join(root, 'node_modules', pkg, file), path.join(out, as));
+};
+vendor('qrcode-generator', 'dist/qrcode.mjs', 'qrcode-generator');
+vendor('jsqr', 'dist/jsQR.js', 'jsqr');
+vendor('jsqr', 'LICENSE', 'jsqr');
+
+console.log(`Built public/data/opportunities.json (${opportunities.length} opportunities) and public/vendor/ (lucide, qrcode-generator, jsqr)`);

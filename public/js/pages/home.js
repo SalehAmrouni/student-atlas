@@ -4,15 +4,18 @@ import { loadData, monthsUntilDeadline } from '../lib/data.js';
 import { opportunityCard, setClusterMeta } from '../lib/cards.js';
 import { openWizard } from '../lib/wizard.js';
 import { getProfile } from '../lib/store.js';
+import { safeNext } from '../lib/account.js';
 import { scoreOpportunity } from '../lib/match.js';
 import { createCarousel } from '../lib/carousel.js';
 import { toast } from '../lib/dom.js';
 
 boot('home', async () => {
-  const startWizard = () => openWizard({ onComplete: () => { window.location.href = '/dashboard.html?welcome=1'; } });
+  const params = new URLSearchParams(window.location.search);
+  // Sent here from a page that needs an account: go back there when the wizard is done.
+  const next = params.has('next') ? safeNext(params.get('next'), null) : null;
+  const startWizard = () => openWizard({ onComplete: () => { window.location.href = next ?? '/dashboard.html?welcome=1'; } });
   $('#start-wizard').addEventListener('click', startWizard);
   $('#start-wizard-2').addEventListener('click', startWizard);
-  const params = new URLSearchParams(window.location.search);
   if (params.get('wizard') === '1') {
     history.replaceState(null, '', '/');
     startWizard();

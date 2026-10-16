@@ -4,29 +4,47 @@
 //
 // Students
 //   GET  /api/account                 who am I? (?data=1 adds the synced data)
-//   POST /api/account {action}        create | login | logout | sync | new-code
+//   POST /api/account {action}        create | login | login-pass | login-link | logout
+//                                     | sync | set-picture | new-pass | new-code
 //                                     | join | leave | delete
 // Teachers
 //   GET  /api/rooms?code=X            public room info (name, open, public key)
 //   GET  /api/rooms?code=X&view=roster          roster + summaries   (teacher auth)
 //   GET  /api/rooms?code=X&student=<username>   one student's portfolio (teacher auth)
-//   POST /api/rooms {action}          create | settings | remove | reset-code | delete
+//   POST /api/rooms {action}          create | settings | remove | lock | unlock
+//                                     | sign-in-link | delete
 //
 // What is stored (Supabase Postgres, see supabase/migrations; accounts and
 // rooms expire after about 13 months without activity):
-//   accounts      random username, a hash of the sign-in code, and the student's
-//                 synced data (profile, saved list, tracker, My Story, Zeus chat,
-//                 College Lab)
+//   accounts      random username; hashes of the picture password, the Login
+//                 Pass, and the (optional, backup) sign-in code; a teacher lock;
+//                 and the student's synced data (profile, saved list, tracker,
+//                 My Story, Zeus chat, College Lab)
 //   sessions      session token hash -> account (the cookie holds the token)
+//   login_links   one-time sign-in links a teacher makes, by token hash
 //   rooms         a room: name, open/closed, public key, the private key encrypted
 //                 with the teacher key, and a hash of the teacher's auth token
 //   room_members  account -> room, with the real name *encrypted in the student's
 //                 browser* with the room's public key, plus grade
 // The server never sees a real name or the teacher key in readable form.
+//
+// Ways a student signs in
+//   picture password  username + three pictures in order (public/js/lib/pictures.js).
+//                     Only 8,000 combinations, so wrong tries lock it: a 15-minute
+//                     pause after every 5, and after 10 it stops working until the
+//                     student signs in another way or a teacher unlocks them.
+//   Login Pass        a QR code image holding a long random secret; uploading it
+//                     or showing it to the webcam signs in. A new pass replaces
+//                     the old one.
+//   sign-in link      made by a teacher for a student in their room; works once,
+//                     for 48 hours.
+//   sign-in code      the older typed code; still works, and students can make one
+//                     as a backup.
 
 import crypto from 'node:crypto';
 import { randomUsername, normalizeUsername, randomSignInCode, normalizeSignInCode, randomRoomCode, normalizeRoomCode } from './names.js';
 import { counselorInsights } from '../../public/js/lib/insights.js';
+import { isPictureSequence } from '../../public/js/lib/pictures.js';
 import { financeTier } from '../../public/js/lib/finance.js';
 
 const P = 'atlas:ac:';
@@ -36,6 +54,11 @@ const MAX_SYNC_BYTES = 400 * 1024;
 const MAX_SMALL_BYTES = 8 * 1024;
 const MAX_ROOM_MEMBERS = 500;
 const SYNC_KEYS = ['profile', 'saved', 'tracker', 'chat', 'portfolio', 'lab'];
+const PICTURE_LOCK_EVERY = 5; // wrong picture tries before a pause
+const PICTURE_LOCK_SECONDS = 15 * 60;
+const PICTURE_MAX_FAILS = 10; // then only another sign-in or a teacher unlock re-enables it
+const LINK_SECONDS = 48 * 60 * 60;
+const TOKEN = /^[A-Za-z0-9_-]{32,64}$/;
 
 // A whole school often shares one public IP, so per-IP limits leave room for a
 // full class; per-username limits stop guessing at one account.
@@ -55,6 +78,10 @@ const safeEqualHex = (a, b) => typeof a === 'string' && typeof b === 'string' &&
   && crypto.timingSafeEqual(Buffer.from(a, 'hex'), Buffer.from(b, 'hex'));
 const B64 = /^[A-Za-z0-9+/]+={0,2}$/;
 const isB64 = (s, min, max) => typeof s === 'string' && s.length >= min && s.length <= max && B64.test(s);
+const scrypt = (password, salt) => new Promise((resolve, reject) => {
+  crypto.scrypt(password, salt, 32, (err, key) => (err ? reject(err) : resolve(key.toString('hex'))));
+});
+const cleanToken = (v) => (typeof v === 'string' && TOKEN.test(v.trim()) ? v.trim() : null);
 const cleanText = (v, max) => (typeof v === 'string' ? v.replace(/[\u0000-\u001f\u007f‪-‮⁦-⁩]/g, '').trim().slice(0, max) : '');
 
 function json(status, body, headers = {}) {
@@ -153,6 +180,10 @@ export function createAccountHandlers({ db, env = {}, byId = new Map(), now = ()
   const salt = env.ACCOUNTS_SALT || env.REVIEWS_SALT || env.KV_REST_API_TOKEN || env.UPSTASH_REDIS_REST_TOKEN || 'student-atlas';
   const visitor = (request) => sha256(`${salt}:ip:${clientIp(request)}`).slice(0, 32);
   const codeHash = (id, code) => sha256(`${salt}:code:${id}:${code}`);
+  // Few possible picture passwords, so a slow hash, keyed by the server's salt.
+  const pictureHash = (id, seq) => scrypt(`${id}:${seq.join('.')}`, `${salt}:picture`);
+  const passHash = (token) => sha256(`${salt}:pass:${token}`);
+  const linkHash = (token) => sha256(`${salt}:link:${token}`);
   const rpc = async (fn, args) => (await db)(fn, args);
 
   async function hit(bucket, rule) {
@@ -177,7 +208,11 @@ export function createAccountHandlers({ db, env = {}, byId = new Map(), now = ()
     emoji: user.emoji,
     createdAt: user.createdAt,
     room: user.room && user.roomName ? { code: user.room, name: user.roomName } : null,
+    hasPicture: Boolean(user.pictureHash),
+    hasPass: Boolean(user.hasPass),
   });
+  const pictureLocked = (user) => user.pictureFails >= PICTURE_MAX_FAILS || (user.pictureLockedUntil ?? 0) > now();
+  const lockedAccount = () => json(423, { error: 'This account is locked. Ask your teacher to unlock it or to make you a sign-in link.', locked: true });
 
   async function startSession(request, id) {
     const token = crypto.randomBytes(32).toString('base64url');
@@ -196,8 +231,9 @@ export function createAccountHandlers({ db, env = {}, byId = new Map(), now = ()
   async function create(request, body) {
     if (await hit(`c:${visitor(request)}`, RATE.create)) return tooMany(RATE.create);
     const id = crypto.randomBytes(12).toString('hex');
-    const signInCode = randomSignInCode();
-    const hash = codeHash(id, normalizeSignInCode(signInCode));
+    // No typed code to begin with: students sign in with pictures or a Login
+    // Pass, and can make a backup code later. This hash matches no code.
+    const hash = codeHash(id, crypto.randomBytes(16).toString('hex'));
     const data = cleanSyncData(body.data) ?? {};
     const at = now();
     let name = null;
@@ -211,29 +247,95 @@ export function createAccountHandlers({ db, env = {}, byId = new Map(), now = ()
     }
     if (!name) return json(503, { error: 'Couldn’t make a username right now. Please try again.' });
     const cookie = await startSession(request, id);
-    return json(201, { user: publicUser({ username: name.username, emoji: name.emoji, createdAt: at }), signInCode, version: 1 }, { 'Set-Cookie': cookie });
+    return json(201, { user: publicUser({ username: name.username, emoji: name.emoji, createdAt: at }), version: 1 }, { 'Set-Cookie': cookie });
   }
 
+  /** Starts a session for a student who proved who they are, and returns their data. */
+  async function finishSignIn(request, user, extra = {}) {
+    await rpc('atlas_signed_in', { p_id: user.id });
+    const cookie = await startSession(request, user.id);
+    const stored = await getStored(user.id);
+    return json(200, { user: publicUser(user), version: stored?.version ?? 0, data: stored?.data ?? {}, ...extra }, { 'Set-Cookie': cookie });
+  }
+
+  function pictureLockedResponse(user) {
+    if (user.pictureFails >= PICTURE_MAX_FAILS) {
+      return json(423, { error: 'Your picture password is locked after too many wrong tries. Sign in with your Login Pass, or ask your teacher to unlock you.', pictureLocked: true });
+    }
+    const minutes = Math.max(1, Math.ceil((user.pictureLockedUntil - now()) / 60000));
+    return json(429, { error: `Too many wrong pictures. Try again in ${minutes} minute${minutes === 1 ? '' : 's'}, or sign in with your Login Pass.`, pictureLocked: true }, { 'Retry-After': String(minutes * 60) });
+  }
+
+  // Username plus either the picture password ({picture: [i, j, k]}) or the sign-in code ({code}).
   async function login(request, body) {
     const ipBucket = `lf:${visitor(request)}`;
     const uname = normalizeUsername(body.username);
-    const code = normalizeSignInCode(body.code);
-    const fail = async () => {
+    const withPicture = body.picture !== undefined;
+    const code = withPicture ? null : normalizeSignInCode(body.code);
+    const fail = async (user) => {
       await hit(ipBucket, RATE.loginFail);
       if (uname) await hit(`uf:${uname}`, RATE.userFail);
-      return json(401, { error: 'That username and sign-in code don’t match. Check both and try again.' });
+      if (user) {
+        const after = await rpc('atlas_picture_fail', { p_id: user.id, p_lock_every: PICTURE_LOCK_EVERY, p_lock_seconds: PICTURE_LOCK_SECONDS });
+        const next = { pictureFails: after.fails, pictureLockedUntil: after.lockedUntil };
+        if (pictureLocked(next)) return pictureLockedResponse(next);
+        const left = PICTURE_LOCK_EVERY - (after.fails % PICTURE_LOCK_EVERY);
+        return json(401, { error: `That username and those pictures don’t match. ${left === 1 ? 'One more wrong try pauses' : `${left} more wrong tries pause`} picture sign-in for this username.` });
+      }
+      return json(401, { error: withPicture ? 'That username and those pictures don’t match. Check both and try again.' : 'That username and sign-in code don’t match. Check both and try again.' });
     };
     // Check the limits without counting this attempt yet.
     const [ipCount, userCount] = await peek(ipBucket, `uf:${uname ?? '-'}`);
     if (ipCount >= RATE.loginFail.max) return tooMany(RATE.loginFail);
     if (userCount >= RATE.userFail.max) return tooMany(RATE.userFail);
-    if (!uname || !code) return fail();
+    if (!uname || (withPicture ? !isPictureSequence(body.picture) : !code)) return fail();
     const user = await rpc('atlas_get_account', { p_username_key: uname });
-    if (!user || !safeEqualHex(user.codeHash, codeHash(user.id, code))) return fail();
-    await rpc('atlas_touch_account', { p_id: user.id });
-    const cookie = await startSession(request, user.id);
-    const stored = await getStored(user.id);
-    return json(200, { user: publicUser(user), version: stored?.version ?? 0, data: stored?.data ?? {} }, { 'Set-Cookie': cookie });
+    if (!user) return fail();
+    if (withPicture) {
+      if (pictureLocked(user)) return pictureLockedResponse(user);
+      if (!user.pictureHash) return fail();
+      if (!safeEqualHex(user.pictureHash, await pictureHash(user.id, body.picture))) return fail(user);
+    } else if (!safeEqualHex(user.codeHash, codeHash(user.id, code))) {
+      return fail();
+    }
+    if (user.locked) return lockedAccount();
+    return finishSignIn(request, user);
+  }
+
+  // The Login Pass, or a teacher's one-time sign-in link: a long random secret, no username needed.
+  async function loginWithToken(request, body, kind) {
+    const ipBucket = `lf:${visitor(request)}`;
+    const [ipCount] = await peek(ipBucket);
+    if (ipCount >= RATE.loginFail.max) return tooMany(RATE.loginFail);
+    const token = cleanToken(kind === 'pass' ? body.pass : body.token);
+    let user = null;
+    if (token) {
+      user = kind === 'pass'
+        ? await rpc('atlas_account_by_pass', { p_hash: passHash(token) })
+        : await rpc('atlas_use_login_link', { p_token_hash: linkHash(token) });
+    }
+    if (!user) {
+      await hit(ipBucket, RATE.loginFail);
+      return json(401, {
+        error: kind === 'pass'
+          ? 'That Login Pass doesn’t work. It may be an older one: downloading a new pass replaces the old one.'
+          : 'That sign-in link has expired or was already used. Ask your teacher for a new one.',
+      });
+    }
+    if (user.locked) return lockedAccount();
+    return finishSignIn(request, user, kind === 'link' ? { fromLink: true } : {});
+  }
+
+  async function setPicture(body, me) {
+    if (!isPictureSequence(body.picture)) return json(422, { error: 'Pick three pictures.' });
+    await rpc('atlas_set_picture', { p_id: me.user.id, p_hash: await pictureHash(me.user.id, body.picture) });
+    return json(200, { user: publicUser(await getAccount(me.user.id)) });
+  }
+
+  async function newPass(me) {
+    const pass = crypto.randomBytes(24).toString('base64url');
+    await rpc('atlas_set_pass', { p_id: me.user.id, p_hash: passHash(pass) });
+    return json(200, { pass, user: publicUser(await getAccount(me.user.id)) });
   }
 
   async function sync(request, body, me) {
@@ -290,6 +392,8 @@ export function createAccountHandlers({ db, env = {}, byId = new Map(), now = ()
       if (error) return error;
       if (body.action === 'create') return await create(request, body);
       if (body.action === 'login') return await login(request, body);
+      if (body.action === 'login-pass') return await loginWithToken(request, body, 'pass');
+      if (body.action === 'login-link') return await loginWithToken(request, body, 'link');
       const me = await currentUser(request);
       if (body.action === 'logout') {
         if (me) await rpc('atlas_delete_session', { p_token_hash: sha256(me.token) });
@@ -298,6 +402,8 @@ export function createAccountHandlers({ db, env = {}, byId = new Map(), now = ()
       if (!me) return json(401, { error: 'You’re signed out. Sign in again to keep saving.' }, { 'Set-Cookie': clearCookie(request) });
       if (body.action === 'sync') return await sync(request, body, me);
       if (body.action === 'new-code') return await newCode(me);
+      if (body.action === 'set-picture') return await setPicture(body, me);
+      if (body.action === 'new-pass') return await newPass(me);
       if (body.action === 'join') return await join(request, body, me);
       if (body.action === 'leave') {
         await rpc('atlas_leave_room', { p_account_id: me.user.id });
@@ -347,6 +453,8 @@ export function createAccountHandlers({ db, env = {}, byId = new Map(), now = ()
         grade: member.grade ?? insights.grade,
         joinedAt: member.joinedAt,
         lastActive: user.lastActive ?? null,
+        locked: Boolean(user.locked),
+        pictureLocked: pictureLocked(user),
         insights: { score: insights.score, status: insights.status, summary: insights.summary, flags: insights.flags, counts: insights.counts, goal: insights.goal, nextDeadline: insights.nextDeadline },
       };
     });
@@ -420,16 +528,24 @@ export function createAccountHandlers({ db, env = {}, byId = new Map(), now = ()
         });
         return json(200, { room: publicRoom(next) });
       }
-      if (body.action === 'remove' || body.action === 'reset-code') {
+      if (['remove', 'lock', 'unlock', 'sign-in-link'].includes(body.action)) {
         const found = await memberByUsername(code, body.username);
         if (!found) return json(404, { error: 'That student isn’t in this room.' });
+        const id = found.user.id;
         if (body.action === 'remove') {
-          await rpc('atlas_leave_room', { p_account_id: found.user.id, p_code: code });
+          await rpc('atlas_leave_room', { p_account_id: id, p_code: code });
           return json(200, { ok: true });
         }
-        const signInCode = randomSignInCode();
-        await rpc('atlas_set_code', { p_id: found.user.id, p_code_hash: codeHash(found.user.id, normalizeSignInCode(signInCode)) });
-        return json(200, { username: found.user.username, signInCode });
+        if (body.action === 'lock' || body.action === 'unlock') {
+          // Locking signs the student out everywhere; unlocking also lifts a picture lockout.
+          await rpc('atlas_set_locked', { p_id: id, p_locked: body.action === 'lock' });
+          return json(200, { username: found.user.username, locked: body.action === 'lock' });
+        }
+        // A one-time link the teacher hands to the student. Making one unlocks the account.
+        const token = crypto.randomBytes(24).toString('base64url');
+        await rpc('atlas_set_locked', { p_id: id, p_locked: false });
+        await rpc('atlas_create_login_link', { p_token_hash: linkHash(token), p_account_id: id, p_seconds: LINK_SECONDS });
+        return json(200, { username: found.user.username, token, expiresAt: now() + LINK_SECONDS * 1000 });
       }
       if (body.action === 'delete') {
         // Students keep their accounts; they just leave the room.

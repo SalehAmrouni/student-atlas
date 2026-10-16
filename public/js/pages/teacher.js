@@ -180,6 +180,7 @@ boot('teacher', async () => {
   }
 
   let filter = { q: '', show: 'all', sort: 'needs' };
+  let redrawRoster = null;
   function dashboard() {
     const { room, students } = roomState;
     $('#teacher-title').textContent = room.name;
@@ -253,8 +254,10 @@ boot('teacher', async () => {
           h('caption', { class: 'visually-hidden' }, `Roster for ${room.name}. Select a name to open that student’s portfolio.`),
           h('thead', {}, h('tr', {}, ['Student', 'Atlas username', 'Grade', 'Status', 'Progress', 'Needs', 'Last active'].map((c) => h('th', { scope: 'col', text: c })))),
           h('tbody', {}, list.map((s) => h('tr', {},
-            h('th', { scope: 'row' }, h('button', { type: 'button', class: 'opp-link', onclick: () => openStudent(s) }, s.name)),
-            h('td', { class: 'mono small' }, `${s.emoji ?? ''} ${s.username}`),
+            h('th', { scope: 'row' }, h('button', { type: 'button', class: 'opp-link', dataset: { username: s.username }, onclick: () => openStudent(s) }, s.name)),
+            h('td', { class: 'mono small' }, `${s.emoji ?? ''} ${s.username}`,
+              s.locked ? h('span', { class: 'badge badge-danger ml-1' }, icon('lock'), 'Locked')
+                : s.pictureLocked ? h('span', { class: 'badge badge-warning ml-1', title: 'Too many wrong pictures' }, icon('lock'), 'Pictures locked') : null),
             h('td', { text: s.grade ? `${s.grade}th` : '–' }),
             h('td', {}, h('span', { class: `badge ${STATUS_BADGE[s.insights.status]}`, text: STATUS_LABEL[s.insights.status] })),
             h('td', {}, h('span', { class: 'small', text: `${s.insights.score}/100 · ${s.insights.counts.milestonesDone}/${s.insights.counts.milestonesTotal} milestones` })),
@@ -264,6 +267,7 @@ boot('teacher', async () => {
             h('td', { class: 'small', text: ago(s.lastActive) })))))));
       refreshIcons();
     };
+    redrawRoster = drawTable;
     search.addEventListener('input', debounce(() => { filter.q = search.value; drawTable(); }, 150));
     show.addEventListener('change', () => { filter.show = show.value; drawTable(); });
     sort.addEventListener('change', () => { filter.sort = sort.value; drawTable(); });
@@ -408,36 +412,85 @@ boot('teacher', async () => {
           kv('Overcoming obstacles', portfolio.insight.obstacles ?? (portfolio.insight.share ? null : 'Not shared'))),
         h('p', { class: 'small faint mb-0' }, 'Students choose whether to share their obstacles answer.')));
 
-    const actions = h('div', { class: 'row' },
-      h('button', {
-        type: 'button', class: 'btn btn-outline btn-sm',
-        onclick: async (e) => {
-          if (!confirm(`Make a new sign-in code for ${s.name}? Their old code stops working.`)) return;
-          try {
-            const out = await api('POST', { body: { action: 'reset-code', code: session.code, username: s.username } });
-            const shown = h('div', { class: 'account-secret mt-2', role: 'status' },
-              h('span', { class: 'small muted', text: `New sign-in for ${s.name}` }),
-              h('strong', { class: 'mono', text: `${out.username} · ${out.signInCode}` }),
-              h('span', { class: 'small muted' }, 'Give this to the student privately. It won’t be shown again.'));
-            e.target.closest('.row').after(shown);
-          } catch (ex) { toast(ex.message, 'error'); }
-        },
-      }, icon('key-round'), 'New sign-in code'),
-      h('button', {
-        type: 'button', class: 'btn btn-danger btn-sm',
-        onclick: async () => {
-          if (!confirm(`Remove ${s.name} from ${roomState.room.name}? They keep their account and data.`)) return;
-          try {
-            await api('POST', { body: { action: 'remove', code: session.code, username: s.username } });
-            modal.close();
-            await refresh();
-          } catch (ex) { toast(ex.message, 'error'); }
-        },
-      }, icon('user-minus'), 'Remove from room'));
+    // Sign-in help: one-time links, and locking an account if a student asks or it's misused.
+    const signInOut = h('div', { class: 'stack-sm', 'aria-live': 'polite' });
+    let signInChanged = false;
+    const post = (action) => api('POST', { body: { action, code: session.code, username: s.username } });
+    const lockBtn = h('button', { type: 'button', class: 'btn btn-outline btn-sm' });
+    const drawLock = () => {
+      lockBtn.replaceChildren(icon(s.locked ? 'lock-open' : 'lock'), s.locked ? 'Unlock account' : 'Lock account');
+      refreshIcons();
+    };
+    lockBtn.addEventListener('click', async () => {
+      const locking = !s.locked;
+      if (locking && !confirm(`Lock ${s.name}’s account? They’ll be signed out everywhere and can’t sign in until you unlock it or make them a sign-in link.`)) return;
+      lockBtn.disabled = true;
+      try {
+        const out = await post(locking ? 'lock' : 'unlock');
+        s.locked = out.locked;
+        if (!locking) s.pictureLocked = false;
+        signInChanged = true;
+        drawLock();
+        signInOut.replaceChildren(h('p', { class: 'small mb-0', role: 'status', text: locking ? `${s.name}’s account is locked.` : `${s.name}’s account is unlocked. Their picture password works again.` }));
+      } catch (ex) { toast(ex.message, 'error'); } finally { lockBtn.disabled = false; }
+    });
+    drawLock();
+
+    const linkBtn = h('button', {
+      type: 'button', class: 'btn btn-primary btn-sm',
+      onclick: async () => {
+        if (!confirm(`Make a one-time sign-in link for ${s.name}? It works once, for 48 hours, and replaces any earlier link.${s.locked ? ' It also unlocks their account.' : ''}`)) return;
+        linkBtn.disabled = true;
+        try {
+          const out = await post('sign-in-link');
+          s.locked = false;
+          s.pictureLocked = false;
+          signInChanged = true;
+          drawLock();
+          const { linkUrl, qrCanvas } = await import('../lib/login-pass.js');
+          const url = linkUrl(out.token);
+          const qr = qrCanvas(url, 5);
+          const until = new Date(out.expiresAt).toLocaleString(undefined, { weekday: 'short', hour: 'numeric', minute: '2-digit' });
+          signInOut.replaceChildren(h('div', { class: 'account-secret link-card' },
+            h('span', { class: 'small muted', text: `One-time sign-in link for ${s.name} (${s.username})` }),
+            h('div', { class: 'link-card-body' },
+              h('img', { class: 'link-qr', src: qr.toDataURL('image/png'), width: '140', height: '140', alt: `QR code for ${s.name}’s sign-in link` }),
+              h('div', { class: 'stack-sm' },
+                h('code', { class: 'mono small link-text', text: url }),
+                h('div', { class: 'row' }, h('button', { type: 'button', class: 'btn btn-outline btn-sm', onclick: () => copyText(url, 'Sign-in link copied') }, icon('copy'), 'Copy link')),
+                h('span', { class: 'small muted', text: `Works once, until ${until}. Send it privately (for example in your school’s messaging), or have the student scan the QR code with their webcam on the sign-in page. They’ll pick new pictures after signing in.` })))));
+          refreshIcons();
+        } catch (ex) { toast(ex.message, 'error'); } finally { linkBtn.disabled = false; }
+      },
+    }, icon('link'), 'Make a sign-in link');
+
+    const actions = h('section', { class: 'portfolio-block stack-sm', 'aria-labelledby': 'signin-help-h' },
+      h('h3', { id: 'signin-help-h', class: 'h3' }, icon('key-round'), 'Sign-in help'),
+      s.locked ? h('p', { class: 'small mb-0' }, 'This account is locked.')
+        : s.pictureLocked ? h('p', { class: 'small mb-0' }, 'This student’s picture password is locked after too many wrong tries. Unlock it or make them a sign-in link.') : null,
+      h('div', { class: 'row' }, linkBtn, lockBtn,
+        h('button', {
+          type: 'button', class: 'btn btn-danger btn-sm',
+          onclick: async () => {
+            if (!confirm(`Remove ${s.name} from ${roomState.room.name}? They keep their account and data.`)) return;
+            try {
+              await api('POST', { body: { action: 'remove', code: session.code, username: s.username } });
+              modal.close();
+              await refresh();
+            } catch (ex) { toast(ex.message, 'error'); }
+          },
+        }, icon('user-minus'), 'Remove from room')),
+      signInOut);
 
     const modal = openModal({
       labelledBy: 'student-title',
       wide: true,
+      onClose: () => {
+        if (!signInChanged) return;
+        // Show the new lock state in the roster, then put focus back on this student's row.
+        redrawRoster?.();
+        setTimeout(() => [...document.querySelectorAll('.roster .opp-link')].find((b) => b.dataset.username === s.username)?.focus());
+      },
       build: (close) => [
         modalHeader('student-title', s.name, `${s.emoji ?? ''} ${s.username} · ${s.grade ? `${s.grade}th grade` : 'grade not set'} · active ${ago(detail.student.lastActive).toLowerCase()}`, close),
         h('div', { class: 'modal-body stack' },
