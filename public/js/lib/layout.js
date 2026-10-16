@@ -127,9 +127,12 @@ export function renderLayout(activePage) {
     if (menuEl) { closeMenu(); a11yBtn.focus(); }
     if (nav.classList.contains('open')) { setNavOpen(false); menuToggle.focus(); }
   });
+  // Check the event path, not e.target: the menu button swaps its icon on click, so by the time this
+  // runs a tapped icon is no longer inside the button and the menu would close the moment it opened.
   document.addEventListener('click', (e) => {
-    if (menuEl && !menuEl.contains(e.target) && !a11yBtn.contains(e.target)) closeMenu();
-    if (nav.classList.contains('open') && !nav.contains(e.target) && !menuToggle.contains(e.target)) setNavOpen(false);
+    const path = e.composedPath();
+    if (menuEl && !path.includes(menuEl) && !path.includes(a11yBtn)) closeMenu();
+    if (nav.classList.contains('open') && !path.includes(nav) && !path.includes(menuToggle)) setNavOpen(false);
   });
 
   const themeBtn = h('button', { class: 'btn btn-ghost btn-icon theme-toggle', type: 'button', 'aria-label': 'Dark mode', 'aria-pressed': String(effectiveTheme() === 'dark') }, icon(effectiveTheme() === 'dark' ? 'sun' : 'moon'));
